@@ -103,7 +103,7 @@ export default function AdminEnquiriesPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -207,7 +207,7 @@ export default function AdminEnquiriesPage() {
                           href={`https://wa.me/${enquiry.customer_phone.replace(/\D/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 hover:bg-muted rounded-lg transition-colors text-green-600"
+                          className="p-2 hover:bg-muted rounded-lg transition-colors text-brand-blue"
                         >
                           <MessageCircle className="w-4 h-4" />
                         </a>

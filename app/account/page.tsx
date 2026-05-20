@@ -85,13 +85,13 @@ export default function AccountPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-slate" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen py-12 bg-[#faf8f5]">
+    <div className="min-h-screen py-12 bg-brand-gray">
       <div className="container mx-auto px-4">
         <h1 className="font-heading text-3xl font-bold mb-8">My Account</h1>
 
@@ -101,7 +101,7 @@ export default function AccountPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#1a1a2e] rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  <div className="w-12 h-12 bg-[var(--color-brand-slate)] rounded-full flex items-center justify-center text-white font-bold text-xl">
                     {fullName?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase()}
                   </div>
                   <div>
@@ -122,7 +122,7 @@ export default function AccountPage() {
                     My Orders
                   </a>
                   {profile?.role === "admin" && (
-                    <a href="/admin" className="block px-4 py-2 text-sm font-medium rounded-md hover:bg-muted text-amber">
+                    <a href="/admin" className="block px-4 py-2 text-sm font-medium rounded-md hover:bg-muted text-brand-slate">
                       Admin Panel
                     </a>
                   )}

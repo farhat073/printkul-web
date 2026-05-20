@@ -55,7 +55,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Banner */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-16 md:py-24">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-16 md:py-24">
         <div className="container mx-auto px-4">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
@@ -85,9 +85,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 <Link
                   key={sub.id}
                   href={`/${categorySlug}/${sub.slug}`}
-                  className="group bg-white rounded-lg border border-border p-4 hover:border-amber/30 hover:shadow-md transition-all"
+                  className="group bg-brand-gray rounded-lg border border-border p-4 hover:border-brand-blue/30 hover:shadow-md transition-all"
                 >
-                  <h3 className="font-medium text-[#1a1a2e] group-hover:text-amber transition-colors">
+                  <h3 className="font-medium text-[var(--color-brand-slate)] group-hover:text-brand-slate transition-colors">
                     {sub.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1">View products →</p>
@@ -123,7 +123,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {/* All Products */}
       {products && products.length > 0 && (
-        <section className="py-16 bg-[#faf8f5]">
+        <section className="py-16 bg-brand-gray">
           <div className="container mx-auto px-4">
             <h2 className="font-heading text-2xl font-bold mb-8">All {category.name}</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

@@ -75,7 +75,7 @@ export default function AdminMediaPage() {
           <CardTitle className="font-heading">Upload Images</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-amber/50 transition-colors">
+          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-brand-blue/50 transition-colors">
             <input
               type="file"
               multiple
@@ -131,7 +131,7 @@ export default function AdminMediaPage() {
         <Card>
           <CardHeader>
             <CardTitle className="font-heading flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-brand-blue" />
               Uploaded Successfully
             </CardTitle>
           </CardHeader>

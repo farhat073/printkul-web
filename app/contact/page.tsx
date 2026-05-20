@@ -23,7 +23,7 @@ export default async function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-16">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
             Contact Us
@@ -43,65 +43,65 @@ export default async function ContactPage() {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white rounded-xl border border-border p-8 text-center hover:shadow-lg hover:border-green-500/30 transition-all"
+              className="group bg-brand-gray rounded border border-border p-8 text-center hover:shadow-lg hover:border-green-500/30 transition-all"
             >
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                <MessageCircle className="w-8 h-8 text-green-600 group-hover:text-white" />
+                <MessageCircle className="w-8 h-8 text-brand-blue group-hover:text-white" />
               </div>
               <h3 className="font-semibold text-lg mb-2">WhatsApp</h3>
               <p className="text-muted-foreground text-sm">
                 Quick responses, 7 days a week
               </p>
-              <p className="text-amber font-medium mt-2">Chat now →</p>
+              <p className="text-brand-slate font-medium mt-2">Chat now →</p>
             </a>
 
             {/* Phone */}
             <a
               href={`tel:${phone.replace(/\D/g, "")}`}
-              className="group bg-white rounded-xl border border-border p-8 text-center hover:shadow-lg hover:border-amber/30 transition-all"
+              className="group bg-brand-gray rounded border border-border p-8 text-center hover:shadow-lg hover:border-brand-blue/30 transition-all"
             >
-              <div className="w-16 h-16 bg-amber/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber group-hover:text-white transition-colors">
-                <Phone className="w-8 h-8 text-amber" />
+              <div className="w-16 h-16 bg-brand-blue/5 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-blue group-hover:text-white transition-colors">
+                <Phone className="w-8 h-8 text-brand-slate" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Phone</h3>
               <p className="text-muted-foreground text-sm">
                 Mon-Sat, 10am - 7pm
               </p>
-              <p className="text-amber font-medium mt-2">{phone}</p>
+              <p className="text-brand-slate font-medium mt-2">{phone}</p>
             </a>
 
             {/* Email */}
             <a
               href={`mailto:${email}`}
-              className="group bg-white rounded-xl border border-border p-8 text-center hover:shadow-lg hover:border-amber/30 transition-all"
+              className="group bg-brand-gray rounded border border-border p-8 text-center hover:shadow-lg hover:border-brand-blue/30 transition-all"
             >
-              <div className="w-16 h-16 bg-amber/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber group-hover:text-white transition-colors">
-                <Mail className="w-8 h-8 text-amber" />
+              <div className="w-16 h-16 bg-brand-blue/5 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-blue group-hover:text-white transition-colors">
+                <Mail className="w-8 h-8 text-brand-slate" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Email</h3>
               <p className="text-muted-foreground text-sm">
                 We reply within 24 hours
               </p>
-              <p className="text-amber font-medium mt-2">{email}</p>
+              <p className="text-brand-slate font-medium mt-2">{email}</p>
             </a>
 
             {/* Address */}
-            <div className="group bg-white rounded-xl border border-border p-8 text-center hover:shadow-lg hover:border-amber/30 transition-all">
-              <div className="w-16 h-16 bg-amber/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-8 h-8 text-amber" />
+            <div className="group bg-brand-gray rounded border border-border p-8 text-center hover:shadow-lg hover:border-brand-blue/30 transition-all">
+              <div className="w-16 h-16 bg-brand-blue/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MapPin className="w-8 h-8 text-brand-slate" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Office</h3>
               <p className="text-muted-foreground text-sm">
                 Business hours only
               </p>
-              <p className="text-amber font-medium mt-2">{address}</p>
+              <p className="text-brand-slate font-medium mt-2">{address}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Summary */}
-      <section className="py-16 bg-[#faf8f5]">
+      <section className="py-16 bg-brand-gray">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-2xl font-bold mb-4">
             Have questions?
@@ -111,7 +111,7 @@ export default async function ContactPage() {
           </p>
           <Link
             href="/faq"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a1a2e] text-white rounded-lg hover:bg-[#2d2d44] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-brand-slate)] text-white rounded-lg hover:bg-[var(--color-brand-slate)] transition-colors"
           >
             View FAQs
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

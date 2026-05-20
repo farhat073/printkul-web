@@ -55,7 +55,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-12">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-12">
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
             <Link href="/" className="hover:text-white">Home</Link>
@@ -72,14 +72,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
       </section>
 
       {/* Filters */}
-      <section className="py-6 border-b border-border bg-white sticky top-[140px] z-10">
+      <section className="py-6 border-b border-border bg-brand-gray sticky top-[140px] z-10">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-4 overflow-x-auto pb-2">
             <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Filter by:</span>
             {uniqueFinishes.slice(0, 6).map((finish) => (
               <button
                 key={finish}
-                className="px-4 py-1.5 bg-muted rounded-full text-sm hover:bg-amber/10 hover:text-amber transition-colors whitespace-nowrap"
+                className="px-4 py-1.5 bg-muted rounded-full text-sm hover:bg-brand-blue/5 hover:text-brand-slate transition-colors whitespace-nowrap"
               >
                 {finish}
               </button>
@@ -108,7 +108,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           {(!products || products.length === 0) && (
             <div className="text-center py-16">
               <p className="text-muted-foreground">No products found in this category.</p>
-              <Link href="/products" className="text-amber hover:underline mt-2 inline-block">
+              <Link href="/products" className="text-brand-slate hover:underline mt-2 inline-block">
                 Browse all products
               </Link>
             </div>

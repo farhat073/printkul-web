@@ -95,7 +95,7 @@ export default function AdminContentPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-slate" />
       </div>
     )
   }

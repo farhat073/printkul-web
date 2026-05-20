@@ -68,7 +68,7 @@ export default function ProductsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -76,7 +76,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-12">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">
             All Products
@@ -88,15 +88,15 @@ export default function ProductsPage() {
       </section>
 
       {/* Filters */}
-      <section className="py-6 border-b border-border bg-white sticky top-[140px] z-10">
+      <section className="py-6 border-b border-border bg-brand-gray sticky top-[140px] z-10">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-4 overflow-x-auto pb-2">
             <button
               onClick={() => setSelectedCategory(null)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                 !selectedCategory
-                  ? "bg-[#1a1a2e] text-white"
-                  : "bg-muted hover:bg-amber/10 hover:text-amber"
+                  ? "bg-[var(--color-brand-slate)] text-white"
+                  : "bg-muted hover:bg-brand-blue/5 hover:text-brand-slate"
               }`}
             >
               All Products
@@ -107,8 +107,8 @@ export default function ProductsPage() {
                 onClick={() => setSelectedCategory(cat.name.toLowerCase().replace(/\s+/g, '-'))}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                   selectedCategory === cat.name.toLowerCase().replace(/\s+/g, '-')
-                    ? "bg-[#1a1a2e] text-white"
-                    : "bg-muted hover:bg-amber/10 hover:text-amber"
+                    ? "bg-[var(--color-brand-slate)] text-white"
+                    : "bg-muted hover:bg-brand-blue/5 hover:text-brand-slate"
                 }`}
               >
                 {cat.name}

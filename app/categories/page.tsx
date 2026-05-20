@@ -17,10 +17,10 @@ export default async function CategoriesPage() {
   const categories = data?.length ? data : mockCategories
 
   return (
-    <div className="min-h-screen bg-[#faf8f5] pt-32 pb-20">
+    <div className="min-h-screen bg-brand-gray pt-32 pb-20">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold font-heading text-[#1a1a2e] mb-4">All Categories</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-heading text-[var(--color-brand-slate)] mb-4">All Categories</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Browse our extensive collection of premium print products, tailored for your brand and business needs.
           </p>
@@ -31,12 +31,12 @@ export default async function CategoriesPage() {
             <Link
               key={category.id}
               href={`/${category.slug}`}
-              className="group block text-center p-8 rounded-2xl border border-black/5 hover:border-amber/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white"
+              className="group block text-center p-8 rounded border border-black/5 hover:border-brand-blue/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-brand-gray"
             >
-              <div className="w-20 h-20 mx-auto bg-[#faf8f5] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm">
-                <Package className="w-10 h-10 text-[#1a1a2e] group-hover:text-amber transition-colors duration-300" />
+              <div className="w-20 h-20 mx-auto bg-brand-gray rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                <Package className="w-10 h-10 text-[var(--color-brand-slate)] group-hover:text-brand-slate transition-colors duration-300" />
               </div>
-              <h3 className="font-semibold text-lg text-[#1a1a2e] mb-2 group-hover:text-amber transition-colors">
+              <h3 className="font-semibold text-lg text-[var(--color-brand-slate)] mb-2 group-hover:text-brand-slate transition-colors">
                 {category.name}
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-2">

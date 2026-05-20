@@ -107,7 +107,7 @@ export default function AdminProductsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -219,7 +219,7 @@ export default function AdminProductsPage() {
                     <td className="px-6 py-4">
                       <button
                         onClick={() => toggleFeatured(product)}
-                        className={`text-sm ${product.is_featured ? "text-amber font-medium" : "text-muted-foreground"}`}
+                        className={`text-sm ${product.is_featured ? "text-brand-slate font-medium" : "text-muted-foreground"}`}
                       >
                         {product.is_featured ? "★ Featured" : "☆ Not featured"}
                       </button>
@@ -269,7 +269,7 @@ export default function AdminProductsPage() {
             <div className="text-center py-12">
               <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-muted-foreground">No products found</p>
-              <Link href="/admin/products/new" className="text-amber hover:underline mt-2 inline-block">
+              <Link href="/admin/products/new" className="text-brand-slate hover:underline mt-2 inline-block">
                 Add your first product
               </Link>
             </div>

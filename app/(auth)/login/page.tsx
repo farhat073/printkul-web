@@ -79,7 +79,7 @@ function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-amber hover:underline"
+                className="text-sm text-brand-slate hover:underline"
               >
                 Forgot password?
               </Link>
@@ -152,7 +152,7 @@ function LoginForm() {
 
           <p className="text-sm text-muted-foreground text-center">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-amber hover:underline">
+            <Link href="/register" className="text-brand-slate hover:underline">
               Create one
             </Link>
           </p>
@@ -164,10 +164,10 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-[#faf8f5]">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-brand-gray">
       <Suspense fallback={
         <div className="flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-amber" />
+          <Loader2 className="w-8 h-8 animate-spin text-brand-slate" />
         </div>
       }>
         <LoginForm />

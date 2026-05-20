@@ -29,7 +29,7 @@ export default async function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-20">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
             {heroTitle}
@@ -53,7 +53,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-[#faf8f5]">
+      <section className="py-16 bg-brand-gray">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -63,7 +63,7 @@ export default async function AboutPage() {
               { number: "24h", label: "Avg Response" },
             ].map((stat, index) => (
               <div key={index}>
-                <div className="text-4xl md:text-5xl font-bold text-amber mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-brand-slate mb-2">
                   {stat.number}
                 </div>
                 <div className="text-muted-foreground">{stat.label}</div>
@@ -85,13 +85,13 @@ export default async function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/products"
-              className="px-6 py-3 bg-[#1a1a2e] text-white rounded-lg hover:bg-[#2d2d44] transition-colors"
+              className="px-6 py-3 bg-[var(--color-brand-slate)] text-white rounded-lg hover:bg-[var(--color-brand-slate)] transition-colors"
             >
               Browse Products
             </a>
             <a
               href="/contact"
-              className="px-6 py-3 border border-[#1a1a2e] rounded-lg hover:bg-[#1a1a2e] hover:text-white transition-colors"
+              className="px-6 py-3 border border-[var(--color-brand-slate)] rounded-lg hover:bg-[var(--color-brand-slate)] hover:text-white transition-colors"
             >
               Contact Us
             </a>

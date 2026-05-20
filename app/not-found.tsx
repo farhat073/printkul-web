@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#faf8f5]">
+    <div className="min-h-screen flex items-center justify-center bg-brand-gray">
       <div className="text-center">
         <div className="text-8xl font-bold text-[#e8e4dc] mb-4">404</div>
         <h1 className="font-heading text-3xl font-bold mb-4">Page Not Found</h1>
@@ -12,7 +12,7 @@ export default function NotFound() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/">
-            <Button className="bg-[#1a1a2e] hover:bg-[#2d2d44]">
+            <Button className="bg-[var(--color-brand-slate)] hover:bg-[var(--color-brand-slate)]">
               Go to Homepage
             </Button>
           </Link>

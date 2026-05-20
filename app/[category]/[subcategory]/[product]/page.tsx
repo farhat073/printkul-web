@@ -82,11 +82,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="border-b border-border py-4">
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-amber">Home</Link>
+            <Link href="/" className="hover:text-brand-slate">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href={`/${category}`} className="hover:text-amber">{fullProduct.subcategory?.category?.name || category}</Link>
+            <Link href={`/${category}`} className="hover:text-brand-slate">{fullProduct.subcategory?.category?.name || category}</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href={`/${category}/${subcategory}`} className="hover:text-amber">{fullProduct.subcategory?.name || subcategory}</Link>
+            <Link href={`/${category}/${subcategory}`} className="hover:text-brand-slate">{fullProduct.subcategory?.name || subcategory}</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-foreground">{fullProduct.name}</span>
           </nav>

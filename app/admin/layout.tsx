@@ -34,12 +34,12 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Admin Header */}
-      <div className="bg-[#1a1a2e] text-white sticky top-0 z-20">
+      <div className="bg-[var(--color-brand-slate)] text-white sticky top-0 z-20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber rounded-lg flex items-center justify-center">
-                <span className="text-[#1a1a2e] font-bold text-xl">P</span>
+              <div className="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">P</span>
               </div>
               <span className="font-heading text-xl font-bold">Printkul Admin</span>
             </Link>
@@ -47,7 +47,7 @@ export default async function AdminLayout({
               <Link href="/" className="text-sm text-white/70 hover:text-white">
                 View Site →
               </Link>
-              <span className="text-sm text-amber">Admin Panel</span>
+              <span className="text-sm text-brand-blue">Admin Panel</span>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default async function AdminLayout({
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-border min-h-[calc(100vh-72px)] sticky top-[72px] hidden lg:block">
+        <aside className="w-64 bg-brand-gray border-r border-border min-h-[calc(100vh-72px)] sticky top-[72px] hidden lg:block">
           <nav className="p-4 space-y-1">
             {navItems.map((item) => (
               <Link

@@ -14,9 +14,9 @@ export function CategoryTile({ category }: CategoryTileProps) {
   return (
     <Link
       href={`/${category.slug}`}
-      className="group block bg-white rounded-xl border border-[#e9ecef] overflow-hidden card-hover"
+      className="group block bg-brand-gray rounded border border-[var(--border)] overflow-hidden card-hover"
     >
-      <div className="aspect-[4/3] relative bg-[#f1f3f5] overflow-hidden">
+      <div className="aspect-[4/3] relative bg-brand-gray overflow-hidden">
         {category.banner_url ? (
           <img
             src={category.banner_url}
@@ -24,12 +24,12 @@ export function CategoryTile({ category }: CategoryTileProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#f8f9fa] to-[#e9ecef] flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-brand-gray to-border flex items-center justify-center">
             {category.icon_url ? (
               <img src={category.icon_url} alt="" className="w-16 h-16 opacity-40" />
             ) : (
-              <div className="w-16 h-16 bg-amber/10 rounded-xl flex items-center justify-center">
-                <span className="text-2xl font-bold text-amber/40">
+              <div className="w-16 h-16 bg-brand-accent/5 rounded flex items-center justify-center">
+                <span className="text-2xl font-bold text-brand-slate/40">
                   {category.name.charAt(0)}
                 </span>
               </div>
@@ -38,11 +38,11 @@ export function CategoryTile({ category }: CategoryTileProps) {
         )}
       </div>
       <div className="p-3.5">
-        <h3 className="font-semibold text-[#0f1b2d] text-sm group-hover:text-amber transition-colors line-clamp-1">
+        <h3 className="font-semibold text-brand-slate text-sm group-hover:text-brand-slate transition-colors line-clamp-1">
           {category.name}
         </h3>
         {category.description && (
-          <p className="text-xs text-[#adb5bd] mt-0.5 line-clamp-1">{category.description}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{category.description}</p>
         )}
       </div>
     </Link>

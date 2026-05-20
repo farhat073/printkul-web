@@ -64,13 +64,13 @@ export default function OrdersPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-slate" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen py-12 bg-[#faf8f5]">
+    <div className="min-h-screen py-12 bg-brand-gray">
       <div className="container mx-auto px-4">
         <h1 className="font-heading text-3xl font-bold mb-8">My Orders</h1>
 
@@ -83,7 +83,7 @@ export default function OrdersPage() {
                 You haven&apos;t placed any orders via WhatsApp yet.
               </p>
               <Link href="/products">
-                <button className="px-6 py-2 bg-amber text-white rounded-lg hover:bg-amber-dark transition-colors">
+                <button className="px-6 py-2 bg-brand-blue text-white rounded-lg hover:hover:bg-brand-blue-dark transition-colors">
                   Browse Products
                 </button>
               </Link>
@@ -123,7 +123,7 @@ export default function OrdersPage() {
                         href={`https://wa.me/${order.customer_phone.replace(/\D/g, "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 hover:bg-muted rounded-lg transition-colors text-green-600"
+                        className="p-2 hover:bg-muted rounded-lg transition-colors text-brand-blue"
                       >
                         <MessageCircle className="w-5 h-5" />
                       </a>

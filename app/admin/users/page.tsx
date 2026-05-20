@@ -76,7 +76,7 @@ export default function AdminUsersPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#1a1a2e] rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 bg-[var(--color-brand-slate)] rounded-full flex items-center justify-center text-white font-bold">
                     {user.email?.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -164,7 +164,7 @@ export default function AdminUsersPage() {
           {selectedUser && (
             <div className="space-y-4">
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#1a1a2e] rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
+                <div className="w-16 h-16 bg-[var(--color-brand-slate)] rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
                   {selectedUser.email?.charAt(0).toUpperCase()}
                 </div>
                 <p className="font-medium">{selectedUser.email}</p>

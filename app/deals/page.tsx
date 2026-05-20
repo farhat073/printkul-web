@@ -21,7 +21,7 @@ export default async function DealsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-amber to-amber-dark text-white py-16">
+      <section className="bg-gradient-to-r from-brand-slate to-brand-slate text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
             Hot Deals & Offers
@@ -47,9 +47,9 @@ export default async function DealsPage() {
                   <Link
                     key={deal.id}
                     href={href}
-                    className="group bg-white rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-amber/30 transition-all"
+                    className="group bg-brand-gray rounded border border-border overflow-hidden hover:shadow-lg hover:border-brand-blue/30 transition-all"
                   >
-                    <div className="relative aspect-[16/9] bg-gradient-to-br from-[#1a1a2e] to-[#2d2d44]">
+                    <div className="relative aspect-[16/9] bg-gradient-to-br from-[var(--color-brand-slate)] to-[var(--color-brand-slate)]">
                       {deal.image_url ? (
                         <img
                           src={deal.image_url}
@@ -62,13 +62,13 @@ export default async function DealsPage() {
                         </div>
                       )}
                       {deal.badge_text && (
-                        <Badge className="absolute top-4 left-4 bg-amber text-white">
+                        <Badge className="absolute top-4 left-4 bg-brand-blue text-white">
                           {deal.badge_text}
                         </Badge>
                       )}
                     </div>
                     <div className="p-6">
-                      <h3 className="font-heading text-xl font-bold mb-2 group-hover:text-amber transition-colors">
+                      <h3 className="font-heading text-xl font-bold mb-2 group-hover:text-brand-slate transition-colors">
                         {deal.title}
                       </h3>
                       {deal.description && (
@@ -77,7 +77,7 @@ export default async function DealsPage() {
                         </p>
                       )}
                       {product && (
-                        <p className="text-sm text-amber font-medium">
+                        <p className="text-sm text-brand-slate font-medium">
                           View Product →
                         </p>
                       )}
@@ -89,7 +89,7 @@ export default async function DealsPage() {
           ) : (
             <div className="text-center py-16">
               <p className="text-muted-foreground text-lg">No active deals at the moment.</p>
-              <Link href="/products" className="text-amber hover:underline mt-4 inline-block">
+              <Link href="/products" className="text-brand-slate hover:underline mt-4 inline-block">
                 Browse all products →
               </Link>
             </div>

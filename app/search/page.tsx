@@ -66,7 +66,7 @@ function SearchContent() {
   return (
     <div className="min-h-screen">
       {/* Search Header */}
-      <section className="bg-gradient-to-r from-[#1a1a2e] to-[#2d2d44] text-white py-12">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="font-heading text-3xl font-bold mb-6">Search Products</h1>
           <form onSubmit={handleSearch} className="max-w-2xl">
@@ -94,7 +94,7 @@ function SearchContent() {
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="flex justify-center py-16">
-              <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+              <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
             </div>
           ) : results.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -123,7 +123,7 @@ function SearchContent() {
               </p>
               <Link
                 href="/products"
-                className="text-amber hover:underline"
+                className="text-brand-slate hover:underline"
               >
                 Browse all products
               </Link>
@@ -139,7 +139,7 @@ export default function SearchPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     }>
       <SearchContent />

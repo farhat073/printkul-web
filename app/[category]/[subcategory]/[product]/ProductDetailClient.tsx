@@ -105,7 +105,7 @@ export function ProductDetailClient({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square bg-muted rounded-xl overflow-hidden">
+            <div className="aspect-square bg-muted rounded overflow-hidden">
               {images[selectedImage] ? (
                 <img
                   src={images[selectedImage]}
@@ -125,7 +125,7 @@ export function ProductDetailClient({
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                      idx === selectedImage ? "border-amber" : "border-transparent hover:border-amber/30"
+                      idx === selectedImage ? "border-brand-blue" : "border-transparent hover:border-brand-blue/30"
                     }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
@@ -138,14 +138,14 @@ export function ProductDetailClient({
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="font-heading text-3xl md:text-4xl font-bold text-[#1a1a2e]">
+              <h1 className="font-heading text-3xl md:text-4xl font-bold text-[var(--color-brand-slate)]">
                 {product.name}
               </h1>
               {product.short_desc && (
                 <p className="text-muted-foreground mt-2">{product.short_desc}</p>
               )}
               <div className="flex items-center gap-4 mt-4">
-                <span className="text-2xl font-bold text-[#1a1a2e]">
+                <span className="text-2xl font-bold text-[var(--color-brand-slate)]">
                   ₹{currentVariant?.price || product.base_price}
                 </span>
                 {product.price_note && (
@@ -167,8 +167,8 @@ export function ProductDetailClient({
                         onClick={() => handleFinishSelect(finish!)}
                         className={`px-4 py-2 rounded-lg border transition-colors ${
                           isSelected
-                            ? "border-amber bg-amber/10 text-amber"
-                            : "border-border hover:border-amber/30"
+                            ? "border-brand-blue bg-brand-blue/5 text-brand-slate"
+                            : "border-border hover:border-brand-blue/30"
                         }`}
                       >
                         {finish}
@@ -193,8 +193,8 @@ export function ProductDetailClient({
                         onClick={() => handleQuantitySelect(qty)}
                         className={`relative p-4 rounded-lg border text-left transition-colors ${
                           selectedQuantity === qty
-                            ? "border-amber bg-amber/10"
-                            : "border-border hover:border-amber/30"
+                            ? "border-brand-blue bg-brand-blue/5"
+                            : "border-border hover:border-brand-blue/30"
                         }`}
                       >
                         <div className="font-semibold">{qty} pcs</div>
@@ -228,13 +228,13 @@ export function ProductDetailClient({
                           <div
                             key={variant.id}
                             className={`flex items-center justify-between p-3 rounded-lg ${
-                              selectedQuantity === variant.quantity ? "bg-amber/10" : "bg-muted/50"
+                              selectedQuantity === variant.quantity ? "bg-brand-blue/5" : "bg-muted/50"
                             }`}
                           >
                             <div>
                               <span className="font-medium">{variant.quantity} pcs</span>
                               {isBestValue && (
-                                <Badge variant="outline" className="ml-2 text-green-600 border-green-600 text-xs">
+                                <Badge variant="outline" className="ml-2 text-brand-blue border-brand-blue text-xs">
                                   Best Value
                                 </Badge>
                               )}
@@ -254,7 +254,7 @@ export function ProductDetailClient({
             {/* Order CTA */}
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="w-full bg-green-600 hover:bg-green-700 text-white text-lg py-6"
+              className="w-full bg-brand-blue hover:hover:bg-brand-blue-dark text-white text-lg py-6"
             >
               <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>

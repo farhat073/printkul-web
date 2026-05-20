@@ -137,7 +137,7 @@ export default function AdminBannersPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-amber border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -158,7 +158,7 @@ export default function AdminBannersPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {banners.map((banner) => (
           <Card key={banner.id}>
-            <div className="aspect-[16/9] bg-muted rounded-t-xl overflow-hidden">
+            <div className="aspect-[16/9] bg-muted rounded-t overflow-hidden">
               {banner.image_url ? (
                 <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover" />
               ) : (

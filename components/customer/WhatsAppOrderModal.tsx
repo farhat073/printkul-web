@@ -106,7 +106,7 @@ export function WhatsAppOrderModal({
         {isSuccess ? (
           <div className="text-center py-8">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
+              <CheckCircle2 className="w-8 h-8 text-brand-blue" />
             </div>
             <h3 className="font-heading text-xl font-semibold mb-2">WhatsApp opened!</h3>
             <p className="text-muted-foreground text-sm mb-6">
@@ -141,7 +141,7 @@ export function WhatsAppOrderModal({
                   <div>
                     <h4 className="font-medium text-sm">{product.name}</h4>
                     <p className="text-sm text-muted-foreground">{variant.name}</p>
-                    <p className="text-sm font-semibold text-amber mt-1">
+                    <p className="text-sm font-semibold text-brand-blue mt-1">
                       ₹{variant.price} × {quantity} = ₹{(parseFloat(variant.price) * quantity).toLocaleString()}
                     </p>
                   </div>
@@ -177,7 +177,7 @@ export function WhatsAppOrderModal({
                 Your number is only used for this order. We don&apos;t share it with third parties.
               </p>
 
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isSubmitting}>
+              <Button type="submit" className="w-full bg-brand-blue hover:hover:bg-brand-blue-dark" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />

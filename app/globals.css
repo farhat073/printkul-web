@@ -4,90 +4,90 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Printkul Design Tokens — Professional E-Commerce */
+/* Printkul Design Tokens — Premium Charcoal & Amber (Non-Blue Professional) */
 :root {
   /* Brand Colors */
-  --color-ink: #1a1a1a;
-  --color-ink-light: #2d2d2d;
-  --color-paper: #f8f9fa;
-  --color-paper-warm: #f1f3f5;
-  --color-amber: #ff8c5f;
-  --color-amber-light: #ffa985;
-  --color-amber-dark: #e57e55;
-  --color-amber-glow: #ffc4ab;
+  --color-brand-primary: #1E1E1E;
+  --color-brand-primary-light: #2D2D2D;
+  --color-brand-accent: #F59E0B;
+  --color-brand-accent-dark: #D97706;
+  --color-brand-slate: #1A1C1E;
+  --color-brand-slate-light: #2C2E30;
+  --color-brand-gray: #F4F4F4;
+  --color-brand-gray-dark: #E1E1E1;
+
+  /* Aliases for compatibility */
+  --color-brand-blue: var(--color-brand-primary);
+  --color-brand-blue-dark: #000000;
+  --color-brand-blue-light: var(--color-brand-primary-light);
 
   /* Semantic */
   --background: #ffffff;
-  --foreground: #1a1a1a;
+  --foreground: #1A1C1E;
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #1A1C1E;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: #1a1a1a;
+  --popover-foreground: #1A1C1E;
+  --primary: #1E1E1E;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f1f3f5;
-  --muted-foreground: #6c757d;
-  --accent: #ff8c5f;
+  --secondary: #F59E0B;
+  --secondary-foreground: #ffffff;
+  --muted: #F4F4F4;
+  --muted-foreground: #5E6266;
+  --accent: #F59E0B;
   --accent-foreground: #ffffff;
-  --destructive: #dc3545;
+  --destructive: #D11109;
   --destructive-foreground: #ffffff;
-  --border: #e9ecef;
-  --input: #dee2e6;
-  --ring: #ff8c5f;
+  --border: #E1E1E1;
+  --input: #E1E1E1;
+  --ring: #1E1E1E;
 
   /* Chart colors */
-  --chart-1: #ff8c5f;
-  --chart-2: #1a1a1a;
-  --chart-3: #6c757d;
-  --chart-4: #ffa985;
-  --chart-5: #e9ecef;
+  --chart-1: #1E1E1E;
+  --chart-2: #F59E0B;
+  --chart-3: #D97706;
+  --chart-4: #4B5563;
+  --chart-5: #9CA3AF;
 
-  --radius: 0.5rem;
+  --radius: 0.25rem; /* Flat corporate UI radius */
   --sidebar: #ffffff;
-  --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: #1a1a1a;
+  --sidebar-foreground: #1A1C1E;
+  --sidebar-primary: #1E1E1E;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f3f5;
-  --sidebar-accent-foreground: #1a1a1a;
-  --sidebar-border: #e9ecef;
-  --sidebar-ring: #ff8c5f;
+  --sidebar-accent: #F4F4F4;
+  --sidebar-accent-foreground: #1A1C1E;
+  --sidebar-border: #E1E1E1;
+  --sidebar-ring: #1E1E1E;
 }
 
 .dark {
-  --background: #1a1a1a;
-  --foreground: #f8f9fa;
-  --card: #2d2d2d;
-  --card-foreground: #f8f9fa;
-  --popover: #2d2d2d;
-  --popover-foreground: #f8f9fa;
-  --primary: #f8f9fa;
-  --primary-foreground: #1a1a1a;
-  --secondary: #2d2d2d;
-  --secondary-foreground: #f8f9fa;
-  --muted: #2d2d2d;
-  --muted-foreground: #adb5bd;
-  --accent: #ff8c5a;
-  --accent-foreground: #1a1a1a;
-  --destructive: #e74c5a;
+  --background: #121212;
+  --foreground: #F4F4F4;
+  --card: #1E1E1E;
+  --card-foreground: #F4F4F4;
+  --popover: #1E1E1E;
+  --popover-foreground: #F4F4F4;
+  --primary: #F4F4F4;
+  --primary-foreground: #1E1E1E;
+  --secondary: #F59E0B;
+  --secondary-foreground: #ffffff;
+  --muted: #1E1E1E;
+  --muted-foreground: #A1A1A1;
+  --accent: #F59E0B;
+  --accent-foreground: #ffffff;
+  --destructive: #EF4444;
   --destructive-foreground: #ffffff;
-  --border: #404040;
-  --input: #404040;
-  --ring: #ff8c5f;
-  --chart-1: #ff8c5f;
-  --chart-2: #f8f9fa;
-  --chart-3: #adb5bd;
-  --chart-4: #ffa985;
-  --chart-5: #404040;
-  --sidebar: #2d2d2d;
-  --sidebar-foreground: #f8f9fa;
-  --sidebar-primary: #ff8c5f;
-  --sidebar-primary-foreground: #1a1a1a;
-  --sidebar-accent: #404040;
-  --sidebar-accent-foreground: #f8f9fa;
-  --sidebar-border: #404040;
-  --sidebar-ring: #ff8c5f;
+  --border: #333333;
+  --input: #333333;
+  --ring: #F59E0B;
+  --sidebar: #1E1E1E;
+  --sidebar-foreground: #F4F4F4;
+  --sidebar-primary: #F59E0B;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #333333;
+  --sidebar-accent-foreground: #F4F4F4;
+  --sidebar-border: #333333;
+  --sidebar-ring: #F59E0B;
 }
 
 @theme inline {
@@ -133,15 +133,26 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Brand tokens — using names proven to work */
-  --color-ink: #1a1a1a;
-  --color-ink-light: #2d2d2d;
-  --color-paper: #f8f9fa;
-  --color-paper-warm: #f1f3f5;
-  --color-amber: #ff8c5f;
-  --color-amber-light: #ffa985;
-  --color-amber-dark: #e57e55;
-  --color-amber-glow: #ffc4ab;
+  /* Brand tokens */
+  --color-brand-primary: #1E1E1E;
+  --color-brand-primary-light: #2D2D2D;
+  --color-brand-accent: #F59E0B;
+  --color-brand-accent-dark: #D97706;
+  --color-brand-slate: #1A1C1E;
+  --color-brand-slate-light: #2C2E30;
+  --color-brand-gray: #F4F4F4;
+  --color-brand-gray-dark: #E1E1E1;
+
+  /* Legacy aliases for compatibility */
+  --color-brand-blue: var(--color-brand-primary);
+  --color-brand-blue-dark: #000000;
+  --color-brand-blue-light: var(--color-brand-primary-light);
+  --color-brand-coral: var(--color-brand-accent);
+  --color-brand-coral-dark: var(--color-brand-accent-dark);
+  --color-brand-coral-light: var(--color-brand-accent);
+  --color-brand-indigo: var(--color-brand-slate);
+  --color-brand-indigo-dark: var(--color-brand-slate);
+  --color-brand-indigo-light: var(--color-brand-primary-light);
 }
 
 @layer base {
@@ -158,18 +169,18 @@
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f3f5;
+  background: var(--color-brand-gray);
 }
 ::-webkit-scrollbar-thumb {
-  background: #adb5bd;
-  border-radius: 3px;
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
+  background: #94a3b8;
 }
 
 /* Hide scrollbar utility */
@@ -183,13 +194,13 @@
 
 /* Selection */
 ::selection {
-  background: #ff8c5f;
+  background: var(--color-brand-accent);
   color: white;
 }
 
 /* Focus states */
 :focus-visible {
-  outline: 2px solid #ff8c5f;
+  outline: 2px solid var(--color-brand-accent);
   outline-offset: 2px;
 }
 
@@ -260,9 +271,9 @@
 
 /* Professional card hover lift */
 .card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease-in-out;
 }
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
