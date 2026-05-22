@@ -127,13 +127,12 @@ export function Navbar() {
             </button>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-              <div className="w-9 h-9 bg-brand-primary rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-lg leading-none">P</span>
-              </div>
-              <span className="font-heading text-xl lg:text-2xl font-bold text-brand-slate tracking-tight">
-                Printkul
-              </span>
+            <Link href="/" className="flex items-center flex-shrink-0">
+              <img 
+                src="/logo-color.svg" 
+                alt="Printkul — easy printing solutions" 
+                className="h-9 lg:h-10 w-auto"
+              />
             </Link>
 
             {/* Search bar – desktop */}

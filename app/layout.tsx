@@ -21,24 +21,24 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Printkul — Custom Print Products for Every Business",
+    default: "Printkul — Kashmir's First Online Digital Printing Store",
     template: "%s | Printkul",
   },
-  description: "Order custom print products — visiting cards, banners, flyers, stationery and more — via WhatsApp. Fast delivery across India.",
-  keywords: ["custom printing", "visiting cards", "banners", "flyers", "India print", "WhatsApp ordering"],
-  authors: [{ name: "Printkul" }],
+  description: "Printkul is a modern online printing service by Mintleaf Design & Print (est. 2016). Order custom business cards, flyers, brochures, banners & marketing materials online. Fast delivery across India.",
+  keywords: ["custom printing", "visiting cards", "banners", "flyers", "brochures", "Kashmir printing", "online print shop", "Mintleaf Design", "Anantnag", "Srinagar", "Jammu"],
+  authors: [{ name: "Printkul — Mintleaf Design & Print" }],
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://printkul.in",
     siteName: "Printkul",
-    title: "Printkul — Custom Print Products for Every Business",
-    description: "Order custom print products via WhatsApp. Fast delivery across India.",
+    title: "Printkul — Kashmir's First Online Digital Printing Store",
+    description: "High-quality, reliable, and affordable online print solutions. Order via WhatsApp. Fast delivery across India.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Printkul — Custom Print Products",
-    description: "Order custom print products via WhatsApp. Fast delivery across India.",
+    title: "Printkul — easy printing solutions",
+    description: "Kashmir's First Online Digital Printing Store. Custom business cards, flyers, brochures, banners & more.",
   },
 };
 

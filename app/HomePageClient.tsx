@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, ArrowRight, Truck, Shield, MessageCircle, Package, Zap, Award, Star, Palette, UploadCloud, CheckCircle } from "lucide-react"
+import { ChevronLeft, ChevronRight, ArrowRight, Truck, Shield, MessageCircle, Package, Zap, Award, Star, Palette, UploadCloud, CheckCircle, MapPin } from "lucide-react"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { CategoryTile } from "@/components/customer/CategoryTile"
 
@@ -101,7 +101,7 @@ export function HomePageClient({
     <div className="min-h-screen bg-white text-brand-slate">
       {/* 1. HERO BANNER */}
       <section className="relative w-full overflow-hidden bg-white">
-        <div className="relative h-[calc(100vh-108px)] min-h-[500px] flex items-center">
+        <div className="relative min-h-[calc(100vh-108px)] py-8 md:py-20 flex items-center">
           
           {/* Background Images - Subtle Opacity */}
           <div className="absolute inset-0 z-0">
@@ -117,33 +117,32 @@ export function HomePageClient({
             ))}
           </div>
           
-          {/* Subtle Gradient Overlay */}
-          <div className="absolute inset-0 z-10 bg-gradient-to-r from-white via-white via-45% to-transparent" />
+          {/* Overlay removed as requested */}
           
           <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 relative z-20 flex flex-col justify-center">
-            <div className="max-w-3xl w-full">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-accent/10 text-brand-accent rounded-full text-sm font-bold mb-4 md:mb-6">
-                <Zap className="w-4 h-4" />
-                <span>India's Premium Print Partner</span>
+            <div className="max-w-3xl w-full bg-white/40 backdrop-blur-sm p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/50 shadow-xl">
+              <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-1 md:px-4 md:py-1.5 bg-brand-accent/20 text-brand-accent rounded-full text-xs md:text-sm font-bold mb-3 md:mb-6">
+                <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span>Kashmir&apos;s First Online Digital Printing Store</span>
               </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-brand-slate leading-[1.05] mb-6 md:mb-8 font-heading tracking-tight">
-                Design it.<br />
-                <span className="text-brand-accent">Print it.</span><br />
-                Love it.
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-brand-slate leading-[1.1] mb-3 md:mb-6 font-heading tracking-tight drop-shadow-md">
+                Best Quality<br />
+                <span className="text-brand-accent drop-shadow-sm">Products.</span><br />
+                <span className="bg-gradient-to-r from-brand-primary via-brand-accent to-brand-orange bg-clip-text text-transparent drop-shadow-sm">Easy Printing.</span>
               </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-slate-600 mb-8 md:mb-10 font-medium max-w-xl leading-relaxed">
-                Premium custom print products for modern businesses. One-click WhatsApp ordering with fast pan-India delivery.
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-800 mb-4 md:mb-8 font-semibold max-w-xl leading-snug md:leading-relaxed drop-shadow-sm">
+                Professional printing for businesses & individuals. High-quality, reliable, and affordable — with fast delivery across India.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 md:gap-5 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-5 mt-1 md:mt-2">
                 <Link
                   href="/products"
-                  className="inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-4 bg-brand-primary text-white font-bold rounded hover:bg-black transition-colors text-base md:text-lg shadow-sm"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 bg-brand-primary text-white font-bold rounded hover:bg-black transition-colors text-sm sm:text-base md:text-lg shadow-sm"
                 >
                   Browse All Products
                 </Link>
                 <Link
                   href="/deals"
-                  className="inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-4 bg-white text-brand-slate font-bold rounded hover:bg-brand-gray transition-colors text-base md:text-lg border border-border shadow-sm"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 bg-white text-brand-slate font-bold rounded hover:bg-brand-gray transition-colors text-sm sm:text-base md:text-lg border border-border shadow-sm"
                 >
                   View Deals
                 </Link>
@@ -247,52 +246,22 @@ export function HomePageClient({
         </section>
       )}
 
-      {/* 4. HOW IT WORKS */}
-      <section className="py-20 bg-brand-gray">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-slate font-heading">How It Works</h2>
-            <p className="text-muted-foreground mt-3 text-lg">Your custom print journey in 3 simple steps</p>
-          </div>
 
-          <div className="relative">
-            <div className="hidden md:block absolute top-1/2 left-[15%] right-[15%] h-0.5 bg-brand-accent/10 -translate-y-1/2 z-0" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-              {[
-                { step: "1", icon: Package, title: "Choose a Product", desc: "Select from 2000+ premium quality products." },
-                { step: "2", icon: Palette, title: "Customise Online", desc: "Use our studio to design or upload your own." },
-                { step: "3", icon: Truck, title: "We Print & Deliver", desc: "Fast, reliable delivery straight to your door." },
-              ].map((item, index) => (
-                <div key={index} className="text-center bg-white p-8 rounded border-2 border-brand-gray hover:border-brand-accent/30 transition-colors shadow-sm hover:shadow-md">
-                  <div className="w-20 h-20 mx-auto bg-brand-accent/5 rounded-full flex items-center justify-center mb-6 relative">
-                    <item.icon className="w-10 h-10 text-brand-slate" />
-                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-brand-slate text-white rounded-full flex items-center justify-center font-bold font-heading shadow-md">
-                      {item.step}
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-brand-slate mb-3">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 5. TRUST BADGES ROW */}
-      <section className="bg-brand-gray border-y border-border py-8 overflow-hidden">
+      <section className="bg-white border-y border-border py-8 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-center md:justify-between flex-wrap gap-y-6 gap-x-12 opacity-80">
             {[
-              "20+ Years of Printing",
-              "2 Lakh+ Designs",
-              "GST Invoice Available",
-              "100% Satisfaction Guarantee",
-              "Free Shipping Above ₹499",
-              "COD Available"
+              "10+ Years of Printing",
+              "ISO IAF Certified",
+              "MSME Registered",
+              "Google Verified",
+              "ZED Certified",
+              "GeM Registered"
             ].map((text, idx) => (
               <div key={idx} className="flex items-center gap-2 font-semibold text-sm md:text-base text-brand-slate">
-                <CheckCircle className="w-5 h-5 text-brand-accent" />
+                <CheckCircle className="w-5 h-5 text-brand-primary" />
                 <span className="whitespace-nowrap">{text}</span>
               </div>
             ))}
@@ -300,56 +269,6 @@ export function HomePageClient({
         </div>
       </section>
 
-      {/* 6. DESIGN SERVICES BANNER */}
-      <section className="py-20 bg-brand-gray">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
-          <div className="bg-brand-slate rounded p-10 md:p-16 flex flex-col md:flex-row items-center justify-between text-white shadow-xl relative overflow-hidden">
-            <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-            <div className="relative z-10 md:w-2/3 mb-8 md:mb-0">
-              <h2 className="text-3xl md:text-5xl font-bold font-heading mb-4">Need a Logo?</h2>
-              <p className="text-lg md:text-xl text-white/90 max-w-xl">
-                Create a professional brand identity in minutes with our AI-powered Logo Maker. Free to try!
-              </p>
-            </div>
-            <div className="relative z-10">
-              <Link href="/design-services/logo-maker" className="inline-flex items-center justify-center px-8 py-4 bg-white text-brand-slate font-bold rounded hover:bg-brand-gray transition-colors shadow-lg hover:shadow-xl text-lg whitespace-nowrap">
-                Try Free Logo Maker <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. CUSTOMER REVIEWS */}
-      <section className="py-20 bg-brand-gray">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-slate font-heading">Loved by Thousands</h2>
-            <div className="flex items-center justify-center gap-1 mt-4">
-              {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-6 h-6 fill-brand-accent text-brand-accent" />)}
-              <span className="ml-2 font-bold text-lg text-brand-slate">4.9 / 5</span>
-              <span className="text-muted-foreground ml-1">(12,450+ reviews)</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Rahul S.", product: "Premium Visiting Cards", text: "The quality is simply unmatched. The raised foil adds such a premium touch to my business cards. Delivery was fast too." },
-              { name: "Priya M.", product: "Custom Standee", text: "Ordered a roll-up banner for an exhibition. The colors were vibrant and exactly as per the proof. Very sturdy stand." },
-              { name: "Amit K.", product: "Custom Stickers", text: "Best place for die-cut stickers! The vinyl is thick and the adhesive is very strong. Highly recommend Printkul." }
-            ].map((review, idx) => (
-              <div key={idx} className="bg-white p-8 rounded shadow-sm hover:shadow-md transition-all border border-border">
-                <div className="flex gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-4 h-4 fill-brand-accent text-brand-accent" />)}
-                </div>
-                <h4 className="font-bold text-lg text-brand-slate mb-1">{review.name}</h4>
-                <p className="text-sm text-brand-accent font-semibold mb-4">Purchased: {review.product}</p>
-                <p className="text-foreground/80 italic">"{review.text}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 8. TRENDING PRODUCTS */}
       {featuredProducts.length > 4 && (
@@ -372,26 +291,133 @@ export function HomePageClient({
         </section>
       )}
 
+      {/* 8a. PRODUCT SHOWCASE */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-slate font-heading">Our Product Range</h2>
+            <p className="text-muted-foreground mt-3 text-lg">Premium quality printing for every need</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {[
+              { name: "Visiting Cards", img: "/products/visiting-cards.png", href: "/visiting-cards" },
+              { name: "Banners & Standees", img: "/products/banners-standees.png", href: "/signs-marketing" },
+              { name: "Flyers & Brochures", img: "/products/flyers-brochures.png", href: "/stationery" },
+              { name: "Stickers & Labels", img: "/products/stickers-labels.png", href: "/labels-stickers" },
+              { name: "Stationery", img: "/products/stationery.png", href: "/stationery" },
+              { name: "Photo Gifts", img: "/products/photo-gifts.png", href: "/photo-gifts" },
+            ].map((product, idx) => (
+              <Link key={idx} href={product.href} className="group relative rounded-xl overflow-hidden border border-border hover:shadow-xl transition-all">
+                <div className="aspect-square overflow-hidden">
+                  <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-5">
+                  <h3 className="text-white font-bold text-lg md:text-xl">{product.name}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8b. BRANDS THAT TRUST US */}
+      <section className="py-14 bg-brand-gray border-y border-border overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+          <h2 className="text-center text-xl md:text-2xl font-bold text-brand-slate font-heading mb-8">Brands That Trust Us</h2>
+          <div className="flex items-center justify-center flex-wrap gap-8 md:gap-14 opacity-60 hover:opacity-80 transition-opacity">
+            {["Government of J&K", "JKSSB", "Tourism Dept", "JKEDI", "University of Kashmir", "NIT Srinagar", "IUST", "SKIMS"].map((brand, idx) => (
+              <div key={idx} className="text-brand-slate font-bold text-sm md:text-base whitespace-nowrap tracking-wide uppercase">
+                {brand}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8c. GOOGLE REVIEWS */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-slate font-heading">What Our Customers Say</h2>
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+              <span className="font-bold text-lg text-brand-slate">Google Reviews</span>
+              <div className="flex gap-0.5 ml-2">
+                {[1,2,3,4,5].map((s) => <Star key={s} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+              </div>
+              <span className="ml-1 font-bold text-brand-slate">4.9</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { name: "Farhat Ahmad", text: "Excellent print quality and fast delivery. The visiting cards came out perfect with the gold foil finish. Highly recommended for businesses in Kashmir!", rating: 5 },
+              { name: "Suhail Bhat", text: "Ordered custom standees for our exhibition. Colors were vibrant and exactly matching the proof. Great customer service via WhatsApp.", rating: 5 },
+              { name: "Mehak Parray", text: "Best printing service in Kashmir! Die-cut stickers and brochures were top-notch quality. Will definitely order again from Printkul.", rating: 5 },
+            ].map((review, idx) => (
+              <div key={idx} className="bg-brand-gray p-8 rounded-xl border border-border hover:shadow-md transition-all">
+                <div className="flex gap-1 mb-4">
+                  {Array.from({length: review.rating}).map((_, s) => <Star key={s} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                </div>
+                <p className="text-foreground/80 italic mb-4">&ldquo;{review.text}&rdquo;</p>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-brand-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    {review.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-brand-slate">{review.name}</h4>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <img src="https://www.google.com/favicon.ico" alt="" className="w-3 h-3" /> Google Review
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <a href="https://share.google/udtVHRq6pDgZIOJgR" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-brand-primary font-semibold hover:text-brand-accent transition-colors">
+              See all reviews on Google <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 8d. FIND STORES */}
+      <section className="py-14 bg-brand-gray border-y border-border">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+          <h2 className="text-center text-xl md:text-2xl font-bold text-brand-slate font-heading mb-8">Find Your Nearest Store</h2>
+          <div className="flex items-center justify-center flex-wrap gap-3 md:gap-4">
+            {["Anantnag","Srinagar","Jammu","Banihal","Bandipora","Baramulla","Budgam","Ganderbal","Kulgam","Kupwara","Pulwama","Shopian"].map((loc, idx) => (
+              <span key={idx} className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-border rounded-full text-sm font-medium text-brand-slate hover:border-brand-primary hover:text-brand-primary transition-colors cursor-default">
+                <MapPin className="w-3.5 h-3.5" />
+                {loc}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 9. NEWSLETTER SIGNUP */}
       <section className="py-24 bg-brand-slate text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold font-heading mb-6">Get 20% Off Your First Order</h2>
-          <p className="text-lg text-white/70 mb-10">Sign up for our newsletter to receive exclusive deals, design tips, and new product announcements.</p>
+          <h2 className="text-3xl md:text-5xl font-bold font-heading mb-6">Get 10% Off Your First Online Order</h2>
+          <p className="text-lg text-white/70 mb-10">Sign up for our newsletter to receive exclusive deals, design tips, and new product announcements. Or message us directly on WhatsApp!</p>
           
           <form className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="email" 
               placeholder="Enter your email address" 
-              className="flex-1 h-14 px-6 rounded text-brand-slate focus:outline-none focus:ring-4 focus:ring-brand-accent/30"
+              className="flex-1 h-14 px-6 rounded-lg text-brand-slate focus:outline-none focus:ring-4 focus:ring-brand-accent/30"
               required
             />
             <button 
               type="submit" 
-              className="h-14 px-8 bg-brand-accent text-brand-primary font-bold rounded hover:bg-brand-accent-dark transition-colors whitespace-nowrap shadow-lg"
+              className="h-14 px-8 bg-brand-accent text-white font-bold rounded-lg hover:bg-brand-accent-dark transition-colors whitespace-nowrap shadow-lg"
             >
               Subscribe Now
             </button>
           </form>
+          
+          <p className="text-white/40 text-sm mt-6">Or WhatsApp us at +91-94190 91333</p>
         </div>
       </section>
     </div>
