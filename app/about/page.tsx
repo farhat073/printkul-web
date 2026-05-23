@@ -156,12 +156,6 @@ export default async function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/products"
-              className="px-8 py-3.5 bg-brand-primary text-white rounded-lg hover:bg-brand-primary-dark transition-colors font-semibold shadow-sm"
-            >
-              Browse Products
-            </a>
-            <a
               href="https://wa.me/919419091333"
               target="_blank"
               rel="noopener noreferrer"

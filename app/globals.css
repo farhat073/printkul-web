@@ -4,93 +4,88 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Printkul Design Tokens — Purple Gradient Brand Identity */
+/* Printkul Design Tokens — Sophisticated Minimalist Identity */
 :root {
-  /* Brand Colors — from Printkul Color Theme */
-  --color-brand-primary: #6B17D1;      /* Purple */
-  --color-brand-primary-light: #7E3BD6;
-  --color-brand-primary-dark: #5812AC;
-  --color-brand-accent: #D71865;       /* Magenta-Pink */
-  --color-brand-accent-dark: #B51456;
-  --color-brand-accent-light: #E83D7F;
-  --color-brand-orange: #E95138;       /* Orange-Red */
-  --color-brand-slate: #2B3539;        /* Dark Charcoal */
-  --color-brand-slate-light: #3D4A50;
-  --color-brand-gray: #F5F5F7;
-  --color-brand-gray-dark: #E1E1E1;
-
-  /* Aliases for compatibility */
-  --color-brand-blue: var(--color-brand-primary);
-  --color-brand-blue-dark: var(--color-brand-primary-dark);
-  --color-brand-blue-light: var(--color-brand-primary-light);
+  /* Brand Colors — Refined & Professional */
+  --color-brand-primary: #1A1A1A;      /* Deep Black-Slate */
+  --color-brand-primary-light: #333333;
+  --color-brand-primary-dark: #000000;
+  --color-brand-accent: #6366F1;       /* Indigo Accent (Modern & Trustworthy) */
+  --color-brand-accent-dark: #4F46E5;
+  --color-brand-accent-light: #818CF8;
+  --color-brand-orange: #F97316;       /* Clean Orange */
+  --color-brand-slate: #0F172A;        /* Premium Navy-Slate */
+  --color-brand-slate-light: #1E293B;
+  --color-brand-gray: #F8FAFC;
+  --color-brand-gray-dark: #E2E8F0;
 
   /* Semantic */
   --background: #ffffff;
-  --foreground: #2B3539;
+  --foreground: #0F172A;
   --card: #ffffff;
-  --card-foreground: #2B3539;
+  --card-foreground: #0F172A;
   --popover: #ffffff;
-  --popover-foreground: #2B3539;
-  --primary: #6B17D1;
+  --popover-foreground: #0F172A;
+  --primary: #1A1A1A;
   --primary-foreground: #ffffff;
-  --secondary: #D71865;
+  --secondary: #6366F1;
   --secondary-foreground: #ffffff;
-  --muted: #F5F5F7;
-  --muted-foreground: #5E6871;
-  --accent: #D71865;
-  --accent-foreground: #ffffff;
-  --destructive: #D11109;
-  --destructive-foreground: #ffffff;
-  --border: #E4E4E7;
-  --input: #E4E4E7;
-  --ring: #6B17D1;
-
-  /* Chart colors */
-  --chart-1: #6B17D1;
-  --chart-2: #D71865;
-  --chart-3: #E95138;
-  --chart-4: #2B3539;
-  --chart-5: #9CA3AF;
-
-  --radius: 0.5rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #2B3539;
-  --sidebar-primary: #6B17D1;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #F5F5F7;
-  --sidebar-accent-foreground: #2B3539;
-  --sidebar-border: #E4E4E7;
-  --sidebar-ring: #6B17D1;
-}
-
-.dark {
-  --background: #0F1114;
-  --foreground: #F5F5F7;
-  --card: #1A1D21;
-  --card-foreground: #F5F5F7;
-  --popover: #1A1D21;
-  --popover-foreground: #F5F5F7;
-  --primary: #8B4FE7;
-  --primary-foreground: #ffffff;
-  --secondary: #E83D7F;
-  --secondary-foreground: #ffffff;
-  --muted: #1A1D21;
-  --muted-foreground: #A1A8B0;
-  --accent: #E83D7F;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #6366F1;
   --accent-foreground: #ffffff;
   --destructive: #EF4444;
   --destructive-foreground: #ffffff;
-  --border: #2A2D32;
-  --input: #2A2D32;
-  --ring: #8B4FE7;
-  --sidebar: #1A1D21;
-  --sidebar-foreground: #F5F5F7;
-  --sidebar-primary: #8B4FE7;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #1A1A1A;
+
+  /* Chart colors */
+  --chart-1: #1A1A1A;
+  --chart-2: #6366F1;
+  --chart-3: #F97316;
+  --chart-4: #0F172A;
+  --chart-5: #94A3B8;
+
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #1A1A1A;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #2A2D32;
-  --sidebar-accent-foreground: #F5F5F7;
-  --sidebar-border: #2A2D32;
-  --sidebar-ring: #8B4FE7;
+  --sidebar-accent: #F8FAFC;
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #1A1A1A;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #F8FAFC;
+  --card: #0F172A;
+  --card-foreground: #F8FAFC;
+  --popover: #0F172A;
+  --popover-foreground: #F8FAFC;
+  --primary: #F8FAFC;
+  --primary-foreground: #020617;
+  --secondary: #818CF8;
+  --secondary-foreground: #ffffff;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #818CF8;
+  --accent-foreground: #ffffff;
+  --destructive: #EF4444;
+  --destructive-foreground: #ffffff;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #F8FAFC;
+  --sidebar: #0F172A;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: #F8FAFC;
+  --sidebar-primary-foreground: #020617;
+  --sidebar-accent: #1E293B;
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: #F8FAFC;
 }
 
 @theme inline {
@@ -137,28 +132,43 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Brand tokens */
-  --color-brand-primary: #6B17D1;
-  --color-brand-primary-light: #7E3BD6;
-  --color-brand-primary-dark: #5812AC;
-  --color-brand-accent: #D71865;
-  --color-brand-accent-dark: #B51456;
-  --color-brand-accent-light: #E83D7F;
-  --color-brand-orange: #E95138;
-  --color-brand-slate: #2B3539;
-  --color-brand-slate-light: #3D4A50;
-  --color-brand-gray: #F5F5F7;
-  --color-brand-gray-dark: #E1E1E1;
+  --color-brand-primary: #1A1A1A;
+  --color-brand-primary-light: #333333;
+  --color-brand-primary-dark: #000000;
+  --color-brand-accent: #6366F1;
+  --color-brand-accent-dark: #4F46E5;
+  --color-brand-accent-light: #818CF8;
+  --color-brand-orange: #F97316;
+  --color-brand-slate: #0F172A;
+  --color-brand-slate-light: #1E293B;
+  --color-brand-gray: #F8FAFC;
+  --color-brand-gray-dark: #E2E8F0;
 
   /* Legacy aliases for compatibility */
-  --color-brand-blue: var(--color-brand-primary);
-  --color-brand-blue-dark: var(--color-brand-primary-dark);
-  --color-brand-blue-light: var(--color-brand-primary-light);
-  --color-brand-coral: var(--color-brand-accent);
-  --color-brand-coral-dark: var(--color-brand-accent-dark);
-  --color-brand-coral-light: var(--color-brand-accent-light);
-  --color-brand-indigo: var(--color-brand-slate);
-  --color-brand-indigo-dark: var(--color-brand-slate);
-  --color-brand-indigo-light: var(--color-brand-primary-light);
+  --color-brand-blue: var(--color-brand-accent);
+  --color-brand-blue-dark: var(--color-brand-accent-dark);
+  --color-brand-blue-light: var(--color-brand-accent-light);
+  --color-brand-coral: var(--color-brand-orange);
+  --color-brand-coral-dark: var(--color-brand-orange);
+  --color-brand-coral-light: var(--color-brand-orange);
+  --color-brand-indigo: var(--color-brand-accent);
+  --color-brand-indigo-dark: var(--color-brand-accent-dark);
+  --color-brand-indigo-light: var(--color-brand-accent-light);
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  --animate-marquee: marquee 10s linear infinite;
+  --animate-marquee-slow: marquee 20s linear infinite;
+
+  @keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  --animate-gradient-x: gradient-x 3s ease infinite;
 }
 
 @layer base {
@@ -252,12 +262,6 @@
 .animate-slide-in-left { animation: slide-in-left 0.3s ease-out forwards; }
 .animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
 .animate-scale-in { animation: scale-in 0.2s ease-out forwards; }
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
 
 /* Stagger delays */
 .stagger-1 { animation-delay: 0.1s; }

@@ -3,6 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/layout/Navbar";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/customer/FloatingWhatsApp";
 import { Providers } from "@/components/Providers";
@@ -51,6 +52,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
         <Providers>
+          <AnnouncementBar />
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />

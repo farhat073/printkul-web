@@ -244,13 +244,6 @@ export function Navbar() {
                 <span className="absolute top-1.5 right-1.5 lg:right-2 w-4 h-4 bg-brand-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
               </Link>
 
-              {/* Browse Products CTA */}
-              <Link
-                href="/products"
-                className="hidden md:flex items-center justify-center h-10 px-4 ml-2 bg-brand-primary text-white text-sm font-semibold rounded-lg hover:bg-brand-primary-dark transition-colors shadow-sm"
-              >
-                Browse Products
-              </Link>
             </div>
           </div>
         </div>
