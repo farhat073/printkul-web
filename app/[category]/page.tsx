@@ -43,14 +43,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   if (!category) notFound()
 
-  const { data: products } = await supabase
-    .from("products")
-    .select("*, subcategory:subcategories(*, category:categories(slug))")
-    .eq("subcategory.category_id", category.id)
-    .eq("is_active", true)
-    .order("sort_order")
+  const subcategoryIds = category.subcategories?.map((s: any) => s.id) || []
 
-  const featuredProducts = products?.filter((p) => p.is_featured) || []
+  let products: any[] = []
+  if (subcategoryIds.length > 0) {
+    const { data: productsData } = await supabase
+      .from("products")
+      .select("*, subcategory:subcategories(slug, category:categories(slug))")
+      .in("subcategory_id", subcategoryIds)
+      .eq("is_active", true)
+      .order("sort_order")
+    products = productsData || []
+  }
+
+  const featuredProducts = products.filter((p) => p.is_featured)
 
   return (
     <div className="min-h-screen">
@@ -122,7 +128,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       )}
 
       {/* All Products */}
-      {products && products.length > 0 && (
+      {products.length > 0 && (
         <section className="py-16 bg-brand-gray">
           <div className="container mx-auto px-4">
             <h2 className="font-heading text-2xl font-bold mb-8">All {category.name}</h2>

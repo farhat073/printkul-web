@@ -1,10 +1,6 @@
 import Link from "next/link"
 import { Phone, Mail, MessageCircle, Instagram, Facebook, Youtube, ExternalLink } from "lucide-react"
 
-const storeLocations = [
-  "Anantnag", "Srinagar", "Jammu", "Banihal", "Bandipora", "Baramulla",
-  "Budgam", "Ganderbal", "Kulgam", "Kupwara", "Pulwama", "Shopian"
-]
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -13,12 +9,38 @@ export function Footer() {
     <footer className="bg-white text-brand-slate border-t border-border">
       {/* ── Main Footer ── */}
       <div className="max-w-[1400px] mx-auto px-4 lg:px-12 pt-20 pb-16">
+        {/* Certifications Trust Badges */}
+        <div className="mb-14 pb-10 border-b border-border">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/50 text-center mb-8">Certified & Trusted</h3>
+          <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+            {[
+              { label: "10+ Years", src: "/certifications/10-years.png" },
+              { label: "ISO IAF Certified", src: "/certifications/iso-iaf.png" },
+              { label: "MSME Registered", src: "/certifications/msme.png" },
+              { label: "Google Verified", src: "/certifications/google-verified.png" },
+              { label: "ZED Certified", src: "/certifications/zed.png" },
+              { label: "GeM Registered", src: "/certifications/gem.png" }
+            ].map((item, idx) => (
+              <div key={idx} className="group flex flex-col items-center gap-2">
+                <img
+                  src={item.src}
+                  alt={item.label}
+                  className="h-8 md:h-10 w-auto object-contain grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                />
+                <span className="text-[8px] font-bold text-muted-foreground/40 group-hover:text-brand-slate uppercase tracking-wider transition-colors duration-300">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Brand & About */}
           <div className="lg:col-span-4 space-y-8">
             <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="Printkul" className="h-8 w-auto" />
+              <img src="/logo-color.png" alt="Printkul" className="h-8 w-auto" />
             </Link>
             <p className="text-muted-foreground text-base leading-relaxed max-w-sm">
               Kashmir&apos;s First Online Digital Printing Store. Crafting professional solutions with precision since 2016.
@@ -110,18 +132,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Presence / Store Locations */}
-        <div className="mt-20 pt-12 border-t border-border">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
-              {storeLocations.map((store) => (
-                <span key={store} className="text-[13px] font-bold text-muted-foreground/60 uppercase tracking-widest hover:text-brand-primary transition-colors cursor-default">
-                  {store}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* ── Copyright Bar ── */}

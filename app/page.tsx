@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
 import { HomePageClient } from "./HomePageClient"
-import { mockCategories, mockProducts, mockBanners, mockDeals } from "@/lib/data/mock"
 
 export const revalidate = 60
 
@@ -33,11 +32,10 @@ export default async function HomePage() {
       .order("sort_order"),
   ])
 
-  // If the user hasn't set up the DB, fallback to mock data so the UI is visible
-  const categories = categoriesData.data?.length ? categoriesData.data : mockCategories
-  const featuredProducts = productsData.data?.length ? productsData.data : mockProducts
-  const banners = bannersData.data?.length ? bannersData.data : mockBanners
-  const deals = dealsData.data?.length ? dealsData.data : mockDeals
+  const categories = categoriesData.data || []
+  const featuredProducts = productsData.data || []
+  const banners = bannersData.data || []
+  const deals = dealsData.data || []
 
   return (
     <HomePageClient

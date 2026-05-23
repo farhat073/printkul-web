@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { ArrowRight, Package, Zap, CheckCircle, MapPin, Star, ChevronRight, Shield, Award } from "lucide-react"
+import { ArrowRight, Package, Zap, CheckCircle, Star, ChevronRight, Shield, Award } from "lucide-react"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
 
@@ -162,17 +162,17 @@ export function HomePageClient({
                   className="flex flex-col items-center gap-5 min-w-[130px] md:min-w-[160px] snap-start group/cat"
                 >
                   <div className="w-[130px] h-[130px] md:w-[160px] md:h-[160px] rounded-full bg-white flex items-center justify-center p-0.5 transition-all duration-300 group-hover/cat:ring-4 group-hover/cat:ring-brand-accent/10 border border-border shadow-sm group-hover/cat:shadow-md group-hover/cat:border-brand-accent overflow-hidden">
-                    {category.banner_url ? (
-                      <img 
-                        src={category.banner_url} 
+                    <img 
+                        src={`/categories/${category.slug}.png`}
                         alt={category.name}
                         className="w-full h-full object-cover rounded-full"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          if (category.banner_url) {
+                            target.src = category.banner_url
+                          }
+                        }}
                       />
-                    ) : (
-                      <div className="w-full h-full rounded-full bg-brand-gray flex items-center justify-center">
-                        <Package className="w-10 h-10 text-muted-foreground/30" />
-                      </div>
-                    )}
                   </div>
                   <h3 className="font-bold text-base text-center text-brand-slate group-hover:text-brand-accent transition-colors line-clamp-2 max-w-[1400px]">
                     {category.name}
@@ -252,37 +252,40 @@ export function HomePageClient({
 
 
 
-      {/* 8a. PRODUCT SHOWCASE */}
-      <section className="py-24 bg-white">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-brand-slate font-heading tracking-tight">Our Premium Range</h2>
-            <p className="text-muted-foreground mt-4 text-xl max-w-2xl mx-auto italic">Crafted with precision, delivered with care. Explore our diverse printing solutions.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-            {[
-              { name: "Visiting Cards", img: "/products/visiting-cards.png", href: "/visiting-cards" },
-              { name: "Banners & Standees", img: "/products/banners-standees.png", href: "/signs-marketing" },
-              { name: "Flyers & Brochures", img: "/products/flyers-brochures.png", href: "/stationery" },
-              { name: "Stickers & Labels", img: "/products/stickers-labels.png", href: "/labels-stickers" },
-              { name: "Stationery", img: "/products/stationery.png", href: "/stationery" },
-              { name: "Photo Gifts", img: "/products/photo-gifts.png", href: "/photo-gifts" },
-            ].map((product, idx) => (
-              <Link key={idx} href={product.href} className="group relative rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-2xl transition-all duration-500">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-slate/90 via-brand-slate/20 to-transparent flex items-end p-6 md:p-8">
-                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-white font-bold text-xl md:text-2xl">{product.name}</h3>
-                    <div className="h-1 w-0 group-hover:w-full bg-brand-accent transition-all duration-500 mt-2 rounded-full" />
+      {/* 8a. PRODUCT SHOWCASE — Dynamic from DB categories */}
+      {categories.length > 0 && (
+        <section className="py-24 bg-white">
+          <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-brand-slate font-heading tracking-tight">Our Premium Range</h2>
+              <p className="text-muted-foreground mt-4 text-xl max-w-2xl mx-auto italic">Crafted with precision, delivered with care. Explore our diverse printing solutions.</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              {categories.slice(0, 6).map((cat) => (
+                <Link key={cat.id} href={`/${cat.slug}`} className="group relative rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-2xl transition-all duration-500">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={`/categories/${cat.slug}.png`}
+                      alt={cat.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        if (cat.banner_url) target.src = cat.banner_url
+                      }}
+                    />
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-slate/90 via-brand-slate/20 to-transparent flex items-end p-6 md:p-8">
+                    <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-white font-bold text-xl md:text-2xl">{cat.name}</h3>
+                      <div className="h-1 w-0 group-hover:w-full bg-brand-accent transition-all duration-500 mt-2 rounded-full" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 8b. BRANDS THAT TRUST US - MARQUEE */}
       <section className="py-20 bg-white border-y border-border overflow-hidden">

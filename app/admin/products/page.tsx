@@ -26,7 +26,8 @@ interface Product {
   sort_order: number
   subcategory?: {
     name: string
-    category?: { name: string }
+    slug: string
+    category?: { name: string; slug: string }
   }
 }
 
@@ -46,7 +47,7 @@ export default function AdminProductsPage() {
   async function fetchProducts() {
     let query = supabase
       .from("products")
-      .select("*, subcategory:subcategories(name, category:categories(name))")
+      .select("*, subcategory:subcategories(name, slug, category:categories(name, slug))")
       .order("sort_order")
 
     if (filterActive !== null) {
@@ -233,7 +234,7 @@ export default function AdminProductsPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>
-                            <Link href={`/${product.subcategory?.category?.name.toLowerCase().replace(/\s+/g, '-')}/${product.subcategory?.name.toLowerCase().replace(/\s+/g, '-')}/${product.slug}`} className="flex items-center w-full">
+                            <Link href={`/${product.subcategory?.category?.slug || ''}/${product.subcategory?.slug || ''}/${product.slug}`} className="flex items-center w-full">
                               <Eye className="w-4 h-4 mr-2" />
                               View
                             </Link>

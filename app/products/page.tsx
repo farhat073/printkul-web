@@ -25,16 +25,16 @@ export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([])
   const supabase = createClient()
 
   useEffect(() => {
     async function fetchData() {
       const { data: categoriesData } = await supabase
         .from("categories")
-        .select("id, name")
+        .select("id, name, slug")
         .eq("is_active", true)
-        .order("name")
+        .order("sort_order")
 
       if (categoriesData) {
         setCategories(categoriesData)
@@ -59,7 +59,10 @@ export default function ProductsPage() {
 
   useEffect(() => {
     if (selectedCategory) {
-      setFilteredProducts(products.filter((p) => p.subcategory?.category?.slug === selectedCategory))
+      setFilteredProducts(products.filter((p) => {
+        const catSlug = p.subcategory?.category?.slug
+        return catSlug === selectedCategory
+      }))
     } else {
       setFilteredProducts(products)
     }
@@ -104,9 +107,9 @@ export default function ProductsPage() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.name.toLowerCase().replace(/\s+/g, '-'))}
+                onClick={() => setSelectedCategory(cat.slug)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
-                  selectedCategory === cat.name.toLowerCase().replace(/\s+/g, '-')
+                  selectedCategory === cat.slug
                     ? "bg-[var(--color-brand-slate)] text-white"
                     : "bg-muted hover:bg-brand-blue/5 hover:text-brand-slate"
                 }`}

@@ -10,7 +10,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { WhatsAppOrderModal } from "@/components/customer/WhatsAppOrderModal"
 import { ProductCard } from "@/components/customer/ProductCard"
-import { Check, Truck, Shield, Clock } from "lucide-react"
+import { Check, Truck, Shield, Clock, ShoppingCart } from "lucide-react"
+import { useCart } from "@/lib/cart"
+import { toast } from "sonner"
 
 interface ProductVariant {
   id: string
@@ -73,6 +75,31 @@ export function ProductDetailClient({
     product.variants?.find((v) => v.is_active)?.quantity || 100
   )
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { addToCart } = useCart()
+
+  const handleAddToCart = () => {
+    if (!selectedVariant) return
+
+    addToCart({
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+      variantId: selectedVariant.id,
+      variantName: selectedVariant.name,
+      price: selectedVariant.price,
+      quantity: selectedQuantity,
+      thumbnailUrl: product.thumbnail_url,
+      categorySlug,
+      subcategorySlug,
+    })
+
+    toast.success("Added to cart", {
+      action: {
+        label: "View Cart",
+        onClick: () => window.location.href = "/cart"
+      }
+    })
+  }
 
   const images = product.images?.length ? product.images : [product.thumbnail_url].filter(Boolean)
 
@@ -252,16 +279,26 @@ export function ProductDetailClient({
             )}
 
             {/* Order CTA */}
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-brand-blue hover:hover:bg-brand-blue-dark text-white text-lg py-6"
-            >
-              <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.789l5.044-1.383C7.561 23.178 9.654 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.487 0-4.807-.801-6.708-2.157l-.482-.334-2.544.696.713-2.46-.364-.542A9.74 9.74 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
-              </svg>
-              Order via WhatsApp
-            </Button>
+            <div className="space-y-3">
+              <Button
+                onClick={handleAddToCart}
+                className="w-full bg-brand-slate hover:bg-brand-slate-light text-white text-lg py-6 shadow-md hover:shadow-lg transition-all font-bold"
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Add to Cart
+              </Button>
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                variant="outline"
+                className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue/5 text-base py-5 font-semibold"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.789l5.044-1.383C7.561 23.178 9.654 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.487 0-4.807-.801-6.708-2.157l-.482-.334-2.544.696.713-2.46-.364-.542A9.74 9.74 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
+                </svg>
+                Order this directly via WhatsApp
+              </Button>
+            </div>
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 pt-4">

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Menu, X, Search, User, ChevronDown, ChevronRight, ChevronLeft, Phone, LogOut, LayoutDashboard, HelpCircle, ShoppingCart, Zap } from "lucide-react"
+import { useCart } from "@/lib/cart"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +28,11 @@ interface Subcategory {
   category_id: string
 }
 
-import { mockCategories } from "@/lib/data/mock"
+
 
 export function Navbar() {
   const [categories, setCategories] = useState<Category[]>([])
+  const { cartCount } = useCart()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -65,11 +67,9 @@ export function Navbar() {
         
         if (data && data.length > 0) {
           setCategories(data)
-        } else {
-          setCategories(mockCategories as any)
         }
       } catch (error) {
-        setCategories(mockCategories as any)
+        console.error('Failed to fetch categories:', error)
       }
     }
 
@@ -241,7 +241,11 @@ export function Navbar() {
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline">Cart</span>
-                <span className="absolute top-1.5 right-1.5 lg:right-2 w-4 h-4 bg-brand-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                {cartCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 lg:right-2 w-4 h-4 bg-brand-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
 
             </div>
