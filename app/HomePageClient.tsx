@@ -3,6 +3,7 @@
 import { useRef } from "react"
 import Link from "next/link"
 import { ArrowRight, Package, Zap, CheckCircle, Star, ChevronRight, ChevronLeft, Shield, Award } from "lucide-react"
+import { toast } from "sonner"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
 import { HeroCarousel } from "@/components/customer/HeroCarousel"
@@ -65,6 +66,29 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       const { scrollLeft, clientWidth } = categoryScrollRef.current
       const scrollTo = direction === "left" ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2
       categoryScrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" })
+    }
+  }
+
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const input = (e.target as HTMLFormElement).querySelector('input')
+    const phone = input?.value
+    
+    if (phone) {
+      toast.success("Connecting you to our WhatsApp...")
+      window.open(`https://wa.me/919419091333?text=Hi Printkul! I would like to claim my 10% discount coupon code. My number is ${phone}`, '_blank')
+      if (input) input.value = ""
+    }
+  }
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const input = (e.target as HTMLFormElement).querySelector('input')
+    const email = input?.value
+    
+    if (email) {
+      toast.success("Success! We'll email your 10% coupon code shortly.")
+      if (input) input.value = ""
     }
   }
 
@@ -315,7 +339,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           <h2 className="text-4xl md:text-6xl font-extrabold font-heading mb-8 tracking-tight">Get 10% Off Your First Order</h2>
           <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">Sign up for our newsletter to receive exclusive deals, design tips, and new product announcements. Join thousands of happy customers.</p>
           
-          <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto" onSubmit={handleWhatsAppSubmit}>
             <input 
               type="tel" 
               placeholder="Enter your WhatsApp number" 
@@ -332,7 +356,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           
           <div className="mt-12 flex flex-col items-center justify-center gap-3">
             <p className="text-white/60 text-sm font-medium uppercase tracking-wider">Or receive it via email</p>
-            <form className="flex w-full max-w-md bg-white/10 rounded-full p-1 border border-white/10 focus-within:border-white/30 transition-colors" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex w-full max-w-md bg-white/10 rounded-full p-1 border border-white/10 focus-within:border-white/30 transition-colors" onSubmit={handleEmailSubmit}>
               <input type="email" placeholder="Enter your email address" className="bg-transparent border-none text-white px-6 py-2 flex-1 focus:outline-none placeholder:text-white/40 text-sm" required />
               <button type="submit" className="px-6 py-2 bg-white text-[#2B3539] font-bold rounded-full hover:bg-white/90 transition-colors text-sm">Send Email</button>
             </form>
