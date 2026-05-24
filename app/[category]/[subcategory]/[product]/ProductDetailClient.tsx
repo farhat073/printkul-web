@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -76,17 +77,22 @@ export function ProductDetailClient({
   )
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { addToCart } = useCart()
+  const router = useRouter()
 
+  const currentVariant = selectedVariant || product.variants?.find((v) => v.is_active)
+  
   const handleAddToCart = () => {
-    if (!selectedVariant) return
+    const variantId = currentVariant?.id || "default"
+    const variantName = currentVariant?.name || `${selectedQuantity} pcs`
+    const price = currentVariant?.price || product.base_price
 
     addToCart({
       productId: product.id,
       productName: product.name,
       productSlug: product.slug,
-      variantId: selectedVariant.id,
-      variantName: selectedVariant.name,
-      price: selectedVariant.price,
+      variantId: variantId,
+      variantName: variantName,
+      price: price,
       quantity: selectedQuantity,
       thumbnailUrl: product.thumbnail_url,
       categorySlug,
@@ -96,7 +102,7 @@ export function ProductDetailClient({
     toast.success("Added to cart", {
       action: {
         label: "View Cart",
-        onClick: () => window.location.href = "/cart"
+        onClick: () => router.push("/cart")
       }
     })
   }
@@ -121,7 +127,6 @@ export function ProductDetailClient({
     }
   }
 
-  const currentVariant = selectedVariant || product.variants?.find((v) => v.is_active)
   const bestValueVariant = product.variants?.reduce((best, v) =>
     v.price && best.price && parseFloat(v.price) / v.quantity < parseFloat(best.price) / best.quantity ? v : best
   , product.variants[0])
