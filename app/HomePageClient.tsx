@@ -317,20 +317,26 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           
           <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto" onSubmit={(e) => e.preventDefault()}>
             <input 
-              type="email" 
-              placeholder="Enter your email address" 
+              type="tel" 
+              placeholder="Enter your WhatsApp number" 
               className="flex-1 h-16 px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-white/30 text-lg font-medium shadow-2xl"
               required
             />
             <button 
               type="submit" 
-              className="h-16 px-10 bg-white text-[#2B3539] font-extrabold rounded-xl hover:bg-white/90 transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-lg"
+              className="h-16 px-10 bg-[#25D366] text-white font-extrabold rounded-xl hover:bg-[#20bd5a] transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-lg"
             >
               Get Coupon Code
             </button>
           </form>
           
-          <p className="text-white/60 text-base mt-12 font-medium">Or WhatsApp us at <a href="https://wa.me/919419091333" className="text-white/90 hover:underline font-bold">+91-94190 91333</a></p>
+          <div className="mt-12 flex flex-col items-center justify-center gap-3">
+            <p className="text-white/60 text-sm font-medium uppercase tracking-wider">Or receive it via email</p>
+            <form className="flex w-full max-w-md bg-white/10 rounded-full p-1 border border-white/10 focus-within:border-white/30 transition-colors" onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Enter your email address" className="bg-transparent border-none text-white px-6 py-2 flex-1 focus:outline-none placeholder:text-white/40 text-sm" required />
+              <button type="submit" className="px-6 py-2 bg-white text-[#2B3539] font-bold rounded-full hover:bg-white/90 transition-colors text-sm">Send Email</button>
+            </form>
+          </div>
         </div>
       </section>
     </div>
