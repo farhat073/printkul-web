@@ -142,7 +142,7 @@ export function WhatsAppOrderModal({
                     <h4 className="font-medium text-sm">{product.name}</h4>
                     <p className="text-sm text-muted-foreground">{variant.name}</p>
                     <p className="text-sm font-semibold text-brand-blue mt-1">
-                      ₹{variant.price} × {quantity} = ₹{(parseFloat(variant.price) * quantity).toLocaleString()}
+                      {quantity} pcs — ₹{parseFloat(variant.price).toLocaleString("en-IN")}
                     </p>
                   </div>
                 </div>
@@ -169,6 +169,9 @@ export function WhatsAppOrderModal({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 98765 43210"
+                  pattern="[+]?[0-9]{10,15}"
+                  minLength={10}
+                  maxLength={15}
                   required
                 />
               </div>
@@ -177,7 +180,7 @@ export function WhatsAppOrderModal({
                 Your number is only used for this order. We don&apos;t share it with third parties.
               </p>
 
-              <Button type="submit" className="w-full bg-brand-blue hover:hover:bg-brand-blue-dark" disabled={isSubmitting}>
+              <Button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue-dark" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />

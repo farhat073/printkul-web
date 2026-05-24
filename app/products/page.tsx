@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { Suspense, useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Input } from "@/components/ui/input"
@@ -20,7 +20,7 @@ interface Product {
   }
 }
 
-export default function ProductsPage() {
+export default function ProductsContent() {
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -79,7 +79,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-12">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-10 md:py-12">
         <div className="container mx-auto px-4">
           <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">
             All Products
@@ -91,7 +91,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Filters */}
-      <section className="py-6 border-b border-border bg-brand-gray sticky top-[140px] z-10">
+      <section className="py-4 md:py-6 border-b border-border bg-brand-gray sticky top-[72px] md:top-[140px] z-20 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-4 overflow-x-auto pb-2">
             <button
@@ -122,7 +122,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {filteredProducts.map((product, index) => (

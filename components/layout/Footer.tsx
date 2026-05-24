@@ -27,7 +27,7 @@ export function Footer() {
   return (
     <footer style={{ backgroundColor: '#2B3539' }} className="text-white">
       {/* ── Main Footer ── */}
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-12 pt-20 pb-16">
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-12 pt-12 md:pt-20 pb-10 md:pb-16">
         {/* Certifications Trust Badges */}
         <div className="mb-14 pb-10 border-b border-white/10">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 text-center mb-8">Certified & Trusted</h3>
@@ -67,19 +67,19 @@ export function Footer() {
               Kashmir&apos;s First Online Digital Printing Store. Crafting professional solutions with precision since 2016.
             </p>
             <div className="flex items-center gap-5">
-              <a href="https://instagram.com/printkul" target="_blank" rel="noopener" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
+              <a href="https://instagram.com/printkul" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com/mintleafdp" target="_blank" rel="noopener" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
+              <a href="https://facebook.com/mintleafdp" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="https://youtube.com/@Printkul" target="_blank" rel="noopener" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-red-500/80 hover:text-white transition-all">
+              <a href="https://youtube.com/@Printkul" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-red-500/80 hover:text-white transition-all">
                 <Youtube className="w-4 h-4" />
               </a>
-              <a href="https://twitter.com/printkul" target="_blank" rel="noopener" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
+              <a href="https://twitter.com/printkul" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
                 <TwitterXIcon className="w-4 h-4" />
               </a>
-              <a href="https://g.page/printkul" target="_blank" rel="noopener" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
+              <a href="https://g.page/printkul" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-all">
                 <GoogleIcon className="w-4 h-4" />
               </a>
             </div>
@@ -136,7 +136,7 @@ export function Footer() {
                   </div>
                   <span className="text-[15px] font-medium">+91-94190 91333</span>
                 </a>
-                <a href="https://wa.me/919419091333" target="_blank" rel="noopener" className="flex items-center gap-3 text-white/50 hover:text-green-400 transition-all group">
+                <a href="https://wa.me/919419091333" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/50 hover:text-green-400 transition-all group">
                   <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
                     <MessageCircle className="w-3.5 h-3.5" />
                   </div>

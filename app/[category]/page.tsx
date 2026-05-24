@@ -61,7 +61,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Banner */}
-      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-16 md:py-24">
+      <section className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[var(--color-brand-slate)] text-white py-12 md:py-24">
         <div className="container mx-auto px-4">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
@@ -70,7 +70,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <span className="text-white">{category.name}</span>
           </nav>
 
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4">
             {category.name}
           </h1>
           {category.description && (
@@ -83,7 +83,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {/* Subcategories */}
       {category.subcategories && category.subcategories.length > 0 && (
-        <section className="py-12 border-b border-border">
+        <section className="py-8 md:py-12 border-b border-border">
           <div className="container mx-auto px-4">
             <h2 className="font-heading text-xl font-semibold mb-6">Browse by Type</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -106,7 +106,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="py-16">
+        <section className="py-10 md:py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-heading text-2xl font-bold">Featured in {category.name}</h2>
@@ -129,7 +129,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {/* All Products */}
       {products.length > 0 && (
-        <section className="py-16 bg-brand-gray">
+        <section className="py-10 md:py-16 bg-brand-gray">
           <div className="container mx-auto px-4">
             <h2 className="font-heading text-2xl font-bold mb-8">All {category.name}</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

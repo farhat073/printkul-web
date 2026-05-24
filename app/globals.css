@@ -174,6 +174,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply bg-background text-foreground;
@@ -182,6 +183,10 @@
     @apply font-sans scroll-smooth;
   }
 }
+
+/* Safe area insets for modern phones */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom, 0px); }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
@@ -323,7 +328,7 @@
 }
 
 .hero-carousel-card {
-  flex: 0 0 calc(90% - 12px);
+  flex: 0 0 calc(85% - 12px);
   aspect-ratio: 12 / 5;
   border-radius: 14px;
   overflow: hidden;
@@ -436,4 +441,15 @@
   width: 24px;
   border-radius: 999px;
   background: var(--color-brand-accent);
+}
+
+/* Mobile touch targets */
+@media (max-width: 639px) {
+  .hero-carousel-dot {
+    width: 10px;
+    height: 10px;
+  }
+  .hero-carousel-dot-active {
+    width: 28px;
+  }
 }

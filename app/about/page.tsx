@@ -1,5 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { Award, MapPin, Users, Clock, Shield, Printer, CheckCircle } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "About Us | Printkul",
+  description: "Kashmir's First Online Digital Printing Store. 10+ years of professional printing experience across Anantnag, Srinagar, and Jammu.",
+}
 
 export const revalidate = 3600
 
@@ -14,14 +20,14 @@ export default async function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative bg-brand-slate text-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-brand-slate text-white py-14 md:py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/20 via-brand-accent/10 to-brand-orange/10" />
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm text-white/90 rounded-full text-sm font-semibold mb-6">
             <Award className="w-4 h-4" />
             <span>Since 2016 • Mintleaf Design & Print</span>
           </div>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6">
             About <span className="bg-gradient-to-r from-brand-accent to-brand-orange bg-clip-text text-transparent">Printkul</span>
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
@@ -31,7 +37,7 @@ export default async function AboutPage() {
       </section>
 
       {/* About Content */}
-      <section className="py-16 md:py-20">
+      <section className="py-10 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
@@ -71,7 +77,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-10 md:py-16 bg-brand-gray">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -81,7 +87,7 @@ export default async function AboutPage() {
               { number: "24h", label: "Avg Response Time" },
             ].map((stat, index) => (
               <div key={index} className="group">
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-brand-primary to-brand-accent bg-clip-text text-transparent mb-2 group-hover:scale-105 transition-transform">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-brand-primary to-brand-accent bg-clip-text text-transparent mb-2 group-hover:scale-105 transition-transform">
                   {stat.number}
                 </div>
                 <div className="text-muted-foreground font-medium">{stat.label}</div>
@@ -92,7 +98,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Store Locations */}
-      <section className="py-16 md:py-20">
+      <section className="py-10 md:py-16 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-3">Find Your Nearest Store</h2>
@@ -122,7 +128,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Certifications */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-10 md:py-16 bg-brand-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-3">Certified & Trusted</h2>
@@ -146,7 +152,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-20">
+      <section className="py-10 md:py-16 lg:py-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-4">
             Ready to get started?

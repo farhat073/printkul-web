@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { ArrowRight, Package, Zap, CheckCircle, Star, ChevronRight, ChevronLeft, Shield, Award } from "lucide-react"
+import { ArrowRight, Star, ChevronRight, ChevronLeft } from "lucide-react"
 import { toast } from "sonner"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
@@ -71,7 +71,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
   const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const input = (e.target as HTMLFormElement).querySelector('input')
+    const input = (e.target as HTMLFormElement).querySelector('input') as HTMLInputElement | null
     const phone = input?.value
     
     if (phone) {
@@ -81,28 +81,17 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
     }
   }
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const input = (e.target as HTMLFormElement).querySelector('input')
-    const email = input?.value
-    
-    if (email) {
-      toast.success("Success! We'll email your 10% coupon code shortly.")
-      if (input) input.value = ""
-    }
-  }
-
   return (
     <div className="min-h-screen bg-white text-brand-slate">
       {/* ── 1. FLIPKART-STYLE HERO CAROUSEL ── */}
       <HeroCarousel banners={banners} />
 
-      {/* 2. EXPLORE ALL CATEGORIES - Side Scroll */}
-      <section className="py-16 bg-brand-gray border-b border-border">
+      {/* 2. EXPLORE ALL CATEGORIES — Side Scroll */}
+      <section className="py-10 md:py-16 bg-brand-gray border-b border-border">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 relative">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <h2 className="text-3xl font-bold text-brand-slate font-heading">Explore all categories</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-slate font-heading">Explore all categories</h2>
               <p className="text-muted-foreground mt-2">Find exactly what you need for your brand</p>
             </div>
           </div>
@@ -110,7 +99,8 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           <div className="relative group">
             <button 
               onClick={() => scrollCategories('left')}
-              className="absolute left-0 top-[80px] md:top-[90px] -translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full flex items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+              className="absolute left-0 top-[80px] md:top-[90px] -translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+              aria-label="Scroll categories left"
             >
               <ChevronLeft className="w-7 h-7 -ml-1" />
             </button>
@@ -147,7 +137,8 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
             
             <button 
               onClick={() => scrollCategories('right')}
-              className="absolute right-0 top-[80px] md:top-[90px] translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full flex items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+              className="absolute right-0 top-[80px] md:top-[90px] translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+              aria-label="Scroll categories right"
             >
               <ChevronRight className="w-7 h-7 ml-1" />
             </button>
@@ -157,14 +148,14 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
       {/* 3. FEATURED / BEST SELLERS */}
       {featuredProducts.length > 0 && (
-        <section className="py-20 md:py-28 bg-white">
+        <section className="py-12 md:py-20 lg:py-28 bg-white">
           <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-accent/10 text-brand-accent rounded-full text-xs font-bold mb-4 uppercase tracking-widest">
                   Our Bestsellers
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold text-brand-slate font-heading tracking-tight">
+                <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">
                   Customer Favorites
                 </h2>
               </div>
@@ -173,7 +164,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 lg:gap-10">
               {featuredProducts.slice(0, 8).map((product) => (
                 <ProductCard
                   key={product.id}
@@ -191,13 +182,13 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
       {/* 8a. PRODUCT SHOWCASE — Dynamic from DB categories */}
       {categories.length > 0 && (
-        <section className="py-24 bg-white">
+        <section className="py-12 md:py-24 bg-white">
           <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-brand-slate font-heading tracking-tight">Our Premium Range</h2>
-              <p className="text-muted-foreground mt-4 text-xl max-w-2xl mx-auto italic">Crafted with precision, delivered with care. Explore our diverse printing solutions.</p>
+              <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">Our Premium Range</h2>
+              <p className="text-muted-foreground mt-4 text-xl max-w-2xl mx-auto">Crafted with precision, delivered with care. Explore our diverse printing solutions.</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
               {categories.slice(0, 6).map((cat) => (
                 <Link key={cat.id} href={`/${cat.slug}`} className="group relative rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-2xl transition-all duration-500">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -225,7 +216,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       )}
 
       {/* 8b. BRANDS THAT TRUST US - MARQUEE */}
-      <section className="py-20 bg-white border-y border-border overflow-hidden">
+      <section className="py-12 md:py-20 bg-white border-y border-border overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-sm md:text-base font-bold text-muted-foreground uppercase tracking-[0.3em]">Trusted By Leading Organizations</h2>
@@ -252,10 +243,10 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 8c. GOOGLE REVIEWS */}
-      <section className="py-24 bg-brand-gray">
+      <section className="py-12 md:py-24 bg-brand-gray">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-brand-slate font-heading tracking-tight">What Our Customers Say</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">What Our Customers Say</h2>
             <div className="flex items-center justify-center gap-3 mt-6">
               <img src="https://www.google.com/favicon.ico" alt="Google" className="w-6 h-6" />
               <span className="font-bold text-xl text-brand-slate">Google Reviews</span>
@@ -265,7 +256,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
               <span className="ml-1 font-extrabold text-2xl text-brand-slate">4.9</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {[
               { name: "Majid Yousuf", text: "The best professional one stop place in Anantnag for printing, designing and what not. They have got best and professional team who never let me down. We are their clients for 4 years now and they have always been exceptionally good.", rating: 5 },
               { name: "Dr. Junaid Malik", text: "For me, Mintleaf turned out an excellent press in Anantnag after exploring multiple alternatives. The design cards I ordered came out with superb quality, good paper quality and vibrant colors. Proofing process was also great.", rating: 5 },
@@ -277,7 +268,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
               { name: "Dr Shahid Shafi", text: "If you are researching the best place to get your printing done in bulk, these are your guys! They did their best to ensure quality and on time delivery. These guys are professionals with good business ethics.", rating: 5 },
               { name: "Zainab Suhail", text: "Had my Nikkah Nama customized and printed from Mintleaf design and print. I'm super happy with the work and the employees who helped. Special thumbs up to Aadil Ashraf for the excellent work. 11/10", rating: 5 },
             ].map((review, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 relative">
+              <div key={idx} className="bg-white p-5 md:p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 relative">
                 <div className="absolute top-5 right-6 text-5xl text-brand-gray-dark font-serif opacity-50">&ldquo;</div>
                 <div className="flex gap-1 mb-4">
                   {Array.from({length: review.rating}).map((_, s) => <Star key={s} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
@@ -314,9 +305,9 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 8d. FIND STORES - MARQUEE */}
-      <section className="py-24 bg-[#2B3539] text-white overflow-hidden">
+      <section className="py-12 md:py-24 bg-[#2B3539] text-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 mb-16 text-center">
-           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Our Presence Across J&K</h2>
+           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-4">Our Presence Across J&K</h2>
            <p className="text-white/60">Delivering excellence to every district in the valley.</p>
         </div>
         <Marquee 
@@ -328,39 +319,34 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 9. NEWSLETTER SIGNUP */}
-      <section className="py-28 text-white relative overflow-hidden" style={{ backgroundColor: '#2B3539' }}>
+      <section className="py-16 md:py-28 text-white relative overflow-hidden" style={{ backgroundColor: '#2B3539' }}>
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/5 to-transparent" />
         <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/5 to-transparent" />
         
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm font-bold mb-8 uppercase tracking-[0.2em]">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm font-bold mb-6 md:mb-8 uppercase tracking-[0.2em]">
             Limited Time Offer
           </div>
-          <h2 className="text-4xl md:text-6xl font-extrabold font-heading mb-8 tracking-tight">Get 10% Off Your First Order</h2>
-          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">Sign up for our newsletter to receive exclusive deals, design tips, and new product announcements. Join thousands of happy customers.</p>
+          <h2 className="text-2xl md:text-4xl lg:text-6xl font-extrabold font-heading mb-4 md:mb-8 tracking-tight">Get 10% Off Your First Order</h2>
+          <p className="text-base md:text-xl text-white/70 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">Drop your WhatsApp number and we&apos;ll send your exclusive 10% coupon code instantly. Join thousands of happy customers.</p>
           
-          <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto" onSubmit={handleWhatsAppSubmit}>
+          <form className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-2xl mx-auto" onSubmit={handleWhatsAppSubmit}>
             <input 
               type="tel" 
               placeholder="Enter your WhatsApp number" 
-              className="flex-1 h-16 px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-white/30 text-lg font-medium shadow-2xl"
+              className="flex-1 h-14 md:h-16 px-6 md:px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-white/30 text-base md:text-lg font-medium shadow-2xl"
+              pattern="[+]?[0-9]{10,15}"
+              minLength={10}
+              maxLength={15}
               required
             />
             <button 
               type="submit" 
-              className="h-16 px-10 bg-[#25D366] text-white font-extrabold rounded-xl hover:bg-[#20bd5a] transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-lg"
+              className="h-14 md:h-16 px-8 md:px-10 bg-[#25D366] text-white font-extrabold rounded-xl hover:bg-[#20bd5a] transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-base md:text-lg"
             >
               Get Coupon Code
             </button>
           </form>
-          
-          <div className="mt-12 flex flex-col items-center justify-center gap-3">
-            <p className="text-white/60 text-sm font-medium uppercase tracking-wider">Or receive it via email</p>
-            <form className="flex w-full max-w-md bg-white/10 rounded-full p-1 border border-white/10 focus-within:border-white/30 transition-colors" onSubmit={handleEmailSubmit}>
-              <input type="email" placeholder="Enter your email address" className="bg-transparent border-none text-white px-6 py-2 flex-1 focus:outline-none placeholder:text-white/40 text-sm" required />
-              <button type="submit" className="px-6 py-2 bg-white text-[#2B3539] font-bold rounded-full hover:bg-white/90 transition-colors text-sm">Send Email</button>
-            </form>
-          </div>
         </div>
       </section>
     </div>

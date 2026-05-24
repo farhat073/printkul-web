@@ -12,7 +12,7 @@ export default function NotFound() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/">
-            <Button className="bg-[var(--color-brand-slate)] hover:bg-[var(--color-brand-slate)]">
+            <Button className="bg-[var(--color-brand-slate)] hover:bg-[var(--color-brand-slate-light)]">
               Go to Homepage
             </Button>
           </Link>

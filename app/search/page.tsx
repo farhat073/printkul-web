@@ -22,7 +22,7 @@ interface Product {
   }
 }
 
-function SearchContent() {
+export default function SearchContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
   const [searchInput, setSearchInput] = useState(query)
@@ -90,7 +90,7 @@ function SearchContent() {
       </section>
 
       {/* Results */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="flex justify-center py-16">
@@ -132,17 +132,5 @@ function SearchContent() {
         </div>
       </section>
     </div>
-  )
-}
-
-export default function SearchPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
-      </div>
-    }>
-      <SearchContent />
-    </Suspense>
   )
 }

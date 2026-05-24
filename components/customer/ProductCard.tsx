@@ -60,8 +60,8 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
         </div>
 
         {/* Content */}
-        <div className="p-5 flex flex-col flex-1">
-          <h3 className="font-bold text-brand-slate text-[15px] group-hover:text-brand-accent transition-colors duration-300 line-clamp-2 leading-snug tracking-tight">
+        <div className="p-3 md:p-5 flex flex-col flex-1">
+          <h3 className="font-bold text-brand-slate text-[13px] md:text-[15px] group-hover:text-brand-accent transition-colors duration-300 line-clamp-2 leading-snug tracking-tight">
             {product.name}
           </h3>
           {product.short_desc && (
@@ -70,11 +70,11 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
             </p>
           )}
           
-          <div className="mt-auto pt-4 flex items-end justify-between">
+          <div className="mt-auto pt-3 md:pt-4 flex items-end justify-between">
             <div>
-              <span className="text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider block mb-0.5">Starting at</span>
+              <span className="text-[10px] md:text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider block mb-0.5">Starting at</span>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-xl font-extrabold text-brand-slate tracking-tight">₹{product.base_price}</span>
+                <span className="text-lg md:text-xl font-extrabold text-brand-slate tracking-tight">₹{product.base_price}</span>
                 {product.price_note && (
                   <span className="text-[10px] font-semibold text-muted-foreground">{product.price_note}</span>
                 )}

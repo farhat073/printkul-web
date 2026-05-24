@@ -8,7 +8,7 @@ export function FloatingWhatsApp() {
       href="https://wa.me/919419091333?text=Hi%20Printkul!%20I%20have%20a%20question%20about%20your%20products."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 group"
+      className="fixed bottom-6 right-4 md:right-6 z-40 group mb-safe"
       aria-label="Chat on WhatsApp"
     >
       <div className="relative">

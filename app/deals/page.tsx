@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Deals & Offers | Printkul",
+  description: "Save big on quality print products. Check out our latest deals and limited time offers.",
+}
 
 export const revalidate = 60
 
@@ -21,9 +27,9 @@ export default async function DealsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-brand-slate to-brand-slate text-white py-16">
+      <section className="bg-gradient-to-r from-brand-slate to-brand-slate text-white py-10 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Hot Deals & Offers
           </h1>
           <p className="text-white/80 text-lg max-w-2xl mx-auto">
@@ -33,7 +39,7 @@ export default async function DealsPage() {
       </section>
 
       {/* Deals Grid */}
-      <section className="py-16">
+      <section className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           {deals && deals.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

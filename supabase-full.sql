@@ -209,46 +209,46 @@ alter table enquiries        enable row level security;
 
 -- Categories
 create policy "public can read active categories" on categories for select using (is_active = true);
-create policy "admin can do everything on categories" on categories for all using (public.is_admin());
+create policy "admin can do everything on categories" on categories for all using (private.is_admin());
 
 -- Subcategories
 create policy "public can read active subcategories" on subcategories for select using (is_active = true);
-create policy "admin can do everything on subcategories" on subcategories for all using (public.is_admin());
+create policy "admin can do everything on subcategories" on subcategories for all using (private.is_admin());
 
 -- Products
 create policy "public can read active products" on products for select using (is_active = true);
-create policy "admin can do everything on products" on products for all using (public.is_admin());
+create policy "admin can do everything on products" on products for all using (private.is_admin());
 
 -- Product Variants
 create policy "public can read active variants" on product_variants for select using (is_active = true);
-create policy "admin can do everything on variants" on product_variants for all using (public.is_admin());
+create policy "admin can do everything on variants" on product_variants for all using (private.is_admin());
 
 -- Profiles
 create policy "users can view own profile"    on profiles for select using (id = auth.uid());
 create policy "users can update own profile"  on profiles for update using (id = auth.uid());
-create policy "admin can view all profiles"   on profiles for select using (public.is_admin());
-create policy "admin can update all profiles" on profiles for update using (public.is_admin());
+create policy "admin can view all profiles"   on profiles for select using (private.is_admin());
+create policy "admin can update all profiles" on profiles for update using (private.is_admin());
 
 -- Site Content
 create policy "public can read site_content" on site_content for select using (true);
-create policy "admin can do everything on site_content" on site_content for all using (public.is_admin());
+create policy "admin can do everything on site_content" on site_content for all using (private.is_admin());
 
 -- Banners
 create policy "public can read active banners" on banners for select using (is_active = true);
-create policy "admin can do everything on banners" on banners for all using (public.is_admin());
+create policy "admin can do everything on banners" on banners for all using (private.is_admin());
 
 -- Deals
 create policy "public can read active deals" on deals for select using (is_active = true);
-create policy "admin can do everything on deals" on deals for all using (public.is_admin());
+create policy "admin can do everything on deals" on deals for all using (private.is_admin());
 
 -- FAQs
 create policy "public can read active faqs" on faqs for select using (is_active = true);
-create policy "admin can do everything on faqs" on faqs for all using (public.is_admin());
+create policy "admin can do everything on faqs" on faqs for all using (private.is_admin());
 
 -- Enquiries
 create policy "users can insert own enquiry" on enquiries for insert with check (user_id = auth.uid() or user_id is null);
 create policy "users can view own enquiries" on enquiries for select using (user_id = auth.uid());
-create policy "admin can view all enquiries" on enquiries for all using (public.is_admin());
+create policy "admin can view all enquiries" on enquiries for all using (private.is_admin());
 
 -- ============================================
 -- TRIGGER: auto-create profile on signup
@@ -293,7 +293,7 @@ create policy "admin can upload to admin-uploads"
   on storage.objects for insert
   with check (
     bucket_id = 'admin-uploads' and
-    public.is_admin()
+    private.is_admin()
   );
 
 -- ============================================

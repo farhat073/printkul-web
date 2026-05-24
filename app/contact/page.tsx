@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Contact Us | Printkul",
+  description: "Get in touch with Printkul. WhatsApp, phone, or email — we're here to help with all your printing needs.",
+}
 
 export const revalidate = 3600
 
@@ -22,10 +28,10 @@ export default async function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative bg-brand-slate text-white py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-brand-slate text-white py-12 md:py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/20 via-brand-accent/10 to-brand-orange/10" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">
             Contact <span className="bg-gradient-to-r from-brand-accent to-brand-orange bg-clip-text text-transparent">Us</span>
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto">
@@ -35,7 +41,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Contact Options */}
-      <section className="py-16">
+      <section className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* WhatsApp */}
@@ -90,7 +96,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Store Locations */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-10 md:py-16 bg-brand-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-3">
@@ -135,7 +141,7 @@ export default async function ContactPage() {
       </section>
 
       {/* FAQ Summary */}
-      <section className="py-16">
+      <section className="py-10 md:py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-4">
             Have questions?
