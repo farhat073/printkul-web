@@ -30,6 +30,7 @@ export function Marquee({
           speed === "normal" ? "animate-marquee" : "animate-marquee-slow",
           pauseOnHover && "group-hover:[animation-play-state:paused]"
         )}
+        style={{ willChange: "transform", transform: "translateZ(0)" }}
       >
         {items.map((item, idx) => (
           <div 
@@ -55,6 +56,7 @@ export function Marquee({
           speed === "normal" ? "animate-marquee" : "animate-marquee-slow",
           pauseOnHover && "group-hover:[animation-play-state:paused]"
         )}
+        style={{ willChange: "transform", transform: "translateZ(0)" }}
       >
         {items.map((item, idx) => (
           <div 
