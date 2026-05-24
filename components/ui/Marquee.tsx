@@ -5,7 +5,7 @@ interface MarqueeProps {
   className?: string
   speed?: "normal" | "slow"
   pauseOnHover?: boolean
-  variant?: "text" | "pill"
+  variant?: "text" | "pill" | "announcement"
 }
 
 export function Marquee({ 
@@ -38,6 +38,8 @@ export function Marquee({
               "whitespace-nowrap transition-all duration-300 cursor-default",
               variant === "pill" 
                 ? "bg-brand-gray border border-border px-6 py-3 rounded-full font-bold text-brand-slate text-sm md:text-base hover:border-brand-primary hover:text-brand-primary hover:bg-white hover:scale-110 shadow-sm"
+                : variant === "announcement"
+                ? "text-white font-semibold text-xs md:text-sm tracking-wide opacity-70 hover:opacity-100 transition-opacity"
                 : "text-brand-slate font-extrabold text-sm md:text-xl tracking-wider uppercase opacity-40 hover:opacity-100 hover:text-brand-primary hover:scale-110"
             )}
           >
@@ -61,6 +63,8 @@ export function Marquee({
               "whitespace-nowrap transition-all duration-300 cursor-default",
               variant === "pill" 
                 ? "bg-brand-gray border border-border px-6 py-3 rounded-full font-bold text-brand-slate text-sm md:text-base hover:border-brand-primary hover:text-brand-primary hover:bg-white hover:scale-110 shadow-sm"
+                : variant === "announcement"
+                ? "text-white font-semibold text-xs md:text-sm tracking-wide opacity-70 hover:opacity-100 transition-opacity"
                 : "text-brand-slate font-extrabold text-sm md:text-xl tracking-wider uppercase opacity-40 hover:opacity-100 hover:text-brand-primary hover:scale-110"
             )}
           >

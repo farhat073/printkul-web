@@ -27,6 +27,7 @@ interface Banner {
 }
 
 const positionLabels: Record<string, string> = {
+  home_carousel: "Home Carousel",
   home_hero: "Home Hero",
   home_mid: "Home Mid",
   category_top: "Category Top",
@@ -243,13 +244,23 @@ export default function AdminBannersPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Image URL *</Label>
+              <Label className="flex items-center gap-2">
+                Image URL *
+                {formData.position === "home_carousel" && (
+                  <span className="text-xs text-muted-foreground font-normal">(Recommended: 1200x500)</span>
+                )}
+              </Label>
               <Input
                 value={formData.image_url}
                 onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                 placeholder="https://..."
                 required
               />
+              {formData.image_url && (
+                <div className="rounded-lg overflow-hidden border border-border aspect-[16/7]">
+                  <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -261,11 +272,11 @@ export default function AdminBannersPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>CTA URL</Label>
+                <Label>Link URL (click destination)</Label>
                 <Input
                   value={formData.cta_url}
                   onChange={(e) => setFormData({ ...formData, cta_url: e.target.value })}
-                  placeholder="/products"
+                  placeholder="/products or https://..."
                 />
               </div>
             </div>
@@ -276,7 +287,8 @@ export default function AdminBannersPage() {
                 onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                 className="w-full px-3 py-2 border border-input rounded-lg bg-background"
               >
-                <option value="home_hero">Home Hero</option>
+                <option value="home_carousel">Home Carousel</option>
+                <option value="home_hero">Home Hero (Legacy)</option>
                 <option value="home_mid">Home Mid</option>
                 <option value="category_top">Category Top</option>
               </select>

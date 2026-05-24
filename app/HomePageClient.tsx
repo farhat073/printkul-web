@@ -1,10 +1,11 @@
 "use client"
 
+import { useRef } from "react"
 import Link from "next/link"
-import { useState, useEffect } from "react"
-import { ArrowRight, Package, Zap, CheckCircle, Star, ChevronRight, Shield, Award } from "lucide-react"
+import { ArrowRight, Package, Zap, CheckCircle, Star, ChevronRight, ChevronLeft, Shield, Award } from "lucide-react"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
+import { HeroCarousel } from "@/components/customer/HeroCarousel"
 
 interface Banner {
   id: string
@@ -56,92 +57,21 @@ interface HomePageClientProps {
   deals: Deal[]
 }
 
-export function HomePageClient({
-  categories,
-  featuredProducts,
-}: HomePageClientProps) {
-  const [currentBanner, setCurrentBanner] = useState(0)
+export function HomePageClient({ categories = [], featuredProducts = [], banners = [], deals = [] }: HomePageClientProps) {
+  const categoryScrollRef = useRef<HTMLDivElement>(null)
 
-  const heroImages = [
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&q=90", // High-end Abstract Color (Bespoke Vibe)
-    "https://images.unsplash.com/photo-1634084462412-b5c67a501f6e?w=1600&q=90", // Premium Foil / Metallic Texture
-    "https://images.unsplash.com/photo-1586075010633-de1580435163?w=1600&q=90", // Architectural Paper Stacks (Quality)
-    "https://images.unsplash.com/photo-1558655146-d09347e92766?w=1600&q=90"  // Minimalist Design & Print Tools
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % heroImages.length)
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [heroImages.length])
+  const scrollCategories = (direction: "left" | "right") => {
+    if (categoryScrollRef.current) {
+      const { scrollLeft, clientWidth } = categoryScrollRef.current
+      const scrollTo = direction === "left" ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2
+      categoryScrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" })
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white text-brand-slate">
-      {/* ── 1. MINIMAL HERO ── */}
-      <section className="relative w-full overflow-hidden bg-brand-gray">
-        <div className="relative min-h-[85vh] flex items-center">
-          {/* Background Images - Full Clarity */}
-          <div className="absolute inset-0 z-0">
-            {heroImages.map((img, index) => (
-              <img 
-                key={index}
-                src={img} 
-                alt={`Slide ${index + 1}`} 
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                  index === currentBanner ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-          </div>
-          
-          <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-12 relative z-20">
-            <div className="max-w-xl bg-white/20 backdrop-blur-xl px-6 py-6 md:px-8 md:py-7 rounded-[1.5rem] border border-white/30 shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)]">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-border rounded-full text-[9px] font-bold uppercase tracking-[0.2em] mb-4 text-brand-accent">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-accent"></span>
-                </span>
-                Kashmir&apos;s Digital Print Studio
-              </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-brand-slate leading-tight mb-4 tracking-tight">
-                <span className="bg-gradient-to-r from-[#6B17D1] via-[#D71865] to-[#6B17D1] bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-x">Crafting</span> <span className="italic text-brand-accent font-serif">Impressions</span><br />
-                that last a lifetime.
-              </h1>
-              <p className="text-base md:text-lg text-brand-slate-light mb-8 max-w-md leading-relaxed font-medium">
-                Premium printing solutions for brands who value precision. We deliver excellence from Srinagar to Srinagar.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="/products"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-accent transition-all shadow-xl hover:shadow-brand-accent/20 text-sm"
-                >
-                  Start Project
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-white/60 text-brand-slate font-bold rounded-xl border border-white/50 backdrop-blur-sm hover:bg-white transition-all text-sm"
-                >
-                  Request Quote
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Indicators */}
-          <div className="absolute bottom-12 right-12 z-20 flex gap-2">
-            {heroImages.map((_, index) => (
-              <button 
-                key={index} 
-                onClick={() => setCurrentBanner(index)} 
-                className={`h-1.5 transition-all duration-500 rounded-full ${
-                  index === currentBanner ? "bg-brand-slate w-8" : "bg-brand-slate/10 w-2 hover:bg-brand-slate/30"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── 1. FLIPKART-STYLE HERO CAROUSEL ── */}
+      <HeroCarousel banners={banners} />
 
       {/* 2. EXPLORE ALL CATEGORIES - Side Scroll */}
       <section className="py-16 bg-brand-gray border-b border-border">
@@ -154,7 +84,17 @@ export function HomePageClient({
           </div>
           
           <div className="relative group">
-            <div className="flex overflow-x-auto gap-6 md:gap-10 pb-6 snap-x snap-mandatory hide-scrollbar">
+            <button 
+              onClick={() => scrollCategories('left')}
+              className="absolute left-0 top-[80px] md:top-[90px] -translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full flex items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+            >
+              <ChevronLeft className="w-7 h-7 -ml-1" />
+            </button>
+
+            <div 
+              ref={categoryScrollRef}
+              className="flex overflow-x-auto gap-6 md:gap-10 pb-6 snap-x snap-mandatory hide-scrollbar"
+            >
               {categories.map((category) => (
                 <Link
                   key={category.id}
@@ -181,8 +121,11 @@ export function HomePageClient({
               ))}
             </div>
             
-            <button className="absolute right-0 top-[80px] md:top-[90px] -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full flex items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95">
-              <ChevronRight className="w-7 h-7" />
+            <button 
+              onClick={() => scrollCategories('right')}
+              className="absolute right-0 top-[80px] md:top-[90px] translate-x-1/2 -translate-y-1/2 bg-white border border-border shadow-xl w-14 h-14 rounded-full flex items-center justify-center text-brand-slate hover:text-brand-accent hidden md:flex transition-all hover:scale-110 z-10 active:scale-95 opacity-0 group-hover:opacity-100"
+            >
+              <ChevronRight className="w-7 h-7 ml-1" />
             </button>
           </div>
         </div>
@@ -221,36 +164,6 @@ export function HomePageClient({
           </div>
         </section>
       )}
-
-      {/* 5. INTERACTIVE DARK RIBBON (Hybrid Option 2 & 3) */}
-      <section className="bg-brand-slate py-5 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-12">
-          <div className="text-center mb-2">
-            <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30">Certifications & Experience</span>
-          </div>
-          <div className="flex items-center justify-center gap-6 md:gap-14">
-            {[
-              { label: "10+ Years Experience", icon: Zap },
-              { label: "ISO IAF Certified", icon: CheckCircle },
-              { label: "MSME Registered", icon: Shield },
-              { label: "Google Verified", icon: Star },
-              { label: "ZED Certified", icon: Award },
-              { label: "GeM Registered", icon: Package }
-            ].map((item, idx) => (
-              <div key={idx} className="group flex items-center gap-0 hover:gap-3 transition-all duration-500 ease-in-out cursor-default">
-                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/60 group-hover:bg-brand-accent group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-lg group-hover:-rotate-12 border border-white/5 group-hover:border-transparent">
-                  <item.icon className="w-4 h-4" />
-                </div>
-                <span className="max-w-0 overflow-hidden opacity-0 group-hover:max-w-[200px] group-hover:opacity-100 transition-all duration-500 whitespace-nowrap text-[11px] font-bold text-white tracking-tight uppercase">
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
 
       {/* 8a. PRODUCT SHOWCASE — Dynamic from DB categories */}
       {categories.length > 0 && (
@@ -328,24 +241,31 @@ export function HomePageClient({
               <span className="ml-1 font-extrabold text-2xl text-brand-slate">4.9</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { name: "Farhat Ahmad", text: "Excellent print quality and fast delivery. The visiting cards came out perfect with the gold foil finish. Highly recommended for businesses in Kashmir!", rating: 5 },
-              { name: "Suhail Bhat", text: "Ordered custom standees for our exhibition. Colors were vibrant and exactly matching the proof. Great customer service via WhatsApp.", rating: 5 },
-              { name: "Mehak Parray", text: "Best printing service in Kashmir! Die-cut stickers and brochures were top-notch quality. Will definitely order again from Printkul.", rating: 5 },
+              { name: "Majid Yousuf", text: "The best professional one stop place in Anantnag for printing, designing and what not. They have got best and professional team who never let me down. We are their clients for 4 years now and they have always been exceptionally good.", rating: 5 },
+              { name: "Dr. Junaid Malik", text: "For me, Mintleaf turned out an excellent press in Anantnag after exploring multiple alternatives. The design cards I ordered came out with superb quality, good paper quality and vibrant colors. Proofing process was also great.", rating: 5 },
+              { name: "Muskaan Akbar", text: "We had an exceptional experience working with Mintleaf for our printing needs! They printed our visiting cards, labels, and tags and the quality was awesome. The quality of the print materials is truly premium.", rating: 5 },
+              { name: "Umar Gilkar", text: "Outstanding printing service. The accuracy, surface finish, and material strength exceeded my expectations. The seller maintained clear communication and delivered exactly as requested.", rating: 5 },
+              { name: "Mudasir Javeed", text: "We partnered with Mintleaf to design and print our new menus for Old Town Cafe, and we couldn't be more impressed. The print quality is sharp, vibrant, and flawless. Every element exceeded our expectations.", rating: 5 },
+              { name: "Rayees Zahoor", text: "I used Mintleaf Design & Print for our wedding invitation cards, and I am absolutely thrilled with the results! The printing quality was top-notch; the colors were vibrant, and the card stock felt luxurious.", rating: 5 },
+              { name: "Waseem Bhat", text: "Creative designs, Awesome ideas and On time Deliveries are the motto of Mintleaf Anantnag. Thanks for the lovely crafted stickers. Wishing you more Success!", rating: 5 },
+              { name: "Dr Shahid Shafi", text: "If you are researching the best place to get your printing done in bulk, these are your guys! They did their best to ensure quality and on time delivery. These guys are professionals with good business ethics.", rating: 5 },
+              { name: "Zainab Suhail", text: "Had my Nikkah Nama customized and printed from Mintleaf design and print. I'm super happy with the work and the employees who helped. Special thumbs up to Aadil Ashraf for the excellent work. 11/10", rating: 5 },
             ].map((review, idx) => (
-              <div key={idx} className="bg-white p-10 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 relative">
-                <div className="absolute top-6 right-8 text-6xl text-brand-gray-dark font-serif opacity-50">&ldquo;</div>
-                <div className="flex gap-1 mb-6">
-                  {Array.from({length: review.rating}).map((_, s) => <Star key={s} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+              <div key={idx} className="bg-white p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 relative">
+                <div className="absolute top-5 right-6 text-5xl text-brand-gray-dark font-serif opacity-50">&ldquo;</div>
+                <div className="flex gap-1 mb-4">
+                  {Array.from({length: review.rating}).map((_, s) => <Star key={s} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                  {review.rating < 5 && Array.from({length: 5 - review.rating}).map((_, s) => <Star key={`e-${s}`} className="w-4 h-4 text-gray-200" />)}
                 </div>
-                <p className="text-brand-slate/80 text-lg leading-relaxed mb-8 relative z-10">{review.text}</p>
-                <div className="flex items-center gap-4 border-t border-border pt-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white text-lg font-bold shadow-md">
+                <p className="text-brand-slate/80 text-[15px] leading-relaxed mb-6 relative z-10 line-clamp-4">{review.text}</p>
+                <div className="flex items-center gap-3 border-t border-border pt-5">
+                  <div className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
                     {review.name.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="font-bold text-base text-brand-slate">{review.name}</h4>
+                    <h4 className="font-bold text-sm text-brand-slate">{review.name}</h4>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 font-semibold">
                       <img src="https://www.google.com/favicon.ico" alt="" className="w-3 h-3" /> Verified Google Review
                     </p>
@@ -354,11 +274,23 @@ export function HomePageClient({
               </div>
             ))}
           </div>
+          <div className="text-center mt-12">
+            <a
+              href="https://maps.app.goo.gl/8TMkK3zKH6c2QjE69"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white border-2 border-border text-brand-slate font-bold rounded-xl hover:border-brand-accent hover:text-brand-accent transition-all shadow-sm hover:shadow-lg text-sm"
+            >
+              <img src="https://www.google.com/favicon.ico" alt="" className="w-4 h-4" />
+              See All Reviews on Google
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </section>
 
       {/* 8d. FIND STORES - MARQUEE */}
-      <section className="py-24 bg-brand-slate text-white overflow-hidden">
+      <section className="py-24 bg-[#2B3539] text-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 mb-16 text-center">
            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Our Presence Across J&K</h2>
            <p className="text-white/60">Delivering excellence to every district in the valley.</p>
@@ -372,12 +304,12 @@ export function HomePageClient({
       </section>
 
       {/* 9. NEWSLETTER SIGNUP */}
-      <section className="py-28 bg-brand-slate text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-brand-primary/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-brand-accent/10 to-transparent" />
+      <section className="py-28 text-white relative overflow-hidden" style={{ backgroundColor: '#2B3539' }}>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/5 to-transparent" />
         
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-brand-accent-light text-sm font-bold mb-8 uppercase tracking-[0.2em]">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm font-bold mb-8 uppercase tracking-[0.2em]">
             Limited Time Offer
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold font-heading mb-8 tracking-tight">Get 10% Off Your First Order</h2>
@@ -387,18 +319,18 @@ export function HomePageClient({
             <input 
               type="email" 
               placeholder="Enter your email address" 
-              className="flex-1 h-16 px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-brand-accent/50 text-lg font-medium shadow-2xl"
+              className="flex-1 h-16 px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-white/30 text-lg font-medium shadow-2xl"
               required
             />
             <button 
               type="submit" 
-              className="h-16 px-10 bg-brand-accent text-white font-extrabold rounded-xl hover:bg-brand-accent-dark transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-lg"
+              className="h-16 px-10 bg-white text-[#2B3539] font-extrabold rounded-xl hover:bg-white/90 transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-lg"
             >
               Get Coupon Code
             </button>
           </form>
           
-          <p className="text-white/60 text-base mt-12 font-medium">Or WhatsApp us at <a href="https://wa.me/919419091333" className="text-brand-accent-light hover:underline font-bold">+91-94190 91333</a></p>
+          <p className="text-white/60 text-base mt-12 font-medium">Or WhatsApp us at <a href="https://wa.me/919419091333" className="text-white/90 hover:underline font-bold">+91-94190 91333</a></p>
         </div>
       </section>
     </div>

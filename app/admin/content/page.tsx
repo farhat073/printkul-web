@@ -17,6 +17,10 @@ interface ContentItem {
 }
 
 const sections: Record<string, { label: string; keys: string[] }> = {
+  announcement: {
+    label: "Announcement Bar",
+    keys: ["announcement_bar_text"],
+  },
   home: {
     label: "Home",
     keys: ["home_hero_title", "home_hero_subtitle", "home_featured_heading"],
@@ -126,7 +130,7 @@ export default function AdminContentPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {section.keys.map((key) => {
-              const isLongContent = key.includes("body") || key.includes("desc")
+              const isLongContent = key.includes("body") || key.includes("desc") || key === "announcement_bar_text"
               return (
                 <div key={key} className="space-y-2">
                   <label className="text-sm font-medium capitalize">
@@ -146,6 +150,9 @@ export default function AdminContentPage() {
                       onChange={(e) => handleChange(key, e.target.value)}
                       placeholder={`Enter ${key.replace(/_/g, " ")}...`}
                     />
+                  )}
+                  {key === "announcement_bar_text" && (
+                    <p className="text-xs text-muted-foreground">Separate multiple announcements with a pipe <code className="bg-muted px-1 rounded">|</code> character. Example: <code className="bg-muted px-1 rounded text-xs">Free Delivery Above ₹5000 | New Arrivals Available</code></p>
                   )}
                 </div>
               )

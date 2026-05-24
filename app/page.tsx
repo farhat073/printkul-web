@@ -21,7 +21,7 @@ export default async function HomePage() {
       .from("banners")
       .select("*")
       .eq("is_active", true)
-      .eq("position", "home_hero")
+      .eq("position", "home_carousel")
       .order("sort_order"),
     supabase
       .from("deals")
