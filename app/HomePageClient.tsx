@@ -2,11 +2,12 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { ArrowRight, Star, ChevronRight, ChevronLeft } from "lucide-react"
+import { ArrowRight, ChevronRight, ChevronLeft } from "lucide-react"
 import { toast } from "sonner"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
 import { HeroCarousel } from "@/components/customer/HeroCarousel"
+import { GoogleReviewsMarquee } from "@/components/customer/GoogleReviewsMarquee"
 
 interface Banner {
   id: string
@@ -243,66 +244,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 8c. GOOGLE REVIEWS */}
-      <section className="py-12 md:py-24 bg-brand-gray">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">What Our Customers Say</h2>
-            <div className="flex items-center justify-center gap-3 mt-6">
-              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-6 h-6" />
-              <span className="font-bold text-xl text-brand-slate">Google Reviews</span>
-              <div className="flex gap-1 ml-2">
-                {[1,2,3,4,5].map((s) => <Star key={s} className="w-6 h-6 fill-yellow-400 text-yellow-400" />)}
-              </div>
-              <span className="ml-1 font-extrabold text-2xl text-brand-slate">4.9</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {[
-              { name: "Majid Yousuf", text: "The best professional one stop place in Anantnag for printing, designing and what not. They have got best and professional team who never let me down. We are their clients for 4 years now and they have always been exceptionally good.", rating: 5 },
-              { name: "Dr. Junaid Malik", text: "For me, Mintleaf turned out an excellent press in Anantnag after exploring multiple alternatives. The design cards I ordered came out with superb quality, good paper quality and vibrant colors. Proofing process was also great.", rating: 5 },
-              { name: "Muskaan Akbar", text: "We had an exceptional experience working with Mintleaf for our printing needs! They printed our visiting cards, labels, and tags and the quality was awesome. The quality of the print materials is truly premium.", rating: 5 },
-              { name: "Umar Gilkar", text: "Outstanding printing service. The accuracy, surface finish, and material strength exceeded my expectations. The seller maintained clear communication and delivered exactly as requested.", rating: 5 },
-              { name: "Mudasir Javeed", text: "We partnered with Mintleaf to design and print our new menus for Old Town Cafe, and we couldn't be more impressed. The print quality is sharp, vibrant, and flawless. Every element exceeded our expectations.", rating: 5 },
-              { name: "Rayees Zahoor", text: "I used Mintleaf Design & Print for our wedding invitation cards, and I am absolutely thrilled with the results! The printing quality was top-notch; the colors were vibrant, and the card stock felt luxurious.", rating: 5 },
-              { name: "Waseem Bhat", text: "Creative designs, Awesome ideas and On time Deliveries are the motto of Mintleaf Anantnag. Thanks for the lovely crafted stickers. Wishing you more Success!", rating: 5 },
-              { name: "Dr Shahid Shafi", text: "If you are researching the best place to get your printing done in bulk, these are your guys! They did their best to ensure quality and on time delivery. These guys are professionals with good business ethics.", rating: 5 },
-              { name: "Zainab Suhail", text: "Had my Nikkah Nama customized and printed from Mintleaf design and print. I'm super happy with the work and the employees who helped. Special thumbs up to Aadil Ashraf for the excellent work. 11/10", rating: 5 },
-            ].map((review, idx) => (
-              <div key={idx} className="bg-white p-5 md:p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 relative">
-                <div className="absolute top-5 right-6 text-5xl text-brand-gray-dark font-serif opacity-50">&ldquo;</div>
-                <div className="flex gap-1 mb-4">
-                  {Array.from({length: review.rating}).map((_, s) => <Star key={s} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
-                  {review.rating < 5 && Array.from({length: 5 - review.rating}).map((_, s) => <Star key={`e-${s}`} className="w-4 h-4 text-gray-200" />)}
-                </div>
-                <p className="text-brand-slate/80 text-[15px] leading-relaxed mb-6 relative z-10 line-clamp-4">{review.text}</p>
-                <div className="flex items-center gap-3 border-t border-border pt-5">
-                  <div className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
-                    {review.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-brand-slate">{review.name}</h4>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1 font-semibold">
-                      <img src="https://www.google.com/favicon.ico" alt="" className="w-3 h-3" /> Verified Google Review
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <a
-              href="https://maps.app.goo.gl/8TMkK3zKH6c2QjE69"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white border-2 border-border text-brand-slate font-bold rounded-xl hover:border-brand-accent hover:text-brand-accent transition-all shadow-sm hover:shadow-lg text-sm"
-            >
-              <img src="https://www.google.com/favicon.ico" alt="" className="w-4 h-4" />
-              See All Reviews on Google
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </section>
+      <GoogleReviewsMarquee />
 
       {/* 8d. FIND STORES - MARQUEE */}
       <section className="py-12 md:py-24 bg-[#2B3539] text-white overflow-hidden">
