@@ -246,8 +246,8 @@ export function GoogleReviewsMarquee() {
             </svg>
           </div>
 
-          {/* Paper output zone — overflow hidden so cards slide out from printer */}
-          <div className="relative -mt-2 mx-6 md:mx-10 overflow-hidden" style={{ minHeight: '200px' }}>
+          {/* Paper output zone — tight against printer slot */}
+          <div className="relative -mt-14 mx-8 md:mx-14 overflow-hidden" style={{ minHeight: '200px' }}>
             {/* Bottom layer: current review (already printed, sitting there) */}
             <div className="relative z-10">
               <ReviewCard review={reviews[currentIndex]} index={currentIndex} />
