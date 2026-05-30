@@ -22,68 +22,71 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
 
   return (
     <Link href={href} className="group block">
-      <div className="bg-white rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.12)] hover:-translate-y-2 flex flex-col h-full border border-border/40 hover:border-brand-accent/20">
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] bg-brand-gray overflow-hidden">
-          {product.thumbnail_url ? (
-            <img
-              src={product.thumbnail_url}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-gray to-border/20">
-              <div className="w-20 h-20 bg-white/80 rounded-2xl flex items-center justify-center shadow-sm">
-                <span className="text-2xl font-bold text-brand-slate/15 tracking-tight">PK</span>
-              </div>
+      <div className="relative rounded-2xl overflow-hidden border border-border/40 hover:border-brand-accent/20 transition-all duration-500 hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.12)] hover:-translate-y-2 aspect-[3/4]">
+        {/* Full-bleed image */}
+        {product.thumbnail_url ? (
+          <img
+            src={product.thumbnail_url}
+            alt={product.name}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+        ) : (
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-gray to-border/20">
+            <div className="w-20 h-20 bg-white/80 rounded-2xl flex items-center justify-center shadow-sm">
+              <span className="text-2xl font-bold text-brand-slate/15 tracking-tight">PK</span>
             </div>
-          )}
-          
-          {/* Subtle gradient overlay at bottom for text readability */}
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          </div>
+        )}
 
-          {/* Badges */}
-          {showFeaturedBadge && product.is_featured && (
-            <div className="absolute top-3 left-3">
-              <span className="bg-brand-accent/90 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wide">
-                BESTSELLER
-              </span>
-            </div>
-          )}
+        {/* Badges — always visible */}
+        {showFeaturedBadge && product.is_featured && (
+          <div className="absolute top-3 left-3 z-20">
+            <span className="bg-brand-accent/90 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wide">
+              BESTSELLER
+            </span>
+          </div>
+        )}
 
-          {/* Hover action button */}
-          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-            <div className="w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl text-brand-slate group-hover:bg-brand-accent group-hover:text-white transition-colors duration-300">
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
+        {/* Default: Name pill at the bottom */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-3 transition-opacity duration-300 group-hover:opacity-0">
+          <div className="inline-flex items-center max-w-full">
+            <span className="bg-white/90 backdrop-blur-md text-brand-slate text-[11px] md:text-[13px] font-bold px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-lg truncate">
+              {product.name}
+            </span>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-3 md:p-5 flex flex-col flex-1">
-          <h3 className="font-bold text-brand-slate text-[13px] md:text-[15px] group-hover:text-brand-accent transition-colors duration-300 line-clamp-2 leading-snug tracking-tight">
-            {product.name}
-          </h3>
-          {product.short_desc && (
-            <p className="text-xs text-muted-foreground mt-2 line-clamp-1 font-medium leading-relaxed">
-              {product.short_desc}
-            </p>
-          )}
-          
-          <div className="mt-auto pt-3 md:pt-4 flex items-end justify-between">
-            <div>
-              <span className="text-[10px] md:text-[11px] font-semibold text-muted-foreground/70 uppercase tracking-wider block mb-0.5">Starting at</span>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-lg md:text-xl font-extrabold text-brand-slate tracking-tight">₹{product.base_price}</span>
-                {product.price_note && (
-                  <span className="text-[10px] font-semibold text-muted-foreground">{product.price_note}</span>
-                )}
+        {/* Hover: Full details overlay */}
+        <div className="absolute inset-0 z-10 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-500">
+          {/* Gradient overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+          {/* Details panel */}
+          <div className="relative p-4 md:p-5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+            <h3 className="font-bold text-white text-[13px] md:text-[15px] line-clamp-2 leading-snug tracking-tight mb-1.5">
+              {product.name}
+            </h3>
+            {product.short_desc && (
+              <p className="text-[11px] md:text-xs text-white/70 line-clamp-1 font-medium mb-3">
+                {product.short_desc}
+              </p>
+            )}
+
+            <div className="flex items-end justify-between">
+              <div>
+                <span className="text-[9px] md:text-[10px] font-semibold text-white/50 uppercase tracking-wider block mb-0.5">Starting at</span>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-lg md:text-xl font-extrabold text-white tracking-tight">₹{product.base_price}</span>
+                  {product.price_note && (
+                    <span className="text-[10px] font-semibold text-white/60">{product.price_note}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="w-9 h-9 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-brand-accent transition-colors duration-300 flex-shrink-0">
+                <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>
-            
-            <span className="text-[11px] font-bold text-brand-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              View Details →
-            </span>
           </div>
         </div>
       </div>
