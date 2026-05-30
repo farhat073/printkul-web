@@ -141,9 +141,6 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-accent/10 text-brand-accent rounded-full text-xs font-bold mb-4 uppercase tracking-widest">
-                  Our Bestsellers
-                </div>
                 <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">
                   Customer Favorites
                 </h2>
@@ -194,7 +191,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-slate/90 via-brand-slate/20 to-transparent flex items-end p-6 md:p-8">
                     <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                       <h3 className="text-white font-bold text-xl md:text-2xl">{cat.name}</h3>
-                      <div className="h-1 w-0 group-hover:w-full bg-brand-accent transition-all duration-500 mt-2 rounded-full" />
+                      <div className="h-1 w-0 group-hover:w-full transition-all duration-500 mt-2 rounded-full" style={{ background: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }} />
                     </div>
                   </div>
                 </Link>

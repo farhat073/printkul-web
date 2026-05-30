@@ -28,7 +28,7 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
           <img
             src={product.thumbnail_url}
             alt={product.name}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out scale-110 md:scale-100 md:group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-gray to-border/20">
@@ -41,14 +41,14 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
         {/* Badges — always visible */}
         {showFeaturedBadge && product.is_featured && (
           <div className="absolute top-3 left-3 z-20">
-            <span className="text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wide" style={{ background: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }}>
+            <span className="text-[10px] font-extrabold px-3 py-1 tracking-wider text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }}>
               BESTSELLER
             </span>
           </div>
         )}
 
-        {/* Default: Name pill at the bottom */}
-        <div className="absolute inset-x-0 bottom-0 z-10 p-3 transition-opacity duration-300 group-hover:opacity-0">
+        {/* Default: Name pill at the bottom (Desktop only) */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-3 hidden md:block transition-opacity duration-300 md:group-hover:opacity-0">
           <div className="inline-flex items-center max-w-full">
             <span className="bg-white/90 backdrop-blur-md text-brand-slate text-[11px] md:text-[13px] font-bold px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-lg truncate">
               {product.name}
@@ -56,13 +56,13 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
           </div>
         </div>
 
-        {/* Hover: Full details overlay */}
-        <div className="absolute inset-0 z-10 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-500">
+        {/* Hover: Full details overlay (Default on mobile, Hover on desktop) */}
+        <div className="absolute inset-0 z-10 flex flex-col justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500">
           {/* Gradient overlay for readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
           {/* Details panel */}
-          <div className="relative p-4 md:p-5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+          <div className="relative p-4 md:p-5 transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-500 ease-out">
             <h3 className="font-bold text-white text-[13px] md:text-[15px] line-clamp-2 leading-snug tracking-tight mb-1.5">
               {product.name}
             </h3>
