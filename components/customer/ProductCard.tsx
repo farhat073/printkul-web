@@ -41,9 +41,11 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
         {/* Badges — always visible */}
         {showFeaturedBadge && product.is_featured && (
           <div className="absolute top-3 left-3 z-20">
-            <span className="text-[10px] font-extrabold px-3 py-1 tracking-wider text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }}>
-              BESTSELLER
-            </span>
+            <div className="bg-white/95 backdrop-blur-md rounded-full shadow-sm border border-black/5 px-2.5 py-1 flex items-center justify-center">
+              <span className="text-[10px] md:text-[11px] font-black tracking-widest text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }}>
+                BESTSELLER
+              </span>
+            </div>
           </div>
         )}
 
