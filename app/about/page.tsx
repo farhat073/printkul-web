@@ -128,7 +128,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Certifications */}
-      <section className="py-10 md:py-16 bg-brand-gray">
+      <section className="py-10 md:py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-slate mb-3">Certified & Trusted</h2>

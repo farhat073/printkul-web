@@ -261,7 +261,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 9. NEWSLETTER SIGNUP */}
-      <section className="py-16 md:py-28 text-white relative overflow-hidden" style={{ backgroundColor: '#2B3539' }}>
+      <section className="py-16 md:py-28 text-white relative overflow-hidden bg-gradient-to-r from-brand-primary to-brand-accent">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/5 to-transparent" />
         <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/5 to-transparent" />
         

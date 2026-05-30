@@ -25,12 +25,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer style={{ backgroundColor: '#2B3539' }} className="text-white">
-      {/* ── Main Footer ── */}
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-12 pt-12 md:pt-20 pb-10 md:pb-16">
-        {/* Certifications Trust Badges */}
-        <div className="mb-14 pb-10 border-b border-white/10">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 text-center mb-8">Certified & Trusted</h3>
+    <footer className="w-full">
+      {/* ── Certifications Trust Badges ── */}
+      <div className="bg-white py-10 md:py-12 border-b border-gray-100">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-12">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 text-center mb-8">Certified & Trusted</h3>
           <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
             {[
               { label: "10+ Years", src: "/certifications/10-years.png" },
@@ -45,18 +44,22 @@ export function Footer() {
                   <img
                     src={item.src}
                     alt={item.label}
-                    className="max-h-full max-w-full object-contain opacity-40 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0"
+                    className="max-h-full max-w-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0"
                   />
                 </div>
-                <span className="text-[8px] font-bold text-white/30 group-hover:text-white/80 uppercase tracking-wider transition-colors duration-300">
+                <span className="text-[8px] font-bold text-black/40 group-hover:text-black/80 uppercase tracking-wider transition-colors duration-300">
                   {item.label}
                 </span>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div style={{ backgroundColor: '#2B3539' }} className="text-white">
+        {/* ── Main Footer ── */}
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-12 pt-12 md:pt-16 pb-10 md:pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Brand & About */}
           <div className="lg:col-span-4 space-y-8">
@@ -189,6 +192,7 @@ export function Footer() {
             <Link href="/delivery-return" className="hover:text-white/70 transition-colors">Returns</Link>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   )
