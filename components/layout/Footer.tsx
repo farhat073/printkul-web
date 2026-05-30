@@ -27,7 +27,7 @@ export function Footer() {
   return (
     <footer className="w-full">
       {/* ── Certifications Trust Badges ── */}
-      <div className="bg-white py-10 md:py-12 border-b border-gray-100">
+      <div className="py-10 md:py-12" style={{ backgroundColor: '#DAF7DC' }}>
         <div className="max-w-[1400px] mx-auto px-4 lg:px-12">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 text-center mb-8">Certified & Trusted</h3>
           <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">

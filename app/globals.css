@@ -279,6 +279,14 @@
 .animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
 .animate-scale-in { animation: scale-in 0.2s ease-out forwards; }
 
+@keyframes gradient-breathe {
+  0%, 100% { background-size: 200% 200%; background-position: 0% 50%; }
+  50% { background-size: 200% 200%; background-position: 100% 50%; }
+}
+.animate-gradient-breathe {
+  animation: gradient-breathe 8s ease-in-out infinite;
+}
+
 /* Stagger delays */
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }

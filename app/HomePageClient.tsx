@@ -3,7 +3,6 @@
 import { useRef } from "react"
 import Link from "next/link"
 import { ArrowRight, ChevronRight, ChevronLeft } from "lucide-react"
-import { toast } from "sonner"
 import { ProductCard } from "@/components/customer/ProductCard"
 import { Marquee } from "@/components/ui/Marquee"
 import { HeroCarousel } from "@/components/customer/HeroCarousel"
@@ -70,20 +69,9 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
     }
   }
 
-  const handleWhatsAppSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const input = (e.target as HTMLFormElement).querySelector('input') as HTMLInputElement | null
-    const phone = input?.value
-    
-    if (phone) {
-      toast.success("Connecting you to our WhatsApp...")
-      window.open(`https://wa.me/919419091333?text=Hi Printkul! I would like to claim my 10% discount coupon code. My number is ${phone}`, '_blank')
-      if (input) input.value = ""
-    }
-  }
 
   return (
-    <div className="min-h-screen bg-white text-brand-slate">
+    <div className="min-h-screen text-brand-slate" style={{ backgroundColor: '#DAF7DC' }}>
       {/* ── 1. FLIPKART-STYLE HERO CAROUSEL ── */}
       <HeroCarousel banners={banners} />
 
@@ -217,10 +205,10 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       )}
 
       {/* 8b. BRANDS THAT TRUST US - MARQUEE */}
-      <section className="py-12 md:py-20 bg-white border-y border-border overflow-hidden">
+      <section className="py-12 md:py-20 overflow-hidden" style={{ backgroundColor: '#DAF7DC' }}>
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="text-sm md:text-base font-bold text-muted-foreground uppercase tracking-[0.3em]">Trusted By Leading Organizations</h2>
+            <h2 className="text-sm md:text-base font-bold text-brand-slate/50 uppercase tracking-[0.3em]">Trusted By Leading Organizations</h2>
           </div>
           <Marquee 
             items={[
@@ -247,49 +235,17 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       <GoogleReviewsMarquee />
 
       {/* 8d. FIND STORES - MARQUEE */}
-      <section className="py-12 md:py-24 bg-[#2B3539] text-white overflow-hidden">
+      <section className="py-12 md:py-24 overflow-hidden" style={{ backgroundColor: '#DAF7DC' }}>
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 mb-16 text-center">
-           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-4">Our Presence Across J&K</h2>
-           <p className="text-white/60">Delivering excellence to every district in the valley.</p>
+           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-4 text-brand-slate">Our Presence Across J&K</h2>
+           <p className="text-brand-slate/50">Delivering excellence to every district in the valley.</p>
         </div>
         <Marquee 
           items={["Anantnag","Srinagar","Jammu","Banihal","Bandipora","Baramulla","Budgam","Ganderbal","Kulgam","Kupwara","Pulwama","Shopian"]} 
           speed="normal"
-          className="py-4 border-y border-white/5 bg-white/5"
+          className="py-4"
           variant="pill"
         />
-      </section>
-
-      {/* 9. NEWSLETTER SIGNUP */}
-      <section className="py-16 md:py-28 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #662CE5 0%, #6727D3 25%, #D4116C 50%, #E73846 75%, #EB652D 100%)' }}>
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/10 to-transparent" />
-        
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm font-bold mb-6 md:mb-8 uppercase tracking-[0.2em]">
-            Limited Time Offer
-          </div>
-          <h2 className="text-2xl md:text-4xl lg:text-6xl font-extrabold font-heading mb-4 md:mb-8 tracking-tight">Get 10% Off Your First Order</h2>
-          <p className="text-base md:text-xl text-white/70 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">Drop your WhatsApp number and we&apos;ll send your exclusive 10% coupon code instantly. Join thousands of happy customers.</p>
-          
-          <form className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-2xl mx-auto" onSubmit={handleWhatsAppSubmit}>
-            <input 
-              type="tel" 
-              placeholder="Enter your WhatsApp number" 
-              className="flex-1 h-14 md:h-16 px-6 md:px-8 rounded-xl text-brand-slate bg-white focus:outline-none focus:ring-4 focus:ring-white/30 text-base md:text-lg font-medium shadow-2xl"
-              pattern="[+]?[0-9]{10,15}"
-              minLength={10}
-              maxLength={15}
-              required
-            />
-            <button 
-              type="submit" 
-              className="h-14 md:h-16 px-8 md:px-10 bg-[#25D366] text-white font-extrabold rounded-xl hover:bg-[#20bd5a] transition-all whitespace-nowrap shadow-2xl hover:scale-105 active:scale-95 text-base md:text-lg"
-            >
-              Get Coupon Code
-            </button>
-          </form>
-        </div>
       </section>
     </div>
   )
