@@ -41,7 +41,7 @@ export function ProductCard({ product, showFeaturedBadge = true }: ProductCardPr
         {/* Badges — always visible */}
         {showFeaturedBadge && product.is_featured && (
           <div className="absolute top-3 left-3 z-20">
-            <span className="bg-brand-accent/90 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wide">
+            <span className="text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wide" style={{ background: 'linear-gradient(90deg, #662CE5, #D4116C, #EB652D)' }}>
               BESTSELLER
             </span>
           </div>
