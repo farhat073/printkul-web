@@ -261,9 +261,9 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       </section>
 
       {/* 9. NEWSLETTER SIGNUP */}
-      <section className="py-16 md:py-28 text-white relative overflow-hidden bg-gradient-to-r from-brand-primary to-brand-accent">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/5 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/5 to-transparent" />
+      <section className="py-16 md:py-28 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #662CE5 0%, #6727D3 25%, #D4116C 50%, #E73846 75%, #EB652D 100%)' }}>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-white/10 to-transparent" />
         
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm font-bold mb-6 md:mb-8 uppercase tracking-[0.2em]">
