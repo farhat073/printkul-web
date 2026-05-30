@@ -76,7 +76,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       <HeroCarousel banners={banners} />
 
       {/* 2. EXPLORE ALL CATEGORIES — Side Scroll */}
-      <section className="py-10 md:py-16 bg-brand-gray border-b border-border">
+      <section className="py-10 md:py-16">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 relative">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -137,7 +137,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
       {/* 3. FEATURED / BEST SELLERS */}
       {featuredProducts.length > 0 && (
-        <section className="py-12 md:py-20 lg:py-28 bg-white">
+        <section className="py-12 md:py-20 lg:py-28">
           <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div>
@@ -171,7 +171,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
       {/* 8a. PRODUCT SHOWCASE — Dynamic from DB categories */}
       {categories.length > 0 && (
-        <section className="py-12 md:py-24 bg-white">
+        <section className="py-12 md:py-24">
           <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-brand-slate font-heading tracking-tight">Our Premium Range</h2>

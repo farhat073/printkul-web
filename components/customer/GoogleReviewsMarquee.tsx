@@ -119,7 +119,7 @@ export function GoogleReviewsMarquee() {
   }, [printNext, isPaused])
 
   return (
-    <section className="py-12 md:py-24 bg-brand-gray relative overflow-hidden">
+    <section className="py-12 md:py-24 relative overflow-hidden">
       {/* Halftone */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
         backgroundImage: `radial-gradient(circle, #0F172A 0.8px, transparent 0.8px)`,
