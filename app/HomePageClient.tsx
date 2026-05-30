@@ -71,7 +71,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
 
 
   return (
-    <div className="min-h-screen text-brand-slate" style={{ backgroundColor: '#DAF7DC' }}>
+    <div className="min-h-screen text-brand-slate bg-white">
       {/* ── 1. FLIPKART-STYLE HERO CAROUSEL ── */}
       <HeroCarousel banners={banners} />
 
@@ -205,7 +205,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       )}
 
       {/* 8b. BRANDS THAT TRUST US - MARQUEE */}
-      <section className="py-12 md:py-20 overflow-hidden" style={{ backgroundColor: '#DAF7DC' }}>
+      <section className="py-12 md:py-20 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-sm md:text-base font-bold text-brand-slate/50 uppercase tracking-[0.3em]">Trusted By Leading Organizations</h2>
@@ -235,7 +235,7 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
       <GoogleReviewsMarquee />
 
       {/* 8d. FIND STORES - MARQUEE */}
-      <section className="py-12 md:py-24 overflow-hidden" style={{ backgroundColor: '#DAF7DC' }}>
+      <section className="py-12 md:py-24 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-8 mb-16 text-center">
            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-4 text-brand-slate">Our Presence Across J&K</h2>
            <p className="text-brand-slate/50">Delivering excellence to every district in the valley.</p>
