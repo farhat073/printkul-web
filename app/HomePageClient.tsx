@@ -209,21 +209,42 @@ export function HomePageClient({ categories = [], featuredProducts = [], banners
           </div>
           <Marquee 
             items={[
-              "Government of J&K", 
-              "JKSSB", 
-              "Tourism Dept", 
-              "JKEDI", 
-              "University of Kashmir", 
-              "NIT Srinagar", 
-              "IUST", 
-              "SKIMS", 
-              "HDFC Bank",
-              "Khyber Resorts",
-              "Private Schools", 
-              "Hotels Association"
+              { text: "GoodDay", logo: "/client-logos/1-goodday-logo.png" },
+              { text: "Aarafh Foods", logo: "/client-logos/aarafh-foods.png" },
+              { text: "Alpine Inn", logo: "/client-logos/alpine-inn-pahalgam.png" },
+              { text: "Aru Foods", logo: "/client-logos/aru-foods.png" },
+              { text: "Auura Water", logo: "/client-logos/auura-water.png" },
+              { text: "Cake Villa", logo: "/client-logos/cake-villa.png" },
+              { text: "City Dental Care", logo: "/client-logos/city-dental-care.png" },
+              { text: "Creme by Ahdoos", logo: "/client-logos/creme-by-ahdoos.png" },
+              { text: "Dalal Sons", logo: "/client-logos/dalal-sons.png" },
+              { text: "Deen Architects", logo: "/client-logos/deen-architects.png" },
+              { text: "Elvaris", logo: "/client-logos/elvaris-logo.png" },
+              { text: "Frukins", logo: "/client-logos/frukins.png" },
+              { text: "Frulavour", logo: "/client-logos/frulavour.png" },
+              { text: "Ghulab Jewellers", logo: "/client-logos/ghulab-jewellers.png" },
+              { text: "Hamdan Foods", logo: "/client-logos/hamdan-foods.png" },
+              { text: "Hermitage Hotel", logo: "/client-logos/hermitage-hotel.png" },
+              { text: "Jiddah", logo: "/client-logos/jiddah.png" },
+              { text: "Kashmir Box", logo: "/client-logos/kashmir-box.png" },
+              { text: "Manchester Education", logo: "/client-logos/manchester-education.png" },
+              { text: "New Shaheen", logo: "/client-logos/new-shaheen.png" },
+              { text: "Pahalgam Divine", logo: "/client-logos/pahalgam-divine.png" },
+              { text: "Qandi", logo: "/client-logos/qandi.png" },
+              { text: "Raahat Mattress", logo: "/client-logos/raahat-mattress.png" },
+              { text: "Royal Furniture", logo: "/client-logos/royal-furniture.png" },
+              { text: "Safalta Agro", logo: "/client-logos/safalta-agro-logo.png" },
+              { text: "Swift Homes", logo: "/client-logos/swift-homes.png" },
+              { text: "Walltec Paints", logo: "/client-logos/walltec-paints.png" },
+              { text: "Walltree Foods", logo: "/client-logos/walltree-foods.png" },
+              { text: "Heeposh", logo: "/client-logos/heeposh.png" },
+              { text: "i Bake Bakery", logo: "/client-logos/i-bake-bakery.png" },
+              { text: "Kinzal", logo: "/client-logos/kinzal.png" },
+              { text: "The Corner Cafe", logo: "/client-logos/the-corner-cafe.png" },
+              { text: "Uprise", logo: "/client-logos/uprise.png" },
             ]} 
             speed="slow"
-            variant="text"
+            variant="logo"
           />
         </div>
       </section>
