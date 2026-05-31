@@ -8,10 +8,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
-import { Plus, Trash2, GripVertical, Loader2 } from "lucide-react"
+import { ImageUploader } from "@/components/admin/ImageUploader"
+import { Plus, Trash2, Loader2, ArrowLeft, X } from "lucide-react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 interface Variant {
   id: string
@@ -53,16 +54,17 @@ export default function ProductFormPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("")
   const [isLoading, setIsLoading] = useState(isEditing)
   const [isSaving, setIsSaving] = useState(false)
+  const [specKey, setSpecKey] = useState("")
+  const [specValue, setSpecValue] = useState("")
   const supabase = createClient()
 
   useEffect(() => {
     async function fetchData() {
-      // Fetch categories
       const { data: cats } = await supabase
         .from("categories")
         .select("*, subcategories(*)")
         .eq("is_active", true)
-        .order("name")
+        .order("sort_order")
 
       if (cats) setCategories(cats)
 
@@ -92,7 +94,6 @@ export default function ProductFormPage() {
             subcategory_id: product.subcategory_id || "",
           })
 
-          // Fetch variants
           const { data: vars } = await supabase
             .from("product_variants")
             .select("*")
@@ -101,7 +102,6 @@ export default function ProductFormPage() {
 
           if (vars) setVariants(vars)
 
-          // Set selected category
           const cat = cats?.find((c) =>
             c.subcategories?.some((s: any) => s.id === product.subcategory_id)
           )
@@ -163,6 +163,22 @@ export default function ProductFormPage() {
     setFormData({ ...formData, slug })
   }
 
+  function addSpecification() {
+    if (!specKey.trim()) return
+    setFormData({
+      ...formData,
+      specifications: { ...formData.specifications, [specKey.trim()]: specValue.trim() },
+    })
+    setSpecKey("")
+    setSpecValue("")
+  }
+
+  function removeSpecification(key: string) {
+    const specs = { ...formData.specifications }
+    delete specs[key]
+    setFormData({ ...formData, specifications: specs })
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsSaving(true)
@@ -170,48 +186,31 @@ export default function ProductFormPage() {
     try {
       let productId = params.id
 
+      const productData = {
+        name: formData.name,
+        slug: formData.slug,
+        short_desc: formData.short_desc,
+        description: formData.description,
+        base_price: formData.base_price,
+        price_note: formData.price_note,
+        thumbnail_url: formData.thumbnail_url,
+        images: formData.images,
+        specifications: formData.specifications,
+        is_active: formData.is_active,
+        is_featured: formData.is_featured,
+        sort_order: formData.sort_order,
+        seo_title: formData.seo_title,
+        seo_desc: formData.seo_desc,
+        subcategory_id: formData.subcategory_id,
+        updated_at: new Date().toISOString(),
+      }
+
       if (isEditing) {
-        await supabase
-          .from("products")
-          .update({
-            name: formData.name,
-            slug: formData.slug,
-            short_desc: formData.short_desc,
-            description: formData.description,
-            base_price: formData.base_price,
-            price_note: formData.price_note,
-            thumbnail_url: formData.thumbnail_url,
-            images: formData.images,
-            specifications: formData.specifications,
-            is_active: formData.is_active,
-            is_featured: formData.is_featured,
-            sort_order: formData.sort_order,
-            seo_title: formData.seo_title,
-            seo_desc: formData.seo_desc,
-            subcategory_id: formData.subcategory_id,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", params.id)
+        await supabase.from("products").update(productData).eq("id", params.id)
       } else {
         const { data, error } = await supabase
           .from("products")
-          .insert({
-            name: formData.name,
-            slug: formData.slug,
-            short_desc: formData.short_desc,
-            description: formData.description,
-            base_price: formData.base_price,
-            price_note: formData.price_note,
-            thumbnail_url: formData.thumbnail_url,
-            images: formData.images,
-            specifications: formData.specifications,
-            is_active: formData.is_active,
-            is_featured: formData.is_featured,
-            sort_order: formData.sort_order,
-            seo_title: formData.seo_title,
-            seo_desc: formData.seo_desc,
-            subcategory_id: formData.subcategory_id,
-          })
+          .insert(productData)
           .select()
           .single()
 
@@ -221,10 +220,8 @@ export default function ProductFormPage() {
 
       // Save variants
       if (productId) {
-        // Delete existing variants
         await supabase.from("product_variants").delete().eq("product_id", productId)
 
-        // Insert new variants
         const variantsToInsert = variants.map((v, i) => ({
           product_id: productId,
           name: v.name || `${formData.name} - ${v.quantity} pcs`,
@@ -253,44 +250,56 @@ export default function ProductFormPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-slate" />
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-accent" />
       </div>
     )
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="font-heading text-2xl font-bold mb-8">
-        {isEditing ? "Edit Product" : "New Product"}
-      </h1>
+    <div className="p-6 lg:p-8 max-w-4xl mx-auto">
+      <div className="flex items-center gap-3 mb-8">
+        <Link href="/admin/products" className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+        </Link>
+        <div>
+          <h1 className="text-xl font-bold text-brand-slate">
+            {isEditing ? "Edit Product" : "New Product"}
+          </h1>
+          <p className="text-xs text-muted-foreground">
+            {isEditing ? "Update product details" : "Add a new product to your catalog"}
+          </p>
+        </div>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold">Basic Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Product Name *</Label>
+                <Label htmlFor="name" className="text-xs">Product Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
+                  placeholder="e.g. Standard Matte Visiting Cards"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="slug">Slug</Label>
+                <Label htmlFor="slug" className="text-xs">Slug</Label>
                 <div className="flex gap-2">
                   <Input
                     id="slug"
                     value={formData.slug}
                     onChange={(e) => handleInputChange("slug", e.target.value)}
+                    placeholder="auto-generated"
                   />
-                  <Button type="button" variant="outline" onClick={autoGenerateSlug}>
+                  <Button type="button" variant="outline" size="sm" onClick={autoGenerateSlug}>
                     Auto
                   </Button>
                 </div>
@@ -298,40 +307,41 @@ export default function ProductFormPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="short_desc">Short Description</Label>
+              <Label htmlFor="short_desc" className="text-xs">Short Description</Label>
               <Input
                 id="short_desc"
                 value={formData.short_desc}
                 onChange={(e) => handleInputChange("short_desc", e.target.value)}
-                placeholder="Shown on product cards"
+                placeholder="Shown on product cards (1 line)"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Full Description</Label>
+              <Label htmlFor="description" className="text-xs">Full Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleInputChange("description", e.target.value)}
                 rows={4}
+                placeholder="Detailed product description..."
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Category & Pricing */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Category & Pricing</CardTitle>
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold">Category & Pricing</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Category *</Label>
+                <Label className="text-xs">Category *</Label>
                 <select
                   value={selectedCategoryId}
                   onChange={(e) => handleCategoryChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-input rounded-lg bg-background"
+                  className="w-full h-9 px-3 border border-input rounded-lg bg-background text-sm"
                 >
                   <option value="">Select category</option>
                   {categories.map((cat) => (
@@ -342,14 +352,14 @@ export default function ProductFormPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label>Sub-category *</Label>
+                <Label className="text-xs">Sub-category *</Label>
                 <select
                   value={formData.subcategory_id}
                   onChange={(e) => handleInputChange("subcategory_id", e.target.value)}
-                  className="w-full px-3 py-2 border border-input rounded-lg bg-background"
+                  className="w-full h-9 px-3 border border-input rounded-lg bg-background text-sm"
                 >
                   <option value="">Select sub-category</option>
-                  {subcategories.map((sub) => (
+                  {subcategories.map((sub: any) => (
                     <option key={sub.id} value={sub.id}>
                       {sub.name}
                     </option>
@@ -360,7 +370,7 @@ export default function ProductFormPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="base_price">Base Price (₹) *</Label>
+                <Label htmlFor="base_price" className="text-xs">Base Price (₹) *</Label>
                 <Input
                   id="base_price"
                   type="number"
@@ -371,7 +381,7 @@ export default function ProductFormPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="price_note">Price Note</Label>
+                <Label htmlFor="price_note" className="text-xs">Price Note</Label>
                 <Input
                   id="price_note"
                   value={formData.price_note}
@@ -380,7 +390,7 @@ export default function ProductFormPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="sort_order">Sort Order</Label>
+                <Label htmlFor="sort_order" className="text-xs">Sort Order</Label>
                 <Input
                   id="sort_order"
                   type="number"
@@ -392,76 +402,124 @@ export default function ProductFormPage() {
           </CardContent>
         </Card>
 
-        {/* Images */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Images</CardTitle>
+        {/* Images — Cloudinary */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold">Images</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="thumbnail_url">Thumbnail URL</Label>
+          <CardContent className="space-y-6">
+            <ImageUploader
+              value={formData.thumbnail_url}
+              onChange={(url) => handleInputChange("thumbnail_url", url)}
+              folder="printkul/thumbnails"
+              label="Thumbnail Image"
+            />
+
+            <ImageUploader
+              value={formData.images}
+              onChange={(urls) => handleInputChange("images", urls)}
+              folder="printkul/products"
+              multiple
+              maxFiles={8}
+              label="Gallery Images (up to 8)"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Specifications */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold">Specifications</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {Object.entries(formData.specifications).length > 0 && (
+              <div className="space-y-2 mb-4">
+                {Object.entries(formData.specifications).map(([key, val]) => (
+                  <div key={key} className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg text-sm">
+                    <span className="font-medium text-brand-slate">{key}:</span>
+                    <span className="text-muted-foreground flex-1">{val}</span>
+                    <button type="button" onClick={() => removeSpecification(key)} className="text-destructive hover:text-destructive/80">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-2">
               <Input
-                id="thumbnail_url"
-                value={formData.thumbnail_url}
-                onChange={(e) => handleInputChange("thumbnail_url", e.target.value)}
-                placeholder="https://..."
+                value={specKey}
+                onChange={(e) => setSpecKey(e.target.value)}
+                placeholder="Key (e.g. Paper Weight)"
+                className="flex-1"
               />
+              <Input
+                value={specValue}
+                onChange={(e) => setSpecValue(e.target.value)}
+                placeholder="Value (e.g. 350gsm)"
+                className="flex-1"
+              />
+              <Button type="button" variant="outline" size="sm" onClick={addSpecification}>
+                <Plus className="w-4 h-4" />
+              </Button>
             </div>
           </CardContent>
         </Card>
 
         {/* Variants */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Product Variants</CardTitle>
-            <Button type="button" variant="outline" onClick={addVariant}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Variant
+        <Card className="border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between pb-4">
+            <CardTitle className="text-sm font-bold">Variants</CardTitle>
+            <Button type="button" variant="outline" size="sm" onClick={addVariant}>
+              <Plus className="w-4 h-4 mr-1" /> Add
             </Button>
           </CardHeader>
           <CardContent>
             {variants.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {variants.map((variant, index) => (
                   <div
                     key={variant.id}
-                    className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 bg-muted/50 rounded-lg"
+                    className="grid grid-cols-2 md:grid-cols-6 gap-3 p-4 bg-muted/30 rounded-xl"
                   >
-                    <div className="space-y-2">
-                      <Label className="text-xs">Finish</Label>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Finish</Label>
                       <Input
                         value={variant.finish}
                         onChange={(e) => updateVariant(index, "finish", e.target.value)}
                         placeholder="Glossy"
+                        className="h-8 text-sm"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Size</Label>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Size</Label>
                       <Input
                         value={variant.size}
                         onChange={(e) => updateVariant(index, "size", e.target.value)}
                         placeholder="A4"
+                        className="h-8 text-sm"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Quantity</Label>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Qty</Label>
                       <Input
                         type="number"
                         value={variant.quantity}
                         onChange={(e) => updateVariant(index, "quantity", parseInt(e.target.value))}
+                        className="h-8 text-sm"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Price (₹)</Label>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Price (₹)</Label>
                       <Input
                         type="number"
                         step="0.01"
                         value={variant.price}
                         onChange={(e) => updateVariant(index, "price", e.target.value)}
+                        className="h-8 text-sm"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-xs">Active</Label>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Active</Label>
                       <Switch
                         checked={variant.is_active}
                         onCheckedChange={(checked) => updateVariant(index, "is_active", checked)}
@@ -472,6 +530,7 @@ export default function ProductFormPage() {
                         type="button"
                         variant="ghost"
                         size="icon"
+                        className="h-8 w-8"
                         onClick={() => removeVariant(index)}
                       >
                         <Trash2 className="w-4 h-4 text-destructive" />
@@ -481,54 +540,76 @@ export default function ProductFormPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground text-center py-8">
-                No variants yet. Add variants to define different finish, size, and quantity options.
+              <p className="text-muted-foreground text-center py-6 text-sm">
+                No variants. Add variants for different finish, size, and quantity options.
               </p>
             )}
           </CardContent>
         </Card>
 
-        {/* Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Settings</CardTitle>
+        {/* SEO */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold">SEO</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-8">
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-xs">SEO Title</Label>
+              <Input
+                value={formData.seo_title}
+                onChange={(e) => handleInputChange("seo_title", e.target.value)}
+                placeholder="Page title for search engines"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs">SEO Description</Label>
+              <Textarea
+                value={formData.seo_desc}
+                onChange={(e) => handleInputChange("seo_desc", e.target.value)}
+                rows={2}
+                placeholder="Meta description for search engines"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Settings & Submit */}
+        <Card className="border-border/50">
+          <CardContent className="p-5">
+            <div className="flex items-center gap-8 mb-6">
               <div className="flex items-center gap-3">
                 <Switch
                   checked={formData.is_active}
                   onCheckedChange={(checked) => handleInputChange("is_active", checked)}
                 />
-                <Label>Active</Label>
+                <Label className="text-sm">Active</Label>
               </div>
               <div className="flex items-center gap-3">
                 <Switch
                   checked={formData.is_featured}
                   onCheckedChange={(checked) => handleInputChange("is_featured", checked)}
                 />
-                <Label>Featured</Label>
+                <Label className="text-sm">Featured</Label>
               </div>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <Button type="button" variant="outline" onClick={() => router.push("/admin/products")}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  isEditing ? "Update Product" : "Create Product"
+                )}
+              </Button>
             </div>
           </CardContent>
         </Card>
-
-        {/* Submit */}
-        <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.push("/admin/products")}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSaving}>
-            {isSaving ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              isEditing ? "Update Product" : "Create Product"
-            )}
-          </Button>
-        </div>
       </form>
     </div>
   )

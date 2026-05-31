@@ -4,15 +4,12 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Plus, Edit2, Trash2, Eye, Package } from "lucide-react"
+import { MoreHorizontal, Plus, Edit2, Trash2, Eye, Package, LayoutGrid, List, Star, StarOff } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
 
 interface Product {
   id: string
@@ -21,6 +18,7 @@ interface Product {
   short_desc?: string
   thumbnail_url?: string
   base_price: string
+  price_note?: string
   is_active: boolean
   is_featured: boolean
   sort_order: number
@@ -37,30 +35,28 @@ export default function AdminProductsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterActive, setFilterActive] = useState<boolean | null>(null)
   const [filterFeatured, setFilterFeatured] = useState<boolean | null>(null)
+  const [filterCategory, setFilterCategory] = useState("")
+  const [categories, setCategories] = useState<any[]>([])
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list")
   const supabase = createClient()
-  const router = useRouter()
 
   useEffect(() => {
     fetchProducts()
+    fetchCategories()
   }, [])
 
+  async function fetchCategories() {
+    const { data } = await supabase.from("categories").select("id, name, slug").eq("is_active", true).order("sort_order")
+    if (data) setCategories(data)
+  }
+
   async function fetchProducts() {
-    let query = supabase
+    const { data } = await supabase
       .from("products")
       .select("*, subcategory:subcategories(name, slug, category:categories(name, slug))")
       .order("sort_order")
 
-    if (filterActive !== null) {
-      query = query.eq("is_active", filterActive)
-    }
-    if (filterFeatured !== null) {
-      query = query.eq("is_featured", filterFeatured)
-    }
-
-    const { data } = await query
-    if (data) {
-      setProducts(data)
-    }
+    if (data) setProducts(data)
     setIsLoading(false)
   }
 
@@ -101,182 +97,237 @@ export default function AdminProductsPage() {
     }
   }
 
-  const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredProducts = products.filter((p) => {
+    if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false
+    if (filterActive !== null && p.is_active !== filterActive) return false
+    if (filterFeatured !== null && p.is_featured !== filterFeatured) return false
+    if (filterCategory && p.subcategory?.category?.slug !== filterCategory) return false
+    return true
+  })
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="animate-spin w-8 h-8 border-4 border-brand-accent border-t-transparent rounded-full" />
       </div>
     )
   }
 
   return (
-    <div className="p-8">
+    <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-bold">Products</h1>
-          <p className="text-muted-foreground">{products.length} products total</p>
+          <h1 className="text-xl font-bold text-brand-slate">Products</h1>
+          <p className="text-sm text-muted-foreground">{products.length} total · {filteredProducts.length} shown</p>
         </div>
         <Link href="/admin/products/new">
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Product
+          <Button size="sm">
+            <Plus className="w-4 h-4 mr-1" /> Add Product
           </Button>
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-3">
         <Input
           placeholder="Search products..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="max-w-xs"
         />
-        <div className="flex gap-2">
-          <Button
-            variant={filterActive === null ? "secondary" : "outline"}
-            onClick={() => setFilterActive(null)}
-            size="sm"
-          >
-            All
-          </Button>
-          <Button
-            variant={filterActive === true ? "secondary" : "outline"}
-            onClick={() => setFilterActive(true)}
-            size="sm"
-          >
-            Active
-          </Button>
-          <Button
-            variant={filterActive === false ? "secondary" : "outline"}
-            onClick={() => setFilterActive(false)}
-            size="sm"
-          >
-            Inactive
-          </Button>
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="h-9 px-3 border border-input rounded-lg bg-background text-sm max-w-[200px]"
+        >
+          <option value="">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.slug}>{cat.name}</option>
+          ))}
+        </select>
+        <div className="flex gap-1.5">
+          <Button variant={filterActive === null ? "secondary" : "outline"} onClick={() => setFilterActive(null)} size="sm">All</Button>
+          <Button variant={filterActive === true ? "secondary" : "outline"} onClick={() => setFilterActive(true)} size="sm">Active</Button>
+          <Button variant={filterActive === false ? "secondary" : "outline"} onClick={() => setFilterActive(false)} size="sm">Inactive</Button>
           <Button
             variant={filterFeatured === true ? "secondary" : "outline"}
             onClick={() => setFilterFeatured(filterFeatured ? null : true)}
             size="sm"
           >
-            Featured Only
+            <Star className="w-3 h-3 mr-1" /> Featured
+          </Button>
+        </div>
+        <div className="flex gap-1 ml-auto">
+          <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-9 w-9" onClick={() => setViewMode("list")}>
+            <List className="w-4 h-4" />
+          </Button>
+          <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-9 w-9" onClick={() => setViewMode("grid")}>
+            <LayoutGrid className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
-      {/* Products Table */}
-      <Card>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="border-b border-border bg-muted/50">
-                <tr className="text-left text-sm">
-                  <th className="px-6 py-3 font-medium">Product</th>
-                  <th className="px-6 py-3 font-medium">Category</th>
-                  <th className="px-6 py-3 font-medium">Price</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
-                  <th className="px-6 py-3 font-medium">Featured</th>
-                  <th className="px-6 py-3 font-medium"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((product) => (
-                  <tr key={product.id} className="border-b border-border hover:bg-muted/30">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
-                          {product.thumbnail_url ? (
-                            <img
-                              src={product.thumbnail_url}
-                              alt={product.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                              <Package className="w-6 h-6" />
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium">{product.name}</p>
-                          <p className="text-sm text-muted-foreground">{product.slug}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm">
-                      {product.subcategory?.category?.name} / {product.subcategory?.name}
-                    </td>
-                    <td className="px-6 py-4">₹{product.base_price}</td>
-                    <td className="px-6 py-4">
-                      <Badge variant={product.is_active ? "default" : "secondary"}>
-                        {product.is_active ? "Active" : "Inactive"}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => toggleFeatured(product)}
-                        className={`text-sm ${product.is_featured ? "text-brand-slate font-medium" : "text-muted-foreground"}`}
-                      >
-                        {product.is_featured ? "★ Featured" : "☆ Not featured"}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Link href={`/${product.subcategory?.category?.slug || ''}/${product.subcategory?.slug || ''}/${product.slug}`} className="flex items-center w-full">
-                              <Eye className="w-4 h-4 mr-2" />
-                              View
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Link href={`/admin/products/${product.id}`} className="flex items-center w-full">
-                              <Edit2 className="w-4 h-4 mr-2" />
-                              Edit
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => toggleActive(product)}
-                          >
-                            {product.is_active ? "Deactivate" : "Activate"}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => deleteProduct(product)}
-                            className="text-destructive"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
+      {/* Products — List View */}
+      {viewMode === "list" && (
+        <Card className="border-border/50">
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="border-b border-border bg-muted/30">
+                  <tr className="text-left text-xs font-medium text-muted-foreground">
+                    <th className="px-4 py-3">Product</th>
+                    <th className="px-4 py-3 hidden md:table-cell">Category</th>
+                    <th className="px-4 py-3">Price</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 hidden sm:table-cell">Featured</th>
+                    <th className="px-4 py-3 w-12"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filteredProducts.map((product) => (
+                    <tr key={product.id} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                            {product.thumbnail_url ? (
+                              <img src={product.thumbnail_url} alt={product.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <Package className="w-5 h-5 text-muted-foreground/40" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-brand-slate truncate">{product.name}</p>
+                            <p className="text-[11px] text-muted-foreground truncate">{product.slug}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 hidden md:table-cell">
+                        <span className="text-xs text-muted-foreground">
+                          {product.subcategory?.category?.name}
+                          <span className="mx-1">›</span>
+                          {product.subcategory?.name}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-sm font-semibold">₹{product.base_price}</span>
+                        {product.price_note && (
+                          <span className="text-[10px] text-muted-foreground block">{product.price_note}</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <Badge variant={product.is_active ? "default" : "secondary"} className="text-[10px]">
+                          {product.is_active ? "Active" : "Inactive"}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3 hidden sm:table-cell">
+                        <button onClick={() => toggleFeatured(product)}>
+                          {product.is_featured ? (
+                            <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                          ) : (
+                            <StarOff className="w-4 h-4 text-muted-foreground/30 hover:text-amber-400 transition-colors" />
+                          )}
+                        </button>
+                      </td>
+                      <td className="px-4 py-3">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreHorizontal className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              <Link href={`/${product.subcategory?.category?.slug || ""}/${product.subcategory?.slug || ""}/${product.slug}`} className="flex items-center w-full">
+                                <Eye className="w-4 h-4 mr-2" /> View
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Link href={`/admin/products/${product.id}`} className="flex items-center w-full">
+                                <Edit2 className="w-4 h-4 mr-2" /> Edit
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => toggleActive(product)}>
+                              {product.is_active ? "Deactivate" : "Activate"}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => deleteProduct(product)} className="text-destructive">
+                              <Trash2 className="w-4 h-4 mr-2" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-12">
+                <Package className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+                <p className="text-sm text-muted-foreground">No products found</p>
+                <Link href="/admin/products/new" className="text-sm text-brand-accent hover:underline mt-2 inline-block">
+                  Add your first product
+                </Link>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Products — Grid View */}
+      {viewMode === "grid" && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredProducts.map((product) => (
+            <Card key={product.id} className="overflow-hidden border-border/50 group">
+              <div className="aspect-square relative bg-muted">
+                {product.thumbnail_url ? (
+                  <img src={product.thumbnail_url} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Package className="w-10 h-10 text-muted-foreground/20" />
+                  </div>
+                )}
+                {product.is_featured && (
+                  <div className="absolute top-2 left-2">
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                  </div>
+                )}
+                <div className="absolute top-2 right-2">
+                  <Badge variant={product.is_active ? "default" : "secondary"} className="text-[9px]">
+                    {product.is_active ? "Active" : "Off"}
+                  </Badge>
+                </div>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                  <Link href={`/admin/products/${product.id}`} className="w-9 h-9 bg-white rounded-full flex items-center justify-center hover:bg-brand-accent hover:text-white transition-colors">
+                    <Edit2 className="w-4 h-4" />
+                  </Link>
+                  <button onClick={() => deleteProduct(product)} className="w-9 h-9 bg-white rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <CardContent className="p-3">
+                <p className="text-sm font-semibold text-brand-slate truncate">{product.name}</p>
+                <p className="text-[10px] text-muted-foreground truncate mt-0.5">
+                  {product.subcategory?.category?.name} › {product.subcategory?.name}
+                </p>
+                <p className="text-sm font-bold mt-1.5">₹{product.base_price}</p>
+              </CardContent>
+            </Card>
+          ))}
 
           {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
-              <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">No products found</p>
-              <Link href="/admin/products/new" className="text-brand-slate hover:underline mt-2 inline-block">
-                Add your first product
-              </Link>
+            <div className="col-span-full text-center py-12">
+              <Package className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+              <p className="text-sm text-muted-foreground">No products found</p>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      )}
     </div>
   )
 }

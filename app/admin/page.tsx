@@ -2,22 +2,43 @@
 
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Package, MessageSquare, TrendingUp, Image, Tag, Users } from "lucide-react"
+import {
+  Package,
+  MessageSquare,
+  FolderTree,
+  Image,
+  Tag,
+  TrendingUp,
+  Plus,
+  ArrowRight,
+  Clock,
+} from "lucide-react"
 import Link from "next/link"
 
 interface Stats {
   totalProducts: number
+  totalCategories: number
+  totalSubcategories: number
   totalEnquiries: number
   newEnquiriesToday: number
   activeBanners: number
   activeDeals: number
 }
 
+const statusColors: Record<string, string> = {
+  initiated: "bg-amber-100 text-amber-700",
+  contacted: "bg-blue-100 text-blue-700",
+  converted: "bg-emerald-100 text-emerald-700",
+  closed: "bg-gray-100 text-gray-500",
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats>({
     totalProducts: 0,
+    totalCategories: 0,
+    totalSubcategories: 0,
     totalEnquiries: 0,
     newEnquiriesToday: 0,
     activeBanners: 0,
@@ -31,6 +52,8 @@ export default function AdminDashboard() {
     async function fetchStats() {
       const [
         productsCount,
+        categoriesCount,
+        subcategoriesCount,
         enquiriesCount,
         bannersCount,
         dealsCount,
@@ -38,6 +61,8 @@ export default function AdminDashboard() {
         recentEnquiriesData,
       ] = await Promise.all([
         supabase.from("products").select("id", { count: "exact" }).eq("is_active", true),
+        supabase.from("categories").select("id", { count: "exact" }).eq("is_active", true),
+        supabase.from("subcategories").select("id", { count: "exact" }).eq("is_active", true),
         supabase.from("enquiries").select("id", { count: "exact" }),
         supabase.from("banners").select("id", { count: "exact" }).eq("is_active", true),
         supabase.from("deals").select("id", { count: "exact" }).eq("is_active", true),
@@ -54,6 +79,8 @@ export default function AdminDashboard() {
 
       setStats({
         totalProducts: productsCount.count || 0,
+        totalCategories: categoriesCount.count || 0,
+        totalSubcategories: subcategoriesCount.count || 0,
         totalEnquiries: enquiriesCount.count || 0,
         newEnquiriesToday: todayEnquiries.count || 0,
         activeBanners: bannersCount.count || 0,
@@ -70,180 +97,131 @@ export default function AdminDashboard() {
     fetchStats()
   }, [])
 
-  const statusColors: Record<string, string> = {
-    initiated: "bg-yellow-100 text-yellow-800",
-    contacted: "bg-blue-100 text-blue-800",
-    converted: "bg-green-100 text-green-800",
-    closed: "bg-gray-100 text-gray-800",
-  }
-
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full" />
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="animate-spin w-8 h-8 border-4 border-brand-accent border-t-transparent rounded-full" />
       </div>
     )
   }
 
+  const statCards = [
+    { label: "Products", value: stats.totalProducts, icon: Package, color: "bg-indigo-50 text-indigo-600", href: "/admin/products" },
+    { label: "Categories", value: stats.totalCategories, icon: FolderTree, color: "bg-violet-50 text-violet-600", href: "/admin/categories" },
+    { label: "Subcategories", value: stats.totalSubcategories, icon: FolderTree, color: "bg-fuchsia-50 text-fuchsia-600", href: "/admin/categories" },
+    { label: "Enquiries", value: stats.totalEnquiries, icon: MessageSquare, color: "bg-blue-50 text-blue-600", href: "/admin/enquiries" },
+    { label: "Today", value: stats.newEnquiriesToday, icon: TrendingUp, color: "bg-emerald-50 text-emerald-600", href: "/admin/enquiries" },
+    { label: "Banners", value: stats.activeBanners, icon: Image, color: "bg-amber-50 text-amber-600", href: "/admin/banners" },
+    { label: "Deals", value: stats.activeDeals, icon: Tag, color: "bg-rose-50 text-rose-600", href: "/admin/deals" },
+  ]
+
+  const quickActions = [
+    { label: "Add Product", href: "/admin/products/new", icon: Plus, desc: "Create a new product listing" },
+    { label: "Manage Categories", href: "/admin/categories", icon: FolderTree, desc: "Add or edit categories" },
+    { label: "Upload Media", href: "/admin/media", icon: Image, desc: "Upload images to Cloudinary" },
+    { label: "View Enquiries", href: "/admin/enquiries", icon: MessageSquare, desc: "Check customer enquiries" },
+  ]
+
   return (
-    <div className="min-h-screen bg-muted/30">
-      {/* Header */}
-      <div className="bg-brand-gray border-b border-border sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <h1 className="font-heading text-2xl font-bold">Admin Dashboard</h1>
-        </div>
+    <div className="p-6 lg:p-8 space-y-8">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-brand-slate tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">Overview of your store</p>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-brand-blue/5 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-brand-slate" />
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+        {statCards.map((stat) => (
+          <Link key={stat.label} href={stat.href}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer border-border/50">
+              <CardContent className="p-4">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-3 ${stat.color}`}>
+                  <stat.icon className="w-4 h-4" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Products</p>
-                  <p className="text-2xl font-bold">{stats.totalProducts}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                <p className="text-2xl font-bold text-brand-slate">{stat.value}</p>
+                <p className="text-[11px] text-muted-foreground font-medium mt-0.5">{stat.label}</p>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <MessageSquare className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Enquiries</p>
-                  <p className="text-2xl font-bold">{stats.totalEnquiries}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Quick Actions */}
+        <Card className="border-border/50">
+          <CardContent className="p-5">
+            <h2 className="font-bold text-sm text-brand-slate mb-4">Quick Actions</h2>
+            <div className="space-y-2">
+              {quickActions.map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/80 transition-colors group"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-brand-slate/5 flex items-center justify-center group-hover:bg-brand-accent/10 transition-colors">
+                    <action.icon className="w-4 h-4 text-brand-slate group-hover:text-brand-accent transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-brand-slate">{action.label}</p>
+                    <p className="text-xs text-muted-foreground">{action.desc}</p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-brand-blue" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Today</p>
-                  <p className="text-2xl font-bold">{stats.newEnquiriesToday}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Image className="w-6 h-6 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Banners</p>
-                  <p className="text-2xl font-bold">{stats.activeBanners}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Tag className="w-6 h-6 text-red-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Active Deals</p>
-                  <p className="text-2xl font-bold">{stats.activeDeals}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions & Recent Enquiries */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Link
-                href="/admin/products/new"
-                className="block p-3 bg-brand-blue/5 rounded-lg hover:bg-brand-blue/10 transition-colors"
-              >
-                <Package className="w-5 h-5 text-brand-slate mb-2" />
-                <span className="font-medium">Add Product</span>
-              </Link>
-              <Link
-                href="/admin/banners"
-                className="block p-3 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors"
-              >
-                <Image className="w-5 h-5 text-blue-600 mb-2" />
-                <span className="font-medium">Manage Banners</span>
-              </Link>
-              <Link
-                href="/admin/enquiries"
-                className="block p-3 bg-green-100 rounded-lg hover:bg-green-200 transition-colors"
-              >
-                <MessageSquare className="w-5 h-5 text-brand-blue mb-2" />
-                <span className="font-medium">View Enquiries</span>
-              </Link>
-              <Link
-                href="/admin/media"
-                className="block p-3 bg-purple-100 rounded-lg hover:bg-purple-200 transition-colors"
-              >
-                <Image className="w-5 h-5 text-purple-600 mb-2" />
-                <span className="font-medium">Upload Images</span>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Recent Enquiries */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="font-heading">Recent Enquiries</CardTitle>
-              <Link href="/admin/enquiries" className="text-sm text-brand-slate hover:underline">
+        {/* Recent Enquiries */}
+        <Card className="lg:col-span-2 border-border/50">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-bold text-sm text-brand-slate">Recent Enquiries</h2>
+              <Link href="/admin/enquiries" className="text-xs font-medium text-brand-accent hover:underline">
                 View all →
               </Link>
-            </CardHeader>
-            <CardContent>
-              {recentEnquiries.length > 0 ? (
-                <div className="space-y-4">
-                  {recentEnquiries.map((enquiry) => (
-                    <div
-                      key={enquiry.id}
-                      className="flex items-center justify-between p-4 bg-muted/50 rounded-lg"
-                    >
-                      <div>
-                        <p className="font-medium">{enquiry.customer_name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {enquiry.product?.name} · {enquiry.variant?.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {new Date(enquiry.created_at).toLocaleString("en-IN")}
+            </div>
+            {recentEnquiries.length > 0 ? (
+              <div className="space-y-3">
+                {recentEnquiries.map((enquiry) => (
+                  <div
+                    key={enquiry.id}
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-brand-slate/10 flex items-center justify-center text-xs font-bold text-brand-slate flex-shrink-0">
+                        {enquiry.customer_name?.charAt(0) || "?"}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-brand-slate truncate">{enquiry.customer_name}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {enquiry.product?.name || "General enquiry"}
                         </p>
                       </div>
-                      <Badge className={statusColors[enquiry.status] || "bg-gray-100"}>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="text-right hidden sm:block">
+                        <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {new Date(enquiry.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                        </p>
+                      </div>
+                      <Badge className={`text-[10px] ${statusColors[enquiry.status] || "bg-gray-100 text-gray-500"}`}>
                         {enquiry.status}
                       </Badge>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-center py-8">No enquiries yet</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <MessageSquare className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+                <p className="text-sm text-muted-foreground">No enquiries yet</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
