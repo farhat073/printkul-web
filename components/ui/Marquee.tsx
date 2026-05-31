@@ -24,17 +24,19 @@ export function Marquee({
     typeof item === "string" ? { text: item } : item
   )
 
+  const gap = variant === "logo" ? "1.25rem" : "1rem"
+
   function renderItem(item: MarqueeItem, idx: number) {
     if (variant === "logo" && item.logo) {
       return (
         <div
           key={idx}
-          className="flex items-center justify-center px-6 md:px-10 transition-all duration-300 cursor-default"
+          className="flex-none flex items-center justify-center px-3 md:px-5 transition-all duration-300 cursor-default"
         >
           <img
             src={item.logo}
             alt={item.text}
-            className="h-10 md:h-14 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+            className="h-10 md:h-14 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 mix-blend-multiply"
           />
         </div>
       )
@@ -44,7 +46,7 @@ export function Marquee({
       <div 
         key={idx} 
         className={cn(
-          "whitespace-nowrap transition-all duration-300 cursor-default",
+          "flex-none whitespace-nowrap transition-all duration-300 cursor-default",
           variant === "pill" 
             ? "bg-brand-gray border border-border px-6 py-3 rounded-full font-bold text-brand-slate text-sm md:text-base hover:border-brand-primary hover:text-brand-primary hover:bg-white hover:scale-110 shadow-sm"
             : variant === "announcement"
@@ -60,32 +62,23 @@ export function Marquee({
   return (
     <div 
       className={cn(
-        "group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] relative",
-        "[mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]",
+        "group overflow-hidden p-2 relative",
+        "[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]",
         className
       )}
     >
-      <div 
+      <div
         className={cn(
-          "flex shrink-0 justify-around [gap:var(--gap)] min-w-full items-center",
-          speed === "normal" ? "animate-marquee" : "animate-marquee-slow",
+          "flex w-max",
+          speed === "normal" ? "marquee-scroll-normal" : "marquee-scroll-slow",
           pauseOnHover && "group-hover:[animation-play-state:paused]"
         )}
-        style={{ willChange: "transform", transform: "translateZ(0)" }}
+        style={{ gap }}
       >
+        {/* First copy */}
         {normalizedItems.map((item, idx) => renderItem(item, idx))}
-      </div>
-      {/* Second track for seamless loop */}
-      <div 
-        aria-hidden="true"
-        className={cn(
-          "flex shrink-0 justify-around [gap:var(--gap)] min-w-full items-center",
-          speed === "normal" ? "animate-marquee" : "animate-marquee-slow",
-          pauseOnHover && "group-hover:[animation-play-state:paused]"
-        )}
-        style={{ willChange: "transform", transform: "translateZ(0)" }}
-      >
-        {normalizedItems.map((item, idx) => renderItem(item, idx))}
+        {/* Second copy for seamless loop */}
+        {normalizedItems.map((item, idx) => renderItem(item, normalizedItems.length + idx))}
       </div>
     </div>
   )

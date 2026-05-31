@@ -155,6 +155,7 @@
   --color-brand-indigo-dark: var(--color-brand-accent-dark);
   --color-brand-indigo-light: var(--color-brand-accent-light);
 
+  /* Legacy — kept for other uses */
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -180,6 +181,22 @@
   }
 
   --animate-gradient-x: gradient-x 3s ease infinite;
+}
+
+/* Marquee scroll — must be global for inline style animation */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-scroll-normal {
+  animation: marquee-scroll 25s linear infinite;
+  will-change: transform;
+}
+
+.marquee-scroll-slow {
+  animation: marquee-scroll 45s linear infinite;
+  will-change: transform;
 }
 
 @layer base {
