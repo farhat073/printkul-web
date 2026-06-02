@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { ImageUploader } from "@/components/admin/ImageUploader"
-import { Plus, Trash2, Loader2, ArrowLeft, X } from "lucide-react"
+import { Plus, Trash2, Loader2, ArrowLeft, X, Percent } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
 
@@ -25,6 +25,11 @@ interface Variant {
   sort_order: number
 }
 
+interface PricingTier {
+  qty: number
+  discount: number // percentage
+}
+
 export default function ProductFormPage() {
   const params = useParams()
   const router = useRouter()
@@ -37,6 +42,13 @@ export default function ProductFormPage() {
     description: "",
     base_price: "",
     price_note: "",
+    moq: 1000,
+    pricing_tiers: [
+      { qty: 2000, discount: 6 },
+      { qty: 3000, discount: 12 },
+      { qty: 5000, discount: 18 },
+      { qty: 10000, discount: 25 },
+    ] as PricingTier[],
     thumbnail_url: "",
     images: [] as string[],
     specifications: {} as Record<string, string>,
@@ -83,6 +95,13 @@ export default function ProductFormPage() {
             description: product.description || "",
             base_price: product.base_price || "",
             price_note: product.price_note || "",
+            moq: product.moq ?? 1000,
+            pricing_tiers: product.pricing_tiers ?? [
+              { qty: 2000, discount: 6 },
+              { qty: 3000, discount: 12 },
+              { qty: 5000, discount: 18 },
+              { qty: 10000, discount: 25 },
+            ],
             thumbnail_url: product.thumbnail_url || "",
             images: product.images || [],
             specifications: product.specifications || {},
@@ -193,6 +212,8 @@ export default function ProductFormPage() {
         description: formData.description,
         base_price: formData.base_price,
         price_note: formData.price_note,
+        moq: formData.moq,
+        pricing_tiers: formData.pricing_tiers,
         thumbnail_url: formData.thumbnail_url,
         images: formData.images,
         specifications: formData.specifications,
@@ -398,6 +419,150 @@ export default function ProductFormPage() {
                   onChange={(e) => handleInputChange("sort_order", parseInt(e.target.value))}
                 />
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* MOQ & Bulk Pricing */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-bold flex items-center gap-2">
+              <Percent className="w-4 h-4" />
+              MOQ & Bulk Pricing Tiers
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs">Minimum Order Quantity (MOQ) *</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  value={formData.moq}
+                  onChange={(e) => handleInputChange("moq", parseInt(e.target.value) || 1000)}
+                  placeholder="1000"
+                />
+                <p className="text-[10px] text-muted-foreground">
+                  Base price is for this quantity. Customers cannot order less.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs font-semibold">Discount Tiers</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const lastQty = formData.pricing_tiers.length > 0
+                      ? formData.pricing_tiers[formData.pricing_tiers.length - 1].qty
+                      : formData.moq
+                    handleInputChange("pricing_tiers", [
+                      ...formData.pricing_tiers,
+                      { qty: lastQty + 1000, discount: 0 },
+                    ])
+                  }}
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1" /> Add Tier
+                </Button>
+              </div>
+
+              {formData.pricing_tiers.length > 0 ? (
+                <div className="space-y-2">
+                  {/* Header */}
+                  <div className="grid grid-cols-[1fr_1fr_40px] gap-3 px-3">
+                    <span className="text-[10px] text-muted-foreground font-medium">Quantity (pcs)</span>
+                    <span className="text-[10px] text-muted-foreground font-medium">Discount (%)</span>
+                    <span></span>
+                  </div>
+                  {/* Base tier (non-editable) */}
+                  <div className="grid grid-cols-[1fr_1fr_40px] gap-3 p-3 bg-muted/30 rounded-lg">
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium">{formData.moq.toLocaleString("en-IN")} pcs</span>
+                      <span className="text-[10px] text-muted-foreground ml-2">(base)</span>
+                    </div>
+                    <span className="text-sm text-muted-foreground flex items-center">0% — base rate</span>
+                    <span></span>
+                  </div>
+                  {/* Editable tiers */}
+                  {formData.pricing_tiers.map((tier, index) => (
+                    <div key={index} className="grid grid-cols-[1fr_1fr_40px] gap-3 p-3 bg-muted/20 rounded-lg">
+                      <Input
+                        type="number"
+                        min={formData.moq + 1}
+                        value={tier.qty}
+                        onChange={(e) => {
+                          const newTiers = [...formData.pricing_tiers]
+                          newTiers[index] = { ...newTiers[index], qty: parseInt(e.target.value) || 0 }
+                          handleInputChange("pricing_tiers", newTiers)
+                        }}
+                        className="h-8 text-sm"
+                      />
+                      <div className="flex items-center gap-1">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={100}
+                          step={1}
+                          value={tier.discount}
+                          onChange={(e) => {
+                            const newTiers = [...formData.pricing_tiers]
+                            newTiers[index] = { ...newTiers[index], discount: parseFloat(e.target.value) || 0 }
+                            handleInputChange("pricing_tiers", newTiers)
+                          }}
+                          className="h-8 text-sm"
+                        />
+                        <span className="text-xs text-muted-foreground">%</span>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => {
+                          handleInputChange(
+                            "pricing_tiers",
+                            formData.pricing_tiers.filter((_, i) => i !== index)
+                          )
+                        }}
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-destructive" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No bulk discount tiers. Add tiers to offer discounts at higher quantities.
+                </p>
+              )}
+
+              {formData.pricing_tiers.length > 0 && formData.base_price && (
+                <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                  <p className="text-[10px] font-semibold text-emerald-700 mb-2">Preview</p>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span>{formData.moq.toLocaleString("en-IN")} pcs</span>
+                      <span className="font-medium">₹{parseFloat(formData.base_price).toLocaleString("en-IN")} (₹{(parseFloat(formData.base_price) / formData.moq).toFixed(2)}/pc)</span>
+                    </div>
+                    {formData.pricing_tiers
+                      .sort((a, b) => a.qty - b.qty)
+                      .map((tier, i) => {
+                        const basePP = parseFloat(formData.base_price) / formData.moq
+                        const discPP = basePP * (1 - tier.discount / 100)
+                        const total = Math.round(discPP * tier.qty)
+                        return (
+                          <div key={i} className="flex justify-between text-xs">
+                            <span>{tier.qty.toLocaleString("en-IN")} pcs <span className="text-emerald-600">({tier.discount}% off)</span></span>
+                            <span className="font-medium">₹{total.toLocaleString("en-IN")} (₹{discPP.toFixed(2)}/pc)</span>
+                          </div>
+                        )
+                      })}
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

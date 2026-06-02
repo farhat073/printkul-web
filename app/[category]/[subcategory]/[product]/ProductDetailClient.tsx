@@ -1,17 +1,15 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { WhatsAppOrderModal } from "@/components/customer/WhatsAppOrderModal"
 import { ProductCard } from "@/components/customer/ProductCard"
-import { Check, Truck, Shield, Clock, ShoppingCart } from "lucide-react"
+import { Truck, Shield, Clock, ShoppingCart, Minus, Plus, Package } from "lucide-react"
 import { useCart } from "@/lib/cart"
 import { toast } from "sonner"
 
@@ -25,6 +23,11 @@ interface ProductVariant {
   is_active: boolean
 }
 
+interface PricingTier {
+  qty: number
+  discount: number
+}
+
 interface Product {
   id: string
   slug: string
@@ -33,6 +36,8 @@ interface Product {
   short_desc?: string
   base_price: string
   price_note?: string
+  moq?: number
+  pricing_tiers?: PricingTier[]
   images?: string[]
   thumbnail_url?: string
   specifications?: Record<string, string>
@@ -59,6 +64,36 @@ interface ProductDetailClientProps {
   subcategorySlug: string
 }
 
+// ── Pricing calculation using DB-stored tiers ──
+function getTierDiscount(qty: number, moq: number, tiers: PricingTier[]): number {
+  // Sort tiers descending by qty to find the highest applicable tier
+  const sorted = [...tiers].sort((a, b) => b.qty - a.qty)
+  for (const tier of sorted) {
+    if (qty >= tier.qty) return tier.discount / 100
+  }
+  return 0 // base rate for MOQ
+}
+
+function calculatePrice(
+  basePrice: number,
+  qty: number,
+  moq: number,
+  tiers: PricingTier[]
+): { total: number; perPiece: number; savings: number } {
+  const basePricePerPiece = basePrice / moq
+  const discount = getTierDiscount(qty, moq, tiers)
+  const perPiece = basePricePerPiece * (1 - discount)
+  const total = perPiece * qty
+  const baseTotalAtMOQRate = basePricePerPiece * qty
+  const savings = baseTotalAtMOQRate - total
+
+  return {
+    total: Math.round(total),
+    perPiece: Math.round(perPiece * 100) / 100,
+    savings: Math.round(savings),
+  }
+}
+
 export function ProductDetailClient({
   product,
   waNumber,
@@ -68,31 +103,88 @@ export function ProductDetailClient({
   categorySlug,
   subcategorySlug,
 }: ProductDetailClientProps) {
+  const moq = product.moq || 1000
+  const tiers: PricingTier[] = product.pricing_tiers || []
+  const presetQuantities = [moq, ...tiers.map((t) => t.qty)].sort((a, b) => a - b)
+
   const [selectedImage, setSelectedImage] = useState(0)
+  const [selectedQuantity, setSelectedQuantity] = useState(moq)
+  const [customQtyInput, setCustomQtyInput] = useState("")
+  const [isCustomMode, setIsCustomMode] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     product.variants?.find((v) => v.is_active) || null
-  )
-  const [selectedQuantity, setSelectedQuantity] = useState<number>(
-    product.variants?.find((v) => v.is_active)?.quantity || 100
   )
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { addToCart } = useCart()
   const router = useRouter()
 
-  const currentVariant = selectedVariant || product.variants?.find((v) => v.is_active)
-  
-  const handleAddToCart = () => {
-    const variantId = currentVariant?.id || "default"
-    const variantName = currentVariant?.name || `${selectedQuantity} pcs`
-    const price = currentVariant?.price || product.base_price
+  const basePrice = parseFloat(product.base_price)
 
+  const pricing = useMemo(
+    () => calculatePrice(basePrice, selectedQuantity, moq, tiers),
+    [basePrice, selectedQuantity, moq, tiers]
+  )
+
+  // All tier prices for the pricing table
+  const allTierPrices = useMemo(() => {
+    return presetQuantities.map((qty) => ({
+      qty,
+      ...calculatePrice(basePrice, qty, moq, tiers),
+      discount: getTierDiscount(qty, moq, tiers),
+    }))
+  }, [basePrice, moq, tiers, presetQuantities])
+
+  const uniqueFinishes = [...new Set(product.variants?.map((v) => v.finish).filter(Boolean) || [])]
+
+  const handleFinishSelect = (finish: string) => {
+    const variant = product.variants?.find((v) => v.finish === finish && v.is_active)
+    if (variant) setSelectedVariant(variant)
+  }
+
+  const handlePresetSelect = (qty: number) => {
+    setSelectedQuantity(qty)
+    setIsCustomMode(false)
+    setCustomQtyInput("")
+  }
+
+  const handleCustomQtyChange = (value: string) => {
+    setCustomQtyInput(value)
+    const num = parseInt(value)
+    if (!isNaN(num) && num >= moq) {
+      setSelectedQuantity(num)
+    }
+  }
+
+  const handleCustomQtyBlur = () => {
+    const num = parseInt(customQtyInput)
+    if (isNaN(num) || num < moq) {
+      setSelectedQuantity(moq)
+      setCustomQtyInput(moq.toString())
+    }
+  }
+
+  const incrementQty = () => {
+    const newQty = selectedQuantity + 1
+    setSelectedQuantity(newQty)
+    setCustomQtyInput(newQty.toString())
+    if (!presetQuantities.includes(newQty)) setIsCustomMode(true)
+  }
+
+  const decrementQty = () => {
+    const newQty = Math.max(moq, selectedQuantity - 1)
+    setSelectedQuantity(newQty)
+    setCustomQtyInput(newQty.toString())
+    if (!presetQuantities.includes(newQty)) setIsCustomMode(true)
+  }
+
+  const handleAddToCart = () => {
     addToCart({
       productId: product.id,
       productName: product.name,
       productSlug: product.slug,
-      variantId: variantId,
-      variantName: variantName,
-      price: price,
+      variantId: selectedVariant?.id || `qty-${selectedQuantity}`,
+      variantName: selectedVariant?.name || `${selectedQuantity.toLocaleString("en-IN")} pcs`,
+      price: pricing.total.toString(),
       quantity: selectedQuantity,
       thumbnailUrl: product.thumbnail_url,
       categorySlug,
@@ -108,28 +200,6 @@ export function ProductDetailClient({
   }
 
   const images = product.images?.length ? product.images : [product.thumbnail_url].filter(Boolean)
-
-  const uniqueFinishes = [...new Set(product.variants?.map((v) => v.finish).filter(Boolean) || [])]
-
-  const handleFinishSelect = (finish: string) => {
-    const variant = product.variants?.find((v) => v.finish === finish && v.is_active)
-    if (variant) {
-      setSelectedVariant(variant)
-      setSelectedQuantity(variant.quantity)
-    }
-  }
-
-  const handleQuantitySelect = (qty: number) => {
-    setSelectedQuantity(qty)
-    const variant = product.variants?.find((v) => v.quantity === qty && v.is_active)
-    if (variant) {
-      setSelectedVariant(variant)
-    }
-  }
-
-  const bestValueVariant = product.variants?.reduce((best, v) =>
-    v.price && best.price && parseFloat(v.price) / v.quantity < parseFloat(best.price) / best.quantity ? v : best
-  , product.variants[0])
 
   return (
     <div className="min-h-screen pb-24 md:pb-0">
@@ -176,14 +246,35 @@ export function ProductDetailClient({
               {product.short_desc && (
                 <p className="text-muted-foreground mt-2">{product.short_desc}</p>
               )}
-              <div className="flex items-center gap-4 mt-4">
-                <span className="text-2xl font-bold text-[var(--color-brand-slate)]">
-                  ₹{currentVariant?.price || product.base_price}
-                </span>
-                {product.price_note && (
-                  <span className="text-muted-foreground">{product.price_note}</span>
-                )}
+            </div>
+
+            {/* ── Dynamic Price Display ── */}
+            <div className="bg-gradient-to-r from-[var(--color-brand-slate)] to-[#3a474d] rounded-xl p-5 text-white">
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-white/60 text-sm font-medium">Total Price</p>
+                  <p className="text-3xl font-bold mt-0.5">
+                    ₹{pricing.total.toLocaleString("en-IN")}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-white/60 text-sm font-medium">Per Piece</p>
+                  <p className="text-xl font-bold mt-0.5">₹{pricing.perPiece}</p>
+                </div>
               </div>
+              {pricing.savings > 0 && (
+                <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2">
+                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-xs">
+                    You save ₹{pricing.savings.toLocaleString("en-IN")}
+                  </Badge>
+                  <span className="text-white/50 text-xs">
+                    vs. ordering at base rate
+                  </span>
+                </div>
+              )}
+              <p className="text-white/40 text-xs mt-2">
+                {gstNote}
+              </p>
             </div>
 
             {/* Variant Selector - Finish */}
@@ -211,73 +302,125 @@ export function ProductDetailClient({
               </div>
             )}
 
-            {/* Quantity Selector */}
-            {product.variants && product.variants.length > 0 && (
-              <div>
-                <label className="text-sm font-medium mb-3 block">Quantity</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[...new Set(product.variants.map((v) => v.quantity))].sort((a, b) => a - b).map((qty) => {
-                    const variant = product.variants?.find((v) => v.quantity === qty && v.is_active)
-                    const isBestValue = bestValueVariant?.quantity === qty
-                    return (
-                      <button
-                        key={qty}
-                        onClick={() => handleQuantitySelect(qty)}
-                        className={`relative p-4 rounded-lg border text-left transition-colors ${
-                          selectedQuantity === qty
-                            ? "border-brand-blue bg-brand-blue/5"
-                            : "border-border hover:border-brand-blue/30"
-                        }`}
-                      >
-                        <div className="font-semibold">{qty} pcs</div>
-                        {variant && (
-                          <div className="text-sm text-muted-foreground">₹{variant.price}</div>
-                        )}
-                        {isBestValue && (
-                          <Badge className="absolute -top-2 -right-2 bg-green-500 text-white text-xs">
-                            Best Value
-                          </Badge>
-                        )}
-                      </button>
-                    )
-                  })}
-                </div>
+            {/* ── Quantity Selector ── */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-semibold">
+                  Quantity
+                  <span className="text-muted-foreground font-normal ml-1.5">(MOQ: {moq.toLocaleString("en-IN")} pcs)</span>
+                </label>
               </div>
-            )}
 
-            {/* Pricing Table */}
-            {product.variants && product.variants.length > 1 && (
-              <Card>
+              {/* Preset Quantity Buttons */}
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mb-4">
+                {presetQuantities.map((qty) => {
+                  const tierPrice = calculatePrice(basePrice, qty, moq, tiers)
+                  const discount = getTierDiscount(qty, moq, tiers)
+                  const isSelected = selectedQuantity === qty && !isCustomMode
+                  return (
+                    <button
+                      key={qty}
+                      onClick={() => handlePresetSelect(qty)}
+                      className={`relative p-3 rounded-xl border-2 text-center transition-all ${
+                        isSelected
+                          ? "border-[var(--color-brand-accent)] bg-[var(--color-brand-accent)]/5 shadow-sm"
+                          : "border-border hover:border-[var(--color-brand-accent)]/40 hover:shadow-sm"
+                      }`}
+                    >
+                      <div className="font-bold text-sm">{qty.toLocaleString("en-IN")}</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">
+                        ₹{tierPrice.perPiece}/pc
+                      </div>
+                      {discount > 0 && (
+                        <Badge className="absolute -top-2 -right-1 bg-emerald-500 text-white text-[9px] px-1.5 py-0">
+                          {Math.round(discount * 100)}% off
+                        </Badge>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Custom Quantity Input */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={decrementQty}
+                  disabled={selectedQuantity <= moq}
+                  className="w-10 h-10 rounded-lg border border-border flex items-center justify-center hover:bg-muted/50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Minus className="w-4 h-4" />
+                </button>
+                <div className="flex-1 relative">
+                  <input
+                    type="number"
+                    min={moq}
+                    step={1}
+                    value={isCustomMode ? customQtyInput : selectedQuantity}
+                    onChange={(e) => {
+                      setIsCustomMode(true)
+                      handleCustomQtyChange(e.target.value)
+                    }}
+                    onFocus={() => {
+                      setIsCustomMode(true)
+                      setCustomQtyInput(selectedQuantity.toString())
+                    }}
+                    onBlur={handleCustomQtyBlur}
+                    className="w-full h-10 text-center text-lg font-bold border border-border rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-accent)]/30 focus:border-[var(--color-brand-accent)] transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    placeholder={`Min ${moq}`}
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">pcs</span>
+                </div>
+                <button
+                  onClick={incrementQty}
+                  className="w-10 h-10 rounded-lg border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+
+              {selectedQuantity < moq && (
+                <p className="text-xs text-destructive mt-2">
+                  Minimum order quantity is {moq.toLocaleString("en-IN")} pieces
+                </p>
+              )}
+            </div>
+
+            {/* ── Pricing Table ── */}
+            {allTierPrices.length > 1 && (
+              <Card className="border-border/50">
                 <CardContent className="p-4">
-                  <h3 className="font-semibold mb-3">Pricing Breakdown</h3>
-                  <div className="space-y-2">
-                    {[...new Map(product.variants.filter(v => v.is_active).map(v => [v.quantity, v])).values()]
-                      .sort((a, b) => a.quantity - b.quantity)
-                      .map((variant) => {
-                        const unitPrice = (parseFloat(variant.price) / variant.quantity).toFixed(2)
-                        const isBestValue = bestValueVariant?.quantity === variant.quantity
-                        return (
-                          <div
-                            key={variant.id}
-                            className={`flex items-center justify-between p-3 rounded-lg ${
-                              selectedQuantity === variant.quantity ? "bg-brand-blue/5" : "bg-muted/50"
-                            }`}
-                          >
-                            <div>
-                              <span className="font-medium">{variant.quantity} pcs</span>
-                              {isBestValue && (
-                                <Badge variant="outline" className="ml-2 text-brand-blue border-brand-blue text-xs">
-                                  Best Value
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="text-right">
-                              <span className="text-sm text-muted-foreground">₹{unitPrice}/pc</span>
-                              <span className="font-semibold ml-3">₹{variant.price}</span>
-                            </div>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <Package className="w-4 h-4 text-muted-foreground" />
+                    Bulk Pricing
+                  </h3>
+                  <div className="space-y-1.5">
+                    {allTierPrices.map(({ qty, total, perPiece, savings, discount }) => {
+                      const isSelected = selectedQuantity === qty
+                      return (
+                        <button
+                          key={qty}
+                          onClick={() => handlePresetSelect(qty)}
+                          className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors text-left ${
+                            isSelected ? "bg-[var(--color-brand-accent)]/5 ring-1 ring-[var(--color-brand-accent)]/20" : "bg-muted/30 hover:bg-muted/60"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="font-medium text-sm">{qty.toLocaleString("en-IN")} pcs</span>
+                            {discount > 0 && (
+                              <Badge variant="outline" className="text-emerald-600 border-emerald-200 bg-emerald-50 text-[10px]">
+                                {Math.round(discount * 100)}% off
+                              </Badge>
+                            )}
                           </div>
-                        )
-                      })}
+                          <div className="text-right flex items-center gap-4">
+                            <span className="text-xs text-muted-foreground">₹{perPiece}/pc</span>
+                            <span className="font-semibold text-sm min-w-[80px] text-right">
+                              ₹{total.toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -287,10 +430,11 @@ export function ProductDetailClient({
             <div className="hidden md:block space-y-3">
               <Button
                 onClick={handleAddToCart}
+                disabled={selectedQuantity < moq}
                 className="w-full bg-brand-slate hover:bg-brand-slate-light text-white text-lg py-6 shadow-md hover:shadow-lg transition-all font-bold"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                Add to Cart
+                Add to Cart — ₹{pricing.total.toLocaleString("en-IN")}
               </Button>
               <Button
                 onClick={() => setIsModalOpen(true)}
@@ -320,8 +464,6 @@ export function ProductDetailClient({
                 <span className="text-xs text-muted-foreground">Quick Response</span>
               </div>
             </div>
-
-            <p className="text-xs text-muted-foreground">{gstNote}</p>
           </div>
         </div>
 
@@ -376,20 +518,27 @@ export function ProductDetailClient({
           </div>
         )}
         {/* Mobile Sticky Checkout Bar */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border p-3 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex items-center gap-3">
-          <Button
-            onClick={handleAddToCart}
-            variant="outline"
-            className="flex-1 border-brand-slate text-brand-slate py-6 text-sm font-bold"
-          >
-            Add to Cart
-          </Button>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className="flex-1 bg-[#25D366] hover:bg-[#1fb855] text-white py-6 font-bold text-sm"
-          >
-            Order Now
-          </Button>
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border p-3 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+          <div className="flex items-center justify-between mb-2 px-1">
+            <span className="text-xs text-muted-foreground">{selectedQuantity.toLocaleString("en-IN")} pcs</span>
+            <span className="text-sm font-bold">₹{pricing.total.toLocaleString("en-IN")}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={handleAddToCart}
+              disabled={selectedQuantity < moq}
+              variant="outline"
+              className="flex-1 border-brand-slate text-brand-slate py-6 text-sm font-bold"
+            >
+              Add to Cart
+            </Button>
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="flex-1 bg-[#25D366] hover:bg-[#1fb855] text-white py-6 font-bold text-sm"
+            >
+              Order Now
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -406,9 +555,9 @@ export function ProductDetailClient({
           subcategory_slug: subcategorySlug,
         }}
         variant={{
-          id: currentVariant?.id || "",
-          name: currentVariant?.name || `${selectedQuantity} pcs`,
-          price: currentVariant?.price || product.base_price,
+          id: selectedVariant?.id || `qty-${selectedQuantity}`,
+          name: selectedVariant?.name || `${selectedQuantity.toLocaleString("en-IN")} pcs`,
+          price: pricing.total.toString(),
         }}
         quantity={selectedQuantity}
         waNumber={waNumber}
